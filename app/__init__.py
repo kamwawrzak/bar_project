@@ -1,4 +1,5 @@
 from flask import Flask
+
 from flask_sqlalchemy import SQLAlchemy
 
 
@@ -11,6 +12,6 @@ def create_app():
     db.init_app(app)
 
     with app.app_context():
-        from . import routes
+        from . import routes  # noqa
         db.create_all()
         return app
