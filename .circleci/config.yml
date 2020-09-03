@@ -12,7 +12,7 @@ jobs:
             - run:
                 name: Run Unit Tests
                 command: |
-                    pytest -v --cov
+                    pytest
                     tox -e lint
             - store_test_results:
                 path: /bin/test_reports
