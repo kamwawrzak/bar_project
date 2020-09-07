@@ -44,15 +44,32 @@ def check_data(email, nick, password, confirm_pass):
     elif RegularUser.query.filter_by(email=email).first():
         error = 'This email address is already registered.'
     elif RegularUser.query.filter_by(nick=nick).first():
-        error = 'This nick name already exists'
+        error = 'This nickname already exists'
     elif password != confirm_pass:
         error = "Password and Confirm Password don't match."
-    elif len(password) < 8:
-        error = "Password is too short."
+    elif validate_password(password) is not None:
+        error = validate_password(password)
     else:
         error = None
     return error
 
 
-def check_password():
-    pass
+def validate_password(password):
+    specials = ['!', '@', '#', '$', '%', '^', '&', '*', '(', ')']
+    if len(password) > 15:
+        error = 'Password is too long'
+    elif len(password) < 8:
+        error = 'Password is too short.'
+    elif not any(char.isdigit() for char in password):
+        error = 'Password must contain at least one digit'
+    elif not any(char.isupper() for char in password):
+        error = 'Password must contain at least one capital letter'
+    elif not any(char.islower() for char in password):
+        error = 'Password must contain at least one lower letter'
+    elif not any(char in specials for char in password):
+        error = 'Password must contain at least of symbols: !@#$%^&*()'
+    elif any(char == ' ' for char in password):
+        error = 'Password cannot include spaces'
+    else:
+        error = None
+    return error
