@@ -1,11 +1,12 @@
 from flask import current_app as app
+from flask import render_template
 
 
 @app.route('/')
-def index_page():
-    return 'Welcome to the bar application.'
+def index():
+    return render_template('base.html', title='Home')
 
 
 @app.route('/v1/register')
-def regular_registration():
-    pass
+def registration():
+    return render_template('register.html', title="Registration")

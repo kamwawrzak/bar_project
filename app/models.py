@@ -4,8 +4,9 @@ from . import db
 class RegularUser(db.Model):
     user_id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(255), unique=True, nullable=False)
+    nick = db.Column(db.String(16), unique=True, nullable=False)
     password_hash = db.Column(db.String(86), nullable=False)
 
 
 class Drink(db.Model):
-    pass
+    drink_id = db.Column(db.Integer, primary_key=True)

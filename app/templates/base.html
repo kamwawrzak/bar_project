@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+</head>
+<body>
+<div class="topnav">
+    <a class="active" href="#home">Home</a>
+    <a href="#search">Search</a>
+    <a href="v1/register">Sign Up</a>
+    <a href="#login">Sign In</a>
+</div>
+{% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul class="flashes">
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+{% block content %}
+{% endblock content %}
+</body>
+</html>
