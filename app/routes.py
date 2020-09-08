@@ -9,4 +9,9 @@ def index():
 
 @app.route('/v1/register')
 def registration():
-    return render_template('register.html', title="Registration")
+    return render_template('register.html', title='Registration')
+
+
+@app.route('/v1/login')
+def login():
+    return render_template('login.html', title='Login')
