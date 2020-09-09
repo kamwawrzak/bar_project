@@ -26,11 +26,10 @@ def register_post():
 
 
 def get_form_data():
-    d = {}
-    d['email'] = request.form.get('email')
-    d['nick'] = request.form.get('nick')
-    d['password'] = request.form.get('password')
-    d['confirm_pass'] = request.form.get('confirm')
+    d = {'email': request.form.get('email'),
+         'nick': request.form.get('nick'),
+         'password': request.form.get('password'),
+         'confirm_pass': request.form.get('confirm')}
     return d
 
 
