@@ -15,3 +15,10 @@ class RegularUser(db.Model, UserMixin):
 
 class Drink(db.Model):
     drink_id = db.Column(db.Integer, primary_key=True)
+    author = db.Column(db.Integer, db.ForeignKey(RegularUser.user_id),
+                       nullable=False)
+    name = db.Column(db.String(35), nullable=False)
+    technique = db.Column(db.String(20), nullable=True)
+    description = db.Column(db.String(250), nullable=True)
+    preparation = db.Column(db.String(250), nullable=False)
+    ingredients = db.Column(db.String(250), nullable=False)

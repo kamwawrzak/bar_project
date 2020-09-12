@@ -1,5 +1,6 @@
 from app import lm
 from app.models import RegularUser
+from app.web_interactors import WebInteractors
 
 from flask import Blueprint, flash, redirect, request, url_for
 
@@ -19,7 +20,7 @@ def load_user(user_id):
 
 @login_bp.route('/v1/login', methods=['GET', 'POST'])
 def login():
-    d = get_form_data()
+    d = WebInteractors().get_form_data('email', 'password', 'remember')
     v = validate_data(d['email'], d['password'])
     if v:
         login_user(v, remember=d['remember'])
@@ -39,13 +40,6 @@ def logout():
     logout_user()
     flash('You have been logged out')
     return redirect(url_for('index'))
-
-
-def get_form_data():
-    d = {'email': request.form.get('email'),
-         'password': request.form.get('password'),
-         'remember': request.form.get('remember')}
-    return d
 
 
 def validate_data(email, password):
