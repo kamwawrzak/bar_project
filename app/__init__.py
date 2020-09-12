@@ -17,8 +17,9 @@ def create_app():
 
     with app.app_context():
         from . import routes  # noqa
-        from .blueprints import login_bp, register_bp
+        from .blueprints import login_bp, drink_bp, register_bp
         app.register_blueprint(login_bp.login_bp)
+        app.register_blueprint(drink_bp.drink_bp)
         app.register_blueprint(register_bp.register_bp)
         db.create_all()
         return app

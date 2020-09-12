@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block content %}
+    <form action="/add_drink" method="POST">
+        <label for="name">Drink Name</label>
+        <input type="text" id="name" name="name"><br>
+        <label for="technique">Technique</label>
+        <input type="text" id="technique" name="technique"><br>
+        <label for="description">Drink description</label>
+        <input type="text" id="description" name="description"><br>
+        <label for="preparation">Drink preparation</label>
+        <input type="text" id="preparation" name="preparation"><br>
+        <label>Ingredients</label>
+        <label>Amount</label><br>
+        <input type="text" name="ingredient1">
+        <input type="number" name="amount1"><br>
+        <input type="text" id="ingredient2">
+        <input type="number" name="amount2"><br>
+        <input type="text" id="ingredient3">
+        <input type="number" name="amount3"><br>
+        <input type="text" id="ingredient4">
+        <input type="number" name="amount4"><br>
+        <input type="text" id="ingredient5">
+        <input type="number" name="amount5"><br>
+        <input type="text" id="ingredient6">
+        <input type="number" name="amount6"><br>
+        <button type="button" name="add ingredients">+</button><br>
+        <button type="submit" name="submit">Submit</button>
+    </form>
+{% endblock content %}
