@@ -28,3 +28,8 @@ def add_drink():
 @app.route('/v1/drinks')
 def display_drinks():
     return render_template('display_drinks.html', title='Drinks')
+
+
+@app.route('/v1/search')
+def search_drinks():
+    return render_template('search.html', title='Search')
