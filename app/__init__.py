@@ -16,8 +16,8 @@ def create_app():
     lm.init_app(app)
 
     with app.app_context():
-        from .blueprints import login_bp, drink_bp, home_bp, register_bp, \
-            search_bp
+        from .blueprints import (login_bp, drink_bp, home_bp, register_bp,
+                                 search_bp)
         app.register_blueprint(home_bp.home_bp)
         app.register_blueprint(login_bp.login_bp)
         app.register_blueprint(drink_bp.drink_bp)
