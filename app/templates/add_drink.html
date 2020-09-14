@@ -3,8 +3,22 @@
     <form action="/add_drink" method="POST">
         <label for="name">Drink Name</label>
         <input type="text" id="name" name="name"><br>
+        <label for="category">Category</label>
+        <select id="category" name="category">
+            {% with categories=categories %}
+                {% for c in categories %}
+                    <option value="{{ c }}">{{ c }}</option>
+                {% endfor %}
+            {% endwith %}
+        </select><br>
         <label for="technique">Technique</label>
-        <input type="text" id="technique" name="technique"><br>
+        <select id="technique" name="technique">
+            {% with techniques=techniques %}
+                {% for t in techniques %}
+                    <option value="{{ t }}">{{ t }}</option>
+                {% endfor %}
+            {% endwith %}
+        </select><br>
         <label for="description">Drink description</label>
         <input type="text" id="description" name="description"><br>
         <label for="preparation">Drink preparation</label>
