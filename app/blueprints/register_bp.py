@@ -2,12 +2,17 @@ from app import db
 from app.models import RegularUser
 from app.web_interactors import WebInteractors
 
-from flask import Blueprint, flash, redirect, url_for
+from flask import Blueprint, flash, redirect, render_template, url_for
 
 from werkzeug.security import generate_password_hash
 
 
 register_bp = Blueprint('register_bp', __name__)
+
+
+@register_bp.route('/v1/register')
+def registration():
+    return render_template('register.html', title='Registration')
 
 
 @register_bp.route('/v1/register', methods=['GET', 'POST'])
@@ -22,10 +27,10 @@ def register_post():
         db.session.add(new_user)
         db.session.commit()
         flash('You have been registered successfully')
-        return redirect(url_for('index'))
+        return redirect(url_for('home_bp.index'))
     else:
         flash(error)
-        return redirect(url_for('registration'))
+        return redirect(url_for('register_bp.registration'))
 
 
 def check_data(email, nick, password, confirm_pass):

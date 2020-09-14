@@ -18,6 +18,7 @@ class Drink(db.Model):
     author = db.Column(db.Integer, db.ForeignKey(RegularUser.user_id),
                        nullable=False)
     name = db.Column(db.String(35), nullable=False)
+    category = db.Column(db.String(35), nullable=False)
     technique = db.Column(db.String(20), nullable=True)
     description = db.Column(db.String(250), nullable=True)
     preparation = db.Column(db.String(250), nullable=False)

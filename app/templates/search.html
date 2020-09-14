@@ -2,7 +2,22 @@
 
 {% block content %}
     <form action="/v1/search" method="POST">
+        <select name="criteria">
+            {% with criteria=search_criteria %}
+                {% for c in criteria %}
+                    <option value="{{ c }}">{{ c }}</option>
+                {% endfor %}
+            {% endwith %}
+        </select>
         <input type="text" name="search">
         <button type="submit" name="search">Search</button><br>
+        <ul>
+            <li><a href="/v1/drinks/all">All Drinks</a></li>
+            {% with categories=categories %}
+                {% for c in categories %}
+                    <li><a href="/v1/drinks/{{ c }}">{{ c }}</a></li>
+                {% endfor %}
+            {% endwith %}
+        </ul>
     </form>
 {% endblock content %}

@@ -4,8 +4,7 @@
     {% with drinks=drinks %}
         {% if drinks %}
             {% for drink in drinks %}
-                <li><a href="/v1/drink/{{ drink.drink_id }}">
-                    {{ drink.name }}</a></li>
+                <li><a href="/v1/drink/{{ drink.drink_id }}">{{ drink.name }}</a></li>
             {% endfor %}
         {% else %}
             There are no drinks with this name.

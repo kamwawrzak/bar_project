@@ -14,9 +14,10 @@ class WebInteractors():
         return d
 
     def get_drink_data(self):
-        d = {'name': request.form.get('name'),
+        d = {'name': request.form.get('name').capitalize(),
              'author': current_user.get_id(),
-             'technique': request.form.get('technique'),
+             'category': request.form.get('category'),
+             'technique': request.form.get('technique').capitalize(),
              'description': request.form.get('description'),
              'preparation': request.form.get('preparation'),
              'ingredients': pickle.dumps(WebInteractors().get_ingredients())}
