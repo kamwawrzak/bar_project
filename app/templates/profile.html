@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <ul>
+        <li><a href="/v1/user_drinks/{{ current_user.user_id }}">Your Drinks</a></li><br>
+        <li><a href="/v1/profile/change_password">Change password</a></li><br>
+        <li><a href="/v1/profile/delete/{{ current_user.user_id }}">Delete account</a></li><br>
+    </ul>
+{% endblock content %}

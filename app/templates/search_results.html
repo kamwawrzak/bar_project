@@ -3,8 +3,16 @@
 {% block content %}
     {% with drinks=drinks %}
         {% if drinks %}
-            {% for drink in drinks %}
-                <li><a href="/v1/drink/{{ drink.drink_id }}">{{ drink.name }}</a></li>
+            {% for d in drinks %}
+                <li>
+                    <a href="/v1/drink/{{ d.drink_id }}">{{ d.name }}</a>
+                    {% if d.author == current_user.user_id %}
+                        <a href="/v1/drink/update/{{ d.drink_id }}">
+                            <input type="button" value="Update Drink"></a>
+                        <a href="/v1/drink/delete/{{ d.drink_id }}">
+                            <input type="button" value="Delete Drink"></a>
+                    {% endif %}
+                </li>
             {% endfor %}
         {% else %}
             There are no drinks with this name.

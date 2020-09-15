@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    Are you sure that you would like to delete your account?<br>
+    <form action="/v1/profile/delete" method="POST">
+        <button type="submit" name="option" value="True">Yes</button>
+        <button type="submit" name="option" value="False">No</button>
+    </form>
+
+{% endblock content %}
