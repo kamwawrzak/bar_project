@@ -3,7 +3,7 @@ import pickle
 from app.models import Drink
 
 
-class DbInteractors:
+class DrinkInteractors:
 
     def get_drink(self, drink_id):
         drink = Drink.query.filter_by(drink_id=drink_id).first()
@@ -18,17 +18,17 @@ class DbInteractors:
         return drinks
 
     def search_by_name(self, search_string):
-        drinks = DbInteractors().get_drinks()
+        drinks = DrinkInteractors().get_drinks()
         d = [drink for drink in drinks if search_string.upper() ==
              drink.name.upper()]
         return d
 
     def search_by_ingredient(self, search_string):
         d = []
-        drinks = DbInteractors().get_drinks()
+        drinks = DrinkInteractors().get_drinks()
         for drink in drinks:
-            ingredients = DbInteractors().get_ingredients(drink)
-            i = DbInteractors().capitalize_keys(ingredients)
+            ingredients = DrinkInteractors().get_ingredients(drink)
+            i = DrinkInteractors().capitalize_keys(ingredients)
             print(i)
             print(search_string.upper())
             for k in i.items():
@@ -38,6 +38,10 @@ class DbInteractors:
 
     def search_by_category(self, category):
         drinks = Drink.query.filter_by(category=category).all()
+        return drinks
+
+    def search_by_user(self, user_id):
+        drinks = Drink.query.filter_by(author=user_id).all()
         return drinks
 
     def capitalize_keys(self, d):
