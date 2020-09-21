@@ -1,5 +1,27 @@
 {% extends 'base.html' %}
+
 {% block content %}
+    <script language="JavaScript">
+        var i=1;
+        function add(){
+        var add_ingredient = document.getElementById("add_ingredient");
+        var br = document.createElement("br");
+
+        var ingredient = document.createElement("input");
+        ingredient.setAttribute("type", "text");
+        ingredient.setAttribute("name", "ingredient"+i);
+
+        var amount = document.createElement("input");
+        amount.setAttribute("type", "number");
+        amount.setAttribute("name", "amount"+i);
+
+        add_ingredient.appendChild(ingredient);
+
+        add_ingredient.appendChild(amount);
+        add_ingredient.appendChild(br);
+        i++;
+    }
+    </script>
     <form action="/v1/add_drink" method="POST">
         <label for="name">Drink Name</label>
         <input type="text" id="name" name="name"><br>
@@ -25,19 +47,17 @@
         <input type="text" id="preparation" name="preparation"><br>
         <label>Ingredients</label>
         <label>Amount</label><br>
-        <input type="text" name="ingredient1">
-        <input type="number" name="amount1"><br>
-        <input type="text" name="ingredient2">
-        <input type="number" name="amount2"><br>
-        <input type="text" name="ingredient3">
-        <input type="number" name="amount3"><br>
-        <input type="text" name="ingredient4">
-        <input type="number" name="amount4"><br>
-        <input type="text" name="ingredient5">
-        <input type="number" name="amount5"><br>
-        <input type="text" name="ingredient6">
-        <input type="number" name="amount6"><br>
-        <button type="button" name="add ingredients">+</button><br>
+        <input type="text" name="ingredient0">
+        <input type="number" name="amount0"><br>
+        <span id="add_ingredient">&nbsp</span><br>
+        <input type="button" value="Add Ingredient" onclick="add()"/>
+
+
         <button type="submit" name="submit">Submit</button>
     </form>
+
+
+
 {% endblock content %}
+
+

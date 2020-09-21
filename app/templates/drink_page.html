@@ -5,11 +5,11 @@
     Drink name: {{ drink.name }}<br>
     Technique: {{ drink.technique }}<br>
     Ingredients:<br>
-    {% for k, v in ingredients.items() %}
-    {% if k != None and v != '' %}
-        <li>{{ k }} : {{ v }} ml<br></li>
-    {% endif %}
-    {% endfor %}
+        {% for k, v in ingredients.items() %}
+            {% if k != None and v != '' %}
+                <li>{{ k }} : {{ v }} ml<br></li>
+            {% endif %}
+        {% endfor %}
     Description: {{ drink.description }}<br>
     Preparation: {{ drink.preparation }}<br>
 

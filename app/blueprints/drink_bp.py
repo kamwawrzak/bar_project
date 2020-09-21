@@ -60,4 +60,30 @@ def delete_drink(drink_id):
     drink = DrinkInteractors().get_drink(drink_id)
     db.session.delete(drink)
     db.session.commit()
-    return redirect(url_for('profile_bp.profile'))
+    return redirect(url_for('profile.display_profile'))
+
+
+@login_required
+@drink_bp.route('/v1/drink/update/<drink_id>')
+def update_drink(drink_id):
+    drink = DrinkInteractors().get_drink(drink_id)
+    if request.method == 'POST':
+        d = WebInteractors().get_drink_data()
+        if d['name']:
+            drink.name = d['name']
+        elif d['category']:
+            drink.category = d['category']
+        elif d['technique']:
+            drink.technique = d['technique']
+        elif d['description']:
+            drink.description = d['description']
+        elif d['preparation']:
+            drink.preparation = d['preparation']
+        elif d['ingredients']:
+            drink.ingredients = d['ingredients']
+        db.session.commit()
+        return redirect(url_for('profile_bp.profile'))
+    else:
+        return render_template('update_drink.html', title='Update drink',
+                               drink=drink, techniques=TECHNIQUES,
+                               categories=CATEGORIES)
