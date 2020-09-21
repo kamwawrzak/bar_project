@@ -1,26 +1,26 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<script language="JavaScript">
-    var i=1;
-    function add(){
-    var add_ingredient = document.getElementById("add_ingredient");
-    var br = document.createElement("br");
+    <script language="JavaScript">
+        var i=1;
+        function add(){
+        var add_ingredient = document.getElementById("add_ingredient");
+        var br = document.createElement("br");
 
-    var ingredient = document.createElement("input");
-	ingredient.setAttribute("type", "text");
-	ingredient.setAttribute("name", "ingredient"+i);
+        var ingredient = document.createElement("input");
+        ingredient.setAttribute("type", "text");
+        ingredient.setAttribute("name", "ingredient"+i);
 
-	var amount = document.createElement("input");
-	amount.setAttribute("type", "number");
-	amount.setAttribute("name", "amount"+i);
+        var amount = document.createElement("input");
+        amount.setAttribute("type", "number");
+        amount.setAttribute("name", "amount"+i);
 
-	add_ingredient.appendChild(ingredient);
+        add_ingredient.appendChild(ingredient);
 
-	add_ingredient.appendChild(amount);
-	add_ingredient.appendChild(br);
-	i++;
-}
+        add_ingredient.appendChild(amount);
+        add_ingredient.appendChild(br);
+        i++;
+    }
     </script>
     <form action="/v1/add_drink" method="POST">
         <label for="name">Drink Name</label>

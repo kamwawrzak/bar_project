@@ -25,18 +25,14 @@ class WebInteractors:
 
     def get_ingredients(self):
         d = {}
+        flag = True
         i = 0
-        while request.form.get('ingredient{}'.format(i)):
-            d[request.form.get('ingredient{}'.format(i))] = request.form.get('amount{}'.format(i))
-            i = i+1
+        while flag:
+            d_key = request.form.get('ingredient{}'.format(i))
+            if d_key is None:
+                break
+            else:
+                d_value = request.form.get('amount{}'.format(i))
+                d[d_key] = d_value
+                i = i+1
         return d
-
-'''  def get_ingredients(self):
-        d = {request.form.get('ingredient1'): request.form.get('amount1'),
-             request.form.get('ingredient2'): request.form.get('amount2'),
-             request.form.get('ingredient3'): request.form.get('amount3'),
-             request.form.get('ingredient4'): request.form.get('amount4'),
-             request.form.get('ingredient5'): request.form.get('amount5'),
-             request.form.get('ingredient6'): request.form.get('amount6')}
-        return d
-'''
