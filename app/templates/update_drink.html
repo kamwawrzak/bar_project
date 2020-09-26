@@ -1,5 +1,64 @@
-{% extends 'base.html %}
+{% extends 'base.html' %}
 
 {% block content %}
+{% with drink=drink, categories=categories, techniques=techniques, ingredients=ingredients, ingr_number=ingr_number %}
+    <script language="JavaScript">
+        var i= {{ ingr_number|tojson }}
+        function add(){
+        var add_ingredient = document.getElementById("add_ingredient");
+        var br = document.createElement("br");
 
+        var ingredient = document.createElement("input");
+        ingredient.setAttribute("type", "text");
+        ingredient.setAttribute("name", "ingredient"+i);
+
+        var amount = document.createElement("input");
+        amount.setAttribute("type", "number");
+        amount.setAttribute("name", "amount"+i);
+
+        add_ingredient.appendChild(ingredient);
+
+        add_ingredient.appendChild(amount);
+        add_ingredient.appendChild(br);
+        i++;
+    }
+    </script>
+    <form action="/v1/drink/update/{{ drink.drink_id }}" method="POST">
+        <label for="name">Drink Name</label>
+        <input type="text" name="name" id="name" value="{{ drink.name }}"><br>
+        <label for="category">Category</label>
+        <select id="category" name="category">
+            {% for c in categories %}
+                {% if drink.category == c %}
+                    <option value="{{ c }}" selected>{{ c }}</option>
+                {% else %}
+                    <option value="{{ c }}">{{ c }}</option>
+                {% endif %}
+            {% endfor %}
+            </select><br>
+        <label for="technique">Technique</label>
+        <select id="technique" name="technique">
+            {% for t in techniques %}
+                {% if drink.technique == t %}
+                    <option value="{{ t }}" selected>{{ t }}</option>
+                {% else %}
+                    <option value="{{ t }}">{{ t }}</option>
+                {% endif %}
+            {% endfor %}
+        </select><br>
+        <label for="description">Description</label>
+        <input type="text" id="description" name="description" value="{{ drink.description }}"><br>
+        <label for="preparation">Preparation</label>
+        <input type="text" id="preparation" name="preparation" value="{{ drink.preparation }}"><br>
+        <label>Ingredient</label>
+        <label>Amount</label><br>
+        {% for i in ingredients %}
+            <input type="text" name="{{ i['i_form_name'] }}" value="{{ i['ingredient'] }}">
+            <input type="number" name="{{ i['a_form_name'] }}" value="{{ i['amount'] }}"><br>
+        {% endfor %}
+    <span id="add_ingredient">&nbsp</span><br>
+    <input type="button" value="Add ingredient" onclick="add()"/>
+    <button type="submit" name="submit">Submit</button>
+    </form>
+{% endwith %}
 {% endblock content %}

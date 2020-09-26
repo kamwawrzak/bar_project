@@ -38,14 +38,13 @@ def add_drink():
 @drink_bp.route('/v1/drink/<drink_id>', methods=['GET'])
 def display_drink(drink_id):
     drink = DrinkInteractors().get_drink(drink_id=drink_id)
-    ingredients = DrinkInteractors().get_ingredients(drink)
+    ingredients = DrinkInteractors().get_shorter_ingredients(drink)
     return render_template('drink_page.html', title=drink.name, drink=drink,
                            ingredients=ingredients)
 
 
 @drink_bp.route('/v1/drinks/<category>', methods=['GET', 'POST'])
 def display_category(category):
-    print(category)
     if category == 'all':
         drinks = DrinkInteractors().get_drinks()
     else:
@@ -64,26 +63,25 @@ def delete_drink(drink_id):
 
 
 @login_required
-@drink_bp.route('/v1/drink/update/<drink_id>')
+@drink_bp.route('/v1/drink/update/<drink_id>', methods=['GET', 'POST'])
 def update_drink(drink_id):
+    drinks = DrinkInteractors().get_drinks()
     drink = DrinkInteractors().get_drink(drink_id)
+    ingredients = DrinkInteractors().get_ingredients(drink)
+    ingr_number = len(ingredients)
     if request.method == 'POST':
         d = WebInteractors().get_drink_data()
-        if d['name']:
-            drink.name = d['name']
-        elif d['category']:
-            drink.category = d['category']
-        elif d['technique']:
-            drink.technique = d['technique']
-        elif d['description']:
-            drink.description = d['description']
-        elif d['preparation']:
-            drink.preparation = d['preparation']
-        elif d['ingredients']:
-            drink.ingredients = d['ingredients']
+        drink.name = d['name']
+        drink.category = d['category']
+        drink.technique = d['technique']
+        drink.description = d['description']
+        drink.preparation = d['preparation']
+        drink.ingredients = d['ingredients']
         db.session.commit()
-        return redirect(url_for('profile_bp.profile'))
+        flash('Drink data updated')
+        return redirect(url_for('profile.display_profile'))
     else:
         return render_template('update_drink.html', title='Update drink',
                                drink=drink, techniques=TECHNIQUES,
-                               categories=CATEGORIES)
+                               categories=CATEGORIES, ingredients=ingredients,
+                               drinks=drinks, ingr_number=ingr_number)
