@@ -13,6 +13,13 @@ class DrinkInteractors:
         ingredients = pickle.loads(drink.ingredients)
         return ingredients
 
+    def get_shorter_ingredients(self, drink):
+        d = {}
+        ingredients = DrinkInteractors().get_ingredients(drink)
+        for i in ingredients:
+            d[i['ingredient']] = i['amount']
+        return d
+
     def get_drinks(self):
         drinks = Drink.query.order_by(Drink.name).all()
         return drinks
@@ -27,10 +34,8 @@ class DrinkInteractors:
         d = []
         drinks = DrinkInteractors().get_drinks()
         for drink in drinks:
-            ingredients = DrinkInteractors().get_ingredients(drink)
+            ingredients = DrinkInteractors().get_shorter_ingredients(drink)
             i = DrinkInteractors().capitalize_keys(ingredients)
-            print(i)
-            print(search_string.upper())
             for k in i.items():
                 if search_string.upper() in k:
                     d.append(drink)
