@@ -15,7 +15,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 profile_bp = Blueprint('profile', __name__)
 
 
-@profile_bp.route('/v1/profile')
+@profile_bp.route('/v1/profile', methods=['GET'])
 def display_profile():
     return render_template('profile.html', title=current_user.nick)
 

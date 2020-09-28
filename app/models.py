@@ -23,3 +23,14 @@ class Drink(db.Model):
     description = db.Column(db.String(250), nullable=True)
     preparation = db.Column(db.String(250), nullable=False)
     ingredients = db.Column(db.String(250), nullable=False)
+
+
+class Comment(db.Model):
+    comment_id = db.Column(db.Integer, primary_key=True)
+    author = db.Column(db.Integer, db.ForeignKey(RegularUser.user_id),
+                       nullable=False)
+    author_nick = db.Column(db.String, nullable=False)
+    drink = db.Column(db.Integer, db.ForeignKey(Drink.drink_id),
+                      nullable=False)
+    date = db.Column(db.String, nullable=False)
+    content = db.Column(db.String(250), nullable=False)

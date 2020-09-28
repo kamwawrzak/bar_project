@@ -1,0 +1,50 @@
+from app import db
+from app.interactors.comment_interactors import CommentInteractors
+from app.interactors.web_interactors import WebInteractors
+from app.models import Comment
+
+from flask import Blueprint, flash, redirect, render_template, request
+
+from flask_login import login_required
+
+comment_bp = Blueprint('comment_bp', __name__)
+
+
+@login_required
+@comment_bp.route('/v1/drink/<drink_id>/comment', methods=['GET', 'POST'])
+def add_commment(drink_id):
+    if request.method == 'POST':
+        d = WebInteractors().get_comment_data(drink_id)
+        new_comment = Comment(author=d['author'],
+                              author_nick=d['author_nick'],
+                              drink=d['drink'],
+                              content=d['content'],
+                              date=d['date'])
+        db.session.add(new_comment)
+        db.session.commit()
+        return redirect('/v1/drink/{}'.format(drink_id))
+
+
+@login_required
+@comment_bp.route('/v1/drink/<drink_id>/comment/delete/<comment_id>')
+def delete_comment(comment_id, drink_id):
+    comment = CommentInteractors().get_comment(comment_id)
+    db.session.delete(comment)
+    db.session.commit()
+    flash('Comment deleted')
+    return redirect('/v1/drink/{}'.format(drink_id))
+
+
+@login_required
+@comment_bp.route('/v1/drink/<drink_id>/comment/edit/<comment_id>',
+                  methods=['GET', 'POST'])
+def edit_comment(comment_id, drink_id):
+    comment = CommentInteractors().get_comment(comment_id)
+    if request.method == 'POST':
+        comment.content = request.form.get('content')
+        db.session.commit()
+        flash('Your comment is updated.')
+        return redirect('/v1/drink/{}'.format(drink_id))
+    else:
+        return render_template('update_comment.html', title='Update comment',
+                               comment=comment)
