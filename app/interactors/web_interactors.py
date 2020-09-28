@@ -1,4 +1,5 @@
 import pickle
+from datetime import datetime, timedelta
 
 from flask import request
 
@@ -21,6 +22,16 @@ class WebInteractors:
              'description': request.form.get('description'),
              'preparation': request.form.get('preparation'),
              'ingredients': pickle.dumps(WebInteractors().get_ingredients())}
+        return d
+
+    def get_comment_data(self, drink_id):
+        ms = timedelta(microseconds=datetime.now().microsecond)
+        dt = datetime.now() - ms
+        d = {'content': request.form.get('content'),
+             'author': current_user.get_id(),
+             'author_nick': current_user.nick,
+             'drink': drink_id,
+             'date': dt}
         return d
 
     def get_ingredients(self):

@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    {% with drink=drink, ingredients=ingredients %}
+    {% with drink=drink, ingredients=ingredients, comments=comments %}
     Drink name: {{ drink.name }}<br>
     Technique: {{ drink.technique }}<br>
     Ingredients:<br>
@@ -12,7 +12,29 @@
         {% endfor %}
     Description: {{ drink.description }}<br>
     Preparation: {{ drink.preparation }}<br>
-
-
+    Comments:<br>
+    {% if comments %}
+        {% for c in comments %}
+            <a href="/v1/user/{{ c.author }}">{{ c.author_nick }}</a> says:<br>
+            {{ c.content }} <br>
+            Comment added: {{ c.date }}
+            {% if c.author == current_user.user_id %}
+                <a href="/v1/drink/{{ drink.drink_id }}/comment/edit/{{ c.comment_id }}">
+                    <input type="button" value="Edit Comment">
+                </a>
+                <a href="/v1/drink/{{ drink.drink_id }}/comment/delete/{{ c.comment_id }}">
+                    <input type="button" value="Delete Comment"><br>
+                 </a>
+            {% endif %}<br>
+        {% endfor %}
+    {% else %}
+        There is no comments. You may be the first!
+    {% endif %}
+    {% if current_user.is_authenticated %}
+    <form action="/v1/drink/{{ drink.drink_id }}/comment" method="POST">
+        <input type="text" name="content" placeholder="Type your comment here.">
+        <button type="submit" name="submit">Add comment</button>
+    </form>
+    {% endif %}
     {% endwith %}
 {% endblock content %}

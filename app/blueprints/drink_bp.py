@@ -1,4 +1,5 @@
 from app import db
+from app.interactors.comment_interactors import CommentInteractors
 from app.interactors.drink_interactors import DrinkInteractors
 from app.interactors.web_interactors import WebInteractors
 from app.models import Drink
@@ -39,8 +40,9 @@ def add_drink():
 def display_drink(drink_id):
     drink = DrinkInteractors().get_drink(drink_id=drink_id)
     ingredients = DrinkInteractors().get_shorter_ingredients(drink)
+    comments = CommentInteractors().get_drink_comments(drink_id)
     return render_template('drink_page.html', title=drink.name, drink=drink,
-                           ingredients=ingredients)
+                           ingredients=ingredients, comments=comments)
 
 
 @drink_bp.route('/v1/drinks/<category>', methods=['GET', 'POST'])
