@@ -1,9 +1,16 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <ul>
-        <li><a href="/v1/user_drinks/{{ current_user.user_id }}">Your Drinks</a></li><br>
-        <li><a href="/v1/profile/change_password">Change password</a></li><br>
-        <li><a href="/v1/profile/delete/{{ current_user.user_id }}">Delete account</a></li><br>
-    </ul>
+    {% with user=user, img=img %}
+        <img src="{{ img }}" style="high:300px; width:200px"><br>
+        User: {{ user.nick }}<br>
+        Joined: {{ user.register_date }}<br>
+        Added drinks: {{ user.drinks_number }}<br>
+        {% if current_user.user_id == user.user_id %}
+            <a href="/v1/user_drinks/{{ user.user_id }}"><input type="button" value="Your drinks"></a><br>
+            <a href="/v1/profile/manage/{{ user.user_id }}"><input type="button" value="Manage your profile"></a>
+        {% else %}
+            <a href="/v1/user_drinks/{{ user.user_id }}"><input type="button" value="{{ user.nick }}'s drinks"></a><br>
+        {% endif %}
+    {% endwith %}
 {% endblock content %}

@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-{% with drink=drink, categories=categories, techniques=techniques, ingredients=ingredients, ingr_number=ingr_number %}
+{% with drink=drink, categories=categories, techniques=techniques, ingredients=ingredients, ingr_number=ingr_number, img=img %}
     <script language="JavaScript">
         var i= {{ ingr_number|tojson }}
         function add(){
@@ -23,9 +23,15 @@
         i++;
     }
     </script>
-    <form action="/v1/drink/update/{{ drink.drink_id }}" method="POST">
+    <form action="/v1/drink/update/{{ drink.drink_id }}" method="POST" enctype="multipart/form-data">
         <label for="name">Drink Name</label>
         <input type="text" name="name" id="name" value="{{ drink.name }}"><br>
+        <img src="{{ img }}" style="width:200px;height:300px;">
+        {% if drink.image != "default.jpg" %}
+            <a href="/v1/drink/{{ drink.drink_id }}/delete_image">
+                <input type="button" value="Delete Image">
+            </a><br>
+        {% endif %}
         <label for="category">Category</label>
         <select id="category" name="category">
             {% for c in categories %}
@@ -57,7 +63,9 @@
             <input type="number" name="{{ i['a_form_name'] }}" value="{{ i['amount'] }}"><br>
         {% endfor %}
     <span id="add_ingredient">&nbsp</span><br>
-    <input type="button" value="Add ingredient" onclick="add()"/>
+    <input type="button" value="Add ingredient" onclick="add()"/><br>
+    <label for="photo">Upload Drink Photo</label>
+    <input type="file" name="file" id="photo"><br>
     <button type="submit" name="submit">Submit</button>
     </form>
 {% endwith %}

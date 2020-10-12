@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% with user=user, img=img %}
+        <form action="/v1/profile/{{ current_user.user_id }}/update_img" method="POST" enctype="multipart/form-data">
+            <img src="{{ img }}" style="high:300px; width:200px"><br>
+            <a href="/v1/profile/{{ current_user.user_id }}/delete_pic"><input type="button" value="Delete profile photo"></a><br>
+            <input type="file" name="file">
+            <input type="submit" name="submit">
+        </form>
+    {% endwith %}
+{% endblock %}

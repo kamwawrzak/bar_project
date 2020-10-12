@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-
 {% block content %}
     <script language="JavaScript">
         var i = 1;
@@ -22,7 +21,7 @@
         i++;
     }
     </script>
-    <form action="/v1/add_drink" method="POST">
+    <form action="/v1/add_drink" method="POST" enctype="multipart/form-data">
         <label for="name">Drink Name</label>
         <input type="text" id="name" name="name"><br>
         <label for="category">Category</label>
@@ -50,9 +49,8 @@
         <input type="text" name="ingredient0">
         <input type="number" name="amount0"><br>
         <span id="add_ingredient">&nbsp</span><br>
-        <input type="button" value="Add Ingredient" onclick="add()"/>
+        <input type="button" value="Add Ingredient" onclick="add()"/><br>
+        <label for="photo">Add Drink Photo</label>
+        <input type="file" name="file" id="photo"><br>
         <button type="submit" name="submit">Submit</button>
-    </form>
 {% endblock content %}
-
-

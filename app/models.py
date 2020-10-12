@@ -8,6 +8,9 @@ class RegularUser(db.Model, UserMixin):
     email = db.Column(db.String(255), unique=True, nullable=False)
     nick = db.Column(db.String(16), unique=True, nullable=False)
     password_hash = db.Column(db.String(86), nullable=False)
+    register_date = db.Column(db.String, nullable=False)
+    image = db.Column(db.String, default='default.jpg')
+    drinks_number = db.Column(db.Integer, default=0)
 
     def get_id(self):
         return self.user_id
@@ -23,6 +26,9 @@ class Drink(db.Model):
     description = db.Column(db.String(250), nullable=True)
     preparation = db.Column(db.String(250), nullable=False)
     ingredients = db.Column(db.String(250), nullable=False)
+    add_date = db.Column(db.String, nullable=False)
+    image = db.Column(db.String(250),
+                      default='default.jpg')
 
 
 class Comment(db.Model):

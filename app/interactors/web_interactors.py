@@ -15,23 +15,25 @@ class WebInteractors:
         return d
 
     def get_drink_data(self):
-        d = {'name': request.form.get('name').capitalize(),
-             'author': current_user.get_id(),
-             'category': request.form.get('category'),
-             'technique': request.form.get('technique').capitalize(),
-             'description': request.form.get('description'),
-             'preparation': request.form.get('preparation'),
-             'ingredients': pickle.dumps(WebInteractors().get_ingredients())}
+        d = WebInteractors().get_form_data('name', 'category', 'technique',
+                                           'description', 'preparation')
+        d['author'] = current_user.get_id()
+        d['ingredients'] = pickle.dumps(WebInteractors().get_ingredients())
+        d['add_date'] = WebInteractors().get_date()
         return d
 
     def get_comment_data(self, drink_id):
-        ms = timedelta(microseconds=datetime.now().microsecond)
-        dt = datetime.now() - ms
         d = {'content': request.form.get('content'),
              'author': current_user.get_id(),
              'author_nick': current_user.nick,
              'drink': drink_id,
-             'date': dt}
+             'date': WebInteractors().get_date()}
+        return d
+
+    def get_user_data(self):
+        d = WebInteractors().get_form_data('email', 'nick', 'password',
+                                           'confirm_pass')
+        d['register_date'] = WebInteractors().get_date()
         return d
 
     def get_ingredients(self):
@@ -53,3 +55,8 @@ class WebInteractors:
                 ingredients.append(d)
                 i = i+1
         return ingredients
+
+    def get_date(self):
+        ms = timedelta(microseconds=datetime.now().microsecond)
+        dt = datetime.now() - ms
+        return dt
