@@ -13,7 +13,7 @@ register_bp = Blueprint('register_bp', __name__)
 
 
 @register_bp.route('/v1/register', methods=['GET', 'POST'])
-def register_post():
+def register_user():
     if request.method == 'GET':
         return render_template('register.html', title='Registration')
     else:
@@ -39,4 +39,4 @@ def register_post():
             return redirect(url_for('login.login'))
         else:
             flash(error)
-            return redirect(url_for('register_bp.registration'))
+            return redirect(url_for('register_bp.register_user'))
