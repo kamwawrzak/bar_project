@@ -1,6 +1,10 @@
 import pickle
 
+from app import db
+from app.interactors.img_interactors import ImgInteractors
 from app.models import Drink
+
+from flask_login import current_user
 
 
 class DrinkInteractors:
@@ -55,3 +59,11 @@ class DrinkInteractors:
             upp = k.upper()
             result[upp] = v
         return result
+
+    def delete_drink(self, drink_id):
+        drink = DrinkInteractors().get_drink(drink_id)
+        db.session.delete(drink)
+        if drink.image != 'default.jpg':
+            ImgInteractors().delete_img(drink, 'drink')
+        current_user.drinks_number -= 1
+        db.session.commit()

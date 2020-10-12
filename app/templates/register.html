@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <form action="/v1/register" method="POST">
+    <form action="/v1/register" method="POST" enctype="multipart/form-data">
         <label for="email">E-mail address</label><br>
         <input type="email" id="email" name="email"><br>
         <label for="nick">Nickname</label><br>
@@ -10,6 +10,8 @@
         <input type="password" id="password" name="password"><br>
         <label for="confirm_pass">Confirm Password</label><br>
         <input type="password" id="confirm_pass" name="confirm_pass"><br>
+        <label for="photo">Upload Your Avatar</label><br>
+        <input type="file" id="photo" name="file"><br>
         <button type="submit" name="submit">Submit</button>
     </form>
 {% endblock content %}

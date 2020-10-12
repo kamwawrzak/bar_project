@@ -1,10 +1,9 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    Are you sure that you would like to delete your account?<br>
-    <form action="/v1/profile/delete" method="POST">
-        <button type="submit" name="option" value="True">Yes</button>
-        <button type="submit" name="option" value="False">No</button>
+    <form action="/v1/profile/delete/{{ current_user.user_id }}" method="POST">
+        Are you sure that you would like to delete your account?<br>
+        <a href="/v1/profile/delete/{{ current_user.user_id }}"><input type="button" value="Yes"></a>
+        <a href="/v1/profile/{{ current_user.user_id }}"><input type="button" value="No"></a>
     </form>
-
 {% endblock content %}
