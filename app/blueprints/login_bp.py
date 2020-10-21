@@ -1,7 +1,7 @@
 from app import lm
 from app.interactors.validators import Validators
-from app.interactors.web_interactors import WebInteractors
-from app.models import RegularUser
+from app.interactors.web_inter import WebInter
+from app.models import User
 
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 
@@ -15,7 +15,7 @@ login_bp = Blueprint('login', __name__)
 
 @lm.user_loader
 def load_user(user_id):
-    return RegularUser.query.get(user_id)
+    return User.query.get(user_id)
 
 
 @login_bp.route('/v1/login', methods=['GET', 'POST'])
@@ -23,9 +23,9 @@ def login():
     if request.method == 'GET':
         return render_template('login.html', title='Login')
     else:
-        d = WebInteractors().get_form_data('email', 'password', 'remember')
+        d = WebInter().get_form_data('email', 'password', 'remember')
         v = Validators().validate_login_data(d['email'], d['password'])
-        if type(v) != str:
+        if isinstance(v, User):
             login_user(v, remember=d['remember'])
             flash('You have logged in successfully.')
             next_page = request.args.get('next')

@@ -1,12 +1,13 @@
 import pickle
-from datetime import datetime, timedelta
+
+from app.interactors.date_time_inter import DatetimeInter
 
 from flask import request
 
 from flask_login import current_user
 
 
-class WebInteractors:
+class WebInter:
 
     def get_form_data(*args):
         d = {}
@@ -15,11 +16,11 @@ class WebInteractors:
         return d
 
     def get_drink_data(self):
-        d = WebInteractors().get_form_data('name', 'category', 'technique',
-                                           'description', 'preparation')
+        d = WebInter().get_form_data('name', 'category', 'technique',
+                                     'description', 'preparation')
         d['author'] = current_user.get_id()
-        d['ingredients'] = pickle.dumps(WebInteractors().get_ingredients())
-        d['add_date'] = WebInteractors().get_date()
+        d['ingredients'] = pickle.dumps(WebInter().get_ingredients())
+        d['add_date'] = DatetimeInter().get_date()
         return d
 
     def get_comment_data(self, drink_id):
@@ -27,13 +28,13 @@ class WebInteractors:
              'author': current_user.get_id(),
              'author_nick': current_user.nick,
              'drink': drink_id,
-             'date': WebInteractors().get_date()}
+             'date': DatetimeInter().get_date()}
         return d
 
     def get_user_data(self):
-        d = WebInteractors().get_form_data('email', 'nick', 'password',
-                                           'confirm_pass')
-        d['register_date'] = WebInteractors().get_date()
+        d = WebInter().get_form_data('email', 'nick', 'password',
+                                     'confirm_pass')
+        d['register_date'] = DatetimeInter().get_date()
         return d
 
     def get_ingredients(self):
@@ -55,8 +56,3 @@ class WebInteractors:
                 ingredients.append(d)
                 i = i+1
         return ingredients
-
-    def get_date(self):
-        ms = timedelta(microseconds=datetime.now().microsecond)
-        dt = datetime.now() - ms
-        return dt
