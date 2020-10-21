@@ -16,8 +16,8 @@
             <li><a href="/v1/drinks/all">All Drinks</a></li>
             {% with categories=categories %}
                 {% for c in categories %}
-                    <li><a href="/v1/drinks/{{ c }}">
-                        {{ c.replace('_', '/').capitalize() }}</a>
+                    <li><a href="/v1/drinks/{{ c.replace('/', '_') }}">
+                        {{ c.capitalize() }}</a>
                     </li>
                 {% endfor %}
             {% endwith %}

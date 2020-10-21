@@ -1,4 +1,4 @@
-from app.models import RegularUser
+from app.db_interactors.user_db_inter import UserDbInter
 
 from werkzeug.security import check_password_hash
 
@@ -6,29 +6,50 @@ from werkzeug.security import check_password_hash
 class Validators:
 
     def validate_register_data(self, email, nick, password, confirm_pass):
+        error = None
+        check_email = Validators().validate_email(email)
+        check_nick = Validators().validate_nick(nick)
+        check_pass = Validators().validate_pass(password, confirm_pass)
+        if check_email is not None:
+            error = check_email
+        elif check_nick:
+            error = check_nick
+        elif check_pass:
+            error = check_pass
+        return error
+
+    def validate_email(self, email):
         if not email:
             error = 'Email is required.'
-        elif not nick:
+        elif UserDbInter().user_by_email(email):
+            if UserDbInter().user_by_email(email) is False:
+                error = 'This email address is already registered.'
+            else:
+                e1 = 'This email address is already registered. '
+                e2 = 'Please try to login via Facebook.'
+                error = e1 + e2
+        else:
+            error = None
+        return error
+
+    def validate_nick(self, nick):
+        if not nick:
             error = 'Nickname is required.'
         elif len(nick) < 5:
             error = 'Nickname must me longer then 5 characters'
-        elif len(nick) > 10:
+        elif len(nick) > 12:
             error = "Nickname must be shorter then 10 characters"
-        elif not password:
-            error = 'Password is required.'
-        elif RegularUser.query.filter_by(email=email).first():
-            error = 'This email address is already registered.'
-        elif RegularUser.query.filter_by(nick=nick).first():
+        elif UserDbInter().user_by_nick(nick):
             error = 'This nickname already exists'
-        elif Validators().validate_pass(password, confirm_pass) is not None:
-            error = Validators().validate_pass(password, confirm_pass)
         else:
             error = None
         return error
 
     def validate_pass(self, password, confirm_pass):
         specials = ['!', '@', '#', '$', '%', '^', '&', '*', '(', ')']
-        if password != confirm_pass:
+        if not password:
+            error = 'Password is required.'
+        elif password != confirm_pass:
             error = "Password and Confirm Password don't match."
         elif len(password) > 15:
             error = 'Password must be shorter then 15 characters'
@@ -49,7 +70,7 @@ class Validators:
         return error
 
     def validate_login_data(self, email, password):
-        user = RegularUser.query.filter_by(email=email).first()
+        user = UserDbInter().user_by_email(email)
         if not user:
             return 'This email is not registered'
         elif not check_password_hash(user.password_hash, password):

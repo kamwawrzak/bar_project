@@ -2,8 +2,11 @@
 
 {% block content %}
     <ul>
+        {% if current_user.nick_changed == False %}
+            <li><a href="/v1/set_nick">Change your nick</a></li>
+        {% endif %}
         <li><a href="/v1/profile/{{ current_user.user_id }}/update_img">Change profile photo</a></li>
-        <li><a href="/v1/profile/change_password">Change password</a></li><br>
+        <li><a href="/v1/profile/change_password">Change password</a></li>
         <li><a href="/v1/profile/delete/confirm">Delete account</a></li><br>
     </ul>
 {% endblock %}
