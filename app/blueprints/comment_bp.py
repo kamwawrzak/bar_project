@@ -25,7 +25,7 @@ def add_commment(drink_id):
 @comment_bp.route('/v1/drink/<drink_id>/comment/delete/<comment_id>')
 def delete_comment(comment_id, drink_id):
     CommentDbInter().delete_comment(comment_id)
-    flash('Comment deleted')
+    flash('Comment deleted.', category='success')
     return redirect('/v1/drink/{}'.format(drink_id))
 
 
@@ -36,7 +36,7 @@ def edit_comment(comment_id, drink_id):
     comment = CommentDbInter().get_comment(comment_id)
     if request.method == 'POST':
         CommentDbInter().update_comment(comment)
-        flash('Your comment is updated.')
+        flash('Your comment is updated.', category='success')
         return redirect('/v1/drink/{}'.format(drink_id))
     else:
         return render_template('update_comment.html', title='Update comment',

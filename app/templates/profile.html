@@ -1,16 +1,51 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    {% with user=user, img=img %}
-        <img src="{{ img }}" style="high:300px; width:200px"><br>
-        User: {{ user.nick }}<br>
-        Joined: {{ user.register_date }}<br>
-        Added drinks: {{ user.drinks_number }}<br>
-        {% if current_user.user_id == user.user_id %}
-            <a href="/v1/user_drinks/{{ user.user_id }}"><input type="button" value="Your drinks"></a><br>
-            <a href="/v1/profile/manage/{{ user.user_id }}"><input type="button" value="Manage your profile"></a>
-        {% else %}
-            <a href="/v1/user_drinks/{{ user.user_id }}"><input type="button" value="{{ user.nick }}'s drinks"></a><br>
-        {% endif %}
+    {% with user=user, img=img, drinks=drinks %}
+        <div id="profile-page">
+            <div id="profile-top">
+                <div id="user-img">
+                    <img src="{{ img }}">
+                </div>
+                <div id="user-info">
+                    <div id="user-nick">
+                        <h2 class="drink-attribute">{{ user.nick }}</h2>
+                    </div>
+                    <div id="join-date">
+                        Joined: <span class="drink-attribute">{{ user.register_date }}</span>
+                    </div>
+                    <div id="drinks-number">
+                        Added drinks: <span class="drink-attribute">{{ user.drinks_number }}</span>
+                    </div>
+                </div>
+            </div>
+            <div style="clear:both;"></div>
+            <h4 class="drink-page-headers">{{ user.nick }}'s Drinks</h4>
+            <div id="user-drinks">
+                {% if drinks %}
+                    <div id="drinks-list" class="search-results">
+                        <ul>
+                            {% for d in drinks %}
+                                <li>
+                                    <a href="/v1/drink/{{ d.drink_id }}">
+                                        <div class="search-img">
+                                            <img src="/static/images/drinks/{{ d.image }}">
+                                        </div>
+                                        <div>
+                                            <div class="drink-name">
+                                                {{ d.name.capitalize() }}
+                                            </div>
+                                            <div style="clear:both;"></div>
+                                        </div>
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% else %}
+                        {{ msg }}
+                    {% endif %}
+            </div>
+        </div>
     {% endwith %}
 {% endblock content %}

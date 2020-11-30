@@ -5,16 +5,17 @@ from app.db_interactors.drink_db_inter import DrinkDbInter
 
 class DrinkInter:
 
-    def unpickle_ingredients(self, drink):
+    def get_ingredients(self, drink):
         ingredients = pickle.loads(drink.ingredients)
         return ingredients
 
-    def get_shorter_ingredients(self, drink):
-        d = {}
-        ingredients = DrinkInter().unpickle_ingredients(drink)
+    def get_ingr_list(self, drink):
+        ingr_names = []
+        ingredients = DrinkInter().get_ingredients(drink)
         for i in ingredients:
-            d[i['ingredient']] = i['amount']
-        return d
+            i_name = i['ingredient'].upper()
+            ingr_names.append(i_name)
+        return ingr_names
 
     def search_by_name(self, search_string):
         drinks = DrinkDbInter().get_drinks()
@@ -26,16 +27,10 @@ class DrinkInter:
         d = []
         drinks = DrinkDbInter().get_drinks()
         for drink in drinks:
-            ingredients = DrinkInter().get_shorter_ingredients(drink)
-            i = DrinkInter().capitalize_keys(ingredients)
-            for k in i.items():
-                if search_string.upper() in k:
-                    d.append(drink)
+            ingr_list = DrinkInter().get_ingr_list(drink)
+            if search_string.upper() in ingr_list:
+                d.append(drink)
         return d
 
-    def capitalize_keys(self, d):
-        result = {}
-        for k, v in d.items():
-            upp = k.upper()
-            result[upp] = v
-        return result
+    def ingredient_iterator(self, i):
+        return i

@@ -1,39 +1,81 @@
 {% extends 'base.html' %}
 
-{% block header %}
+{% block head %}
     <script type="text/javascript" src="{{ url_for('static', filename='js/rows_adder.js') }}"></script>
 {% endblock %}
+
 {% block content %}
-    <form action="/v1/add_drink" method="POST" enctype="multipart/form-data">
-        <label for="name">Drink Name</label>
-        <input type="text" id="name" name="name"><br>
-        <label for="category">Category</label>
-        <select id="category" name="category">
-            {% with categories=categories %}
-                {% for c in categories %}
-                    <option value="{{ c }}">{{ c }}</option>
-                {% endfor %}
-            {% endwith %}
-        </select><br>
-        <label for="technique">Technique</label>
-        <select id="technique" name="technique">
-            {% with techniques=techniques %}
-                {% for t in techniques %}
-                    <option value="{{ t }}">{{ t }}</option>
-                {% endfor %}
-            {% endwith %}
-        </select><br>
-        <label for="description">Drink description</label>
-        <input type="text" id="description" name="description"><br>
-        <label for="preparation">Drink preparation</label>
-        <input type="text" id="preparation" name="preparation"><br>
-        <label>Ingredients</label>
-        <label>Amount</label><br>
-        <input type="text" name="ingredient0">
-        <input type="number" name="amount0"><br>
-        <span id="add_ingredient">&nbsp</span><br>
-        <input type="button" value="Add Ingredient" onclick="add()"/><br>
-        <label for="photo">Add Drink Photo</label>
-        <input type="file" name="file" id="photo"><br>
-        <button type="submit" name="submit">Submit</button>
+    <div id="add-drink" class="form-container">
+        <form action="/v1/add_drink" method="POST" enctype="multipart/form-data">
+            <div id="drink-name-container" class="text-fields">
+                <h4>Drink Name</h4>
+                <input type="text" id="name" name="name" class="text-fields">
+            </div>
+            <div class="selectors-container">
+                <div id="category-container" class="selector">
+                    <h4>Category</h4>
+                    <select id="category-select" class="dropdownlist" name="category" required>
+                            {% with categories=categories %}
+                                    <option value="" selected hidden>Choose Category...</option>
+                                {% for c in categories %}
+                                    <option value="{{ c }}">{{ c.capitalize() }}</option>
+                                {% endfor %}
+                            {% endwith %}
+                    </select>
+                </div>
+                <div id="technique-container" class="selector">
+                    <h4>Technique</h4>
+                    <select id="technique-select" class="dropdownlist" name="technique" required>
+                        {% with techniques=techniques %}
+                                <option value="" selected hidden>Choose Technique...</option>
+                            {% for t in techniques %}
+                                <option value="{{ t }}">{{ t.capitalize() }}</option>
+                            {% endfor %}
+                        {% endwith %}
+                    </select>
+                </div>
+                <div style="clear:both;"></div>
+            </div>
+            <div class="text-box">
+                <h4>Description</h4>
+                <textarea id="description" name="description" maxlength="500" placeholder="Max 500 characters"></textarea>
+            </div>
+            <div class="text-box">
+                <h4>Preparation</h4>
+                <textarea id="preparation" name="preparation" maxlength="500" placeholder="Max 500 characters"></textarea>
+            </div>
+            <div id="ingredients" class="ingredients">
+                <h4>Ingredients</h4>
+                <table id="ingredients-tab" class="text-fields">
+                    <tr class="ingredient-row">
+                        <td>
+                            <input type="text" name="ingredient0" class="ingredient-input" placeholder="Ingredient Name">
+                        </td>
+                        <td>
+                            <input type="number" name="amount0" class="ingredient-input" step="0.1" placeholder="Amount">
+                        </td>
+                        <td>
+                            <select id="unit" name="unit0" class="dropdownlist">
+                                <option selected hidden value=" ">Unit</option>
+                                <option value="ml">ml</option>
+                                <option value="piece(s)">piece(s)</option>
+                                <option value="drop(s)">drop(s)</option>
+                            </select>
+                        </td>
+                    </tr>
+                </table>
+                <input type="hidden" id="ingredient-iterator" value="1">
+                <input type="button" id="add-ingredient" class="submit-button" value="Add ingredient" onclick="add()"/>
+            </div>
+            <div class="upload-photo">
+                <label for="upload-photo" class="photo-upload">Choose Drink Photo...</label>
+                <input type="file" name="file" id="upload-photo">
+            </div>
+            <div class="photo-hint"> Accept formats: .png .jpg .jpeg and size < 5MB.</div>
+            <button type="submit" id="add-button" name="submit" class="submit-button">
+                Add Drink <i class="icon-right-big"></i>
+            </button>
+        </form>
+    </div>
+    <script src="{{ url_for('static', filename='js/filename_updater.js') }}"></script>
 {% endblock content %}

@@ -1,4 +1,5 @@
 from app import db
+from app.db_interactors.comment_db_inter import CommentDbInter
 from app.db_interactors.drink_db_inter import DrinkDbInter
 from app.interactors.date_time_inter import DatetimeInter
 from app.interactors.img_inter import ImgInter
@@ -45,7 +46,6 @@ class UserDbInter:
         elif user_type == 'oauth':
             new_user = User(email=email,
                             oauth_user=True,
-                            nick_changed=False,
                             register_date=register_date)
         db.session.add(new_user)
         db.session.commit()
@@ -54,13 +54,19 @@ class UserDbInter:
     def delete_user(self, user_id):
         user = UserDbInter().get_user(user_id)
         drinks = DrinkDbInter().search_by_user(user.user_id)
+        oauth = OAuth.query.filter_by(user_id=user_id).first()
+        comments = CommentDbInter().get_user_comments(user_id)
         if user.image != 'default.jpg':
             ImgInter().delete_img(user)
         for d in drinks:
             if d.image != 'default.jpg':
                 ImgInter().delete_img(d)
             db.session.delete(d)
+        for c in comments:
+            CommentDbInter().delete_comment(c.comment_id)
         db.session.delete(user)
+        if oauth:
+            db.session.delete(oauth)
         db.session.commit()
 
     def update_password(self, password):
@@ -69,7 +75,6 @@ class UserDbInter:
 
     def update_nick(self, nick):
         current_user.nick = nick
-        current_user.nick_changed = True
         db.session.commit()
 
     def add_oauth(self, provider, provider_user_id, token):

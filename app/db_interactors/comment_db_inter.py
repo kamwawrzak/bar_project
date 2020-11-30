@@ -10,6 +10,10 @@ class CommentDbInter:
         comments = Comment.query.filter_by(drink=drink_id).all()
         return comments
 
+    def get_user_comments(self, user_id):
+        comments = Comment.query.filter_by(author=user_id).all()
+        return comments
+
     def get_comment(self, comment_id):
         comment = Comment.query.filter_by(comment_id=comment_id).first()
         return comment
