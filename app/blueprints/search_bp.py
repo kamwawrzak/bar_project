@@ -16,27 +16,28 @@ def search_drinks():
                                categories=Drink.CATEGORIES,
                                search_criteria=Drink.SEARCH_CRITERIA)
     else:
-        msg = None
         criteria = WebInter().get_form_data('criteria')['criteria']
         search_string = WebInter().get_form_data('search')['search']
         if criteria == 'drink name':
             drinks = DrinkInter().search_by_name(search_string)
         else:
             drinks = DrinkInter().search_by_ingredient(search_string)
+        msg = 'Search results for: "{}"'.format(search_string)
         if len(drinks) == 0:
-            msg = 'There are no drinks that meets these criteria.'
+            msg = 'There are no search results for: "{}"'.format(search_string)
         return render_template('search_results.html', title='Search results',
                                drinks=drinks, msg=msg)
 
 
 @search_bp.route('/v1/drinks/<category>', methods=['GET', 'POST'])
 def display_category(category):
-    msg = None
+    category = category.replace('_', '/')
     if category == 'all':
         drinks = DrinkDbInter().get_drinks()
     else:
-        drinks = DrinkDbInter().search_by_category(category.replace('_', '/'))
+        drinks = DrinkDbInter().search_by_category(category)
+    msg = 'Drinks in category: {}'.format(category.capitalize())
     if len(drinks) == 0:
-        msg = 'There are no drinks in this category.'
+        msg = 'There are no drinks in this category yet.'
     return render_template('search_results.html', title=category.upper(),
                            drinks=drinks, msg=msg)

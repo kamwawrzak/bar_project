@@ -1,11 +1,9 @@
 from app import db
 from app.db_interactors.user_db_inter import UserDbInter
-from app.interactors.nick_creator import NickCreator
 from app.interactors.validators import Validators
 from app.models import OAuth
 
-from flask import (Blueprint, current_app, flash, redirect, render_template,
-                   request, url_for)
+from flask import (Blueprint, current_app, flash, redirect, request, url_for)
 
 from flask_dance.consumer import oauth_authorized
 from flask_dance.consumer.storage.sqla import SQLAlchemyStorage
@@ -20,7 +18,7 @@ oauth_bp = Blueprint('oauth_bp', __name__)
 fb_blueprint = make_facebook_blueprint(
     client_id=current_app.config['FB_ID'],
     client_secret=current_app.config['FB_SECRET'],
-    redirect_to='facebook.set_nick',
+    scope=['email'],
     storage=SQLAlchemyStorage(OAuth, db.session, user=current_user))
 
 
@@ -28,38 +26,31 @@ fb_blueprint = make_facebook_blueprint(
 def fb_login():
     if not facebook.authorized:
         return redirect(url_for('facebook.login'))
-    else:
-        return redirect(url_for('home_bp.index'))
+    return redirect(url_for('home_bp.index'))
 
 
 @login_required
-@fb_blueprint.route('/v1/set_nick', methods=['GET', 'POST'])
+@fb_blueprint.route('/v1/set_nick', methods=['POST'])
 def set_nick():
     if request.method == 'POST':
-        user = UserDbInter().get_user(current_user.user_id)
-        if user.nick_changed:
-            redirect(url_for('home_bp.index'))
+        nick = request.form.get('nick')
+        error = Validators().validate_nick(nick)
+        if not error:
+            UserDbInter().update_nick(nick)
+            flash('Your account has been created.', category='success')
         else:
-            nick = request.form.get('nick')
-            error = Validators().validate_nick(nick)
-            if not error:
-                UserDbInter().update_nick(nick)
-                return redirect(url_for('home_bp.index'))
-            else:
-                flash(error)
-                return redirect('/v1/set_nick')
-    else:
-        return render_template('set_nick.html', title='Set Nick')
+            flash(error, category='error')
+        return redirect(url_for('home_bp.index'))
 
 
 @oauth_authorized.connect_via(fb_blueprint)
 def fb_logged_in(blueprint, token):
     if not token:
-        flash('Failed to log in via Facebook.')
+        flash('Failed to log in via Facebook.', category='error')
         return False
-    resp = blueprint.session.get('/me?fields=id,email')
+    resp = facebook.get('me?fields=email')
     if not resp.ok:
-        flash('Failed to get user data')
+        flash('Failed to obtain your data from Facebook.', category='error')
         return False
     user_data = resp.json()
     try:
@@ -70,13 +61,11 @@ def fb_logged_in(blueprint, token):
                                         token=token)
     if oauth.user:
         login_user(oauth.user)
-        flash('Logged in successfully.')
+        flash('You have been logged in.', category='success')
     else:
-        temp_nick = NickCreator().create_temp_nick(user_data['email'])
         user = UserDbInter().add_user(email=user_data['email'],
-                                      nick=temp_nick,
+                                      nick=None,
                                       user_type='oauth')
         UserDbInter().assign_oauth_user(oauth, user)
         login_user(user)
-        flash('Sign in successfully.')
     return False

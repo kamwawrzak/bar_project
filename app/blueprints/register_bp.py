@@ -28,8 +28,8 @@ def register_user():
                                    password=pass_hash,
                                    img=img,
                                    user_type='regular')
-            flash('You have been registered successfully')
+            flash('Your account has been created.', category='success')
             return redirect(url_for('login.login'))
         else:
-            flash(error)
+            flash(error, category='error')
             return redirect(url_for('register_bp.register_user'))

@@ -3,9 +3,23 @@
 {% block content %}
     {% with drinks=drinks, msg=msg %}
         {% if drinks %}
-            {% for d in drinks %}
+        <div class="search-results">
+            <h3> {{ msg }} </h3>
+            <ul>
+                {% for d in drinks %}
                 <li>
-                    <a href="/v1/drink/{{ d.drink_id }}">{{ d.name }}</a>
+                    <a href="/v1/drink/{{ d.drink_id }}">
+                        <div class="search-img">
+                            <img src="/static/images/drinks/{{ d.image }}">
+                        </div>
+                        <div class="drink-name">
+                            {{ d.name.capitalize() }}
+                        </div>
+                        <div class="drink-author">
+                            Created by: {{ d.author_nick }}
+                        </div>
+                        <div style="clear:both;"></div>
+                    </a>
                     {% if d.author == current_user.user_id %}
                         <a href="/v1/drink/update/{{ d.drink_id }}">
                             <input type="button" value="Update Drink"></a>
@@ -13,9 +27,11 @@
                             <input type="button" value="Delete Drink"></a>
                     {% endif %}
                 </li>
-            {% endfor %}
+                {% endfor %}
+            </ul>
+        </div>
         {% else %}
-            {{ msg }}
+            <h3> {{ msg }} </h3>
         {% endif %}
     {% endwith %}
 {% endblock content %}

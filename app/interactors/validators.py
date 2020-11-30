@@ -25,7 +25,7 @@ class Validators:
             if UserDbInter().user_by_email(email) is False:
                 error = 'This email address is already registered.'
             else:
-                e1 = 'This email address is already registered. '
+                e1 = 'This email address is taken. '
                 e2 = 'Please try to login via Facebook.'
                 error = e1 + e2
         else:
