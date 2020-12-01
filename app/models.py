@@ -43,6 +43,7 @@ class Drink(db.Model):
     ingredients = db.Column(db.String(250), nullable=False)
     add_date = db.Column(db.String, nullable=False)
     image = db.Column(db.String(250), default='default.jpg')
+    views = db.Column(db.Integer, default=0)
 
 
 class Comment(db.Model):

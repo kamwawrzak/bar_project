@@ -49,7 +49,7 @@ class WebInter:
             ingredient = request.form.get(form_ingr_name)
             amount = request.form.get(form_amount_name)
             unit = request.form.get(form_unit_name)
-            if ingredient is None:
+            if ingredient == '':
                 break
             else:
                 d = {'ingredient': ingredient,

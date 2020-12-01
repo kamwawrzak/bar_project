@@ -4,6 +4,10 @@ from app.models import Drink
 
 from flask_login import current_user
 
+from random import randint
+
+from sqlalchemy import func
+
 
 class DrinkDbInter:
 
@@ -45,6 +49,19 @@ class DrinkDbInter:
             img_name = ImgInter().upload_img(img, drink)
             drink.image = img_name
         db.session.commit()
+
+    def views_counter(self, drink):
+        drink.views += 1
+        db.session.commit()
+
+    def get_most_viewed(self):
+        max_views = db.session.query(func.max(Drink.views))
+        drinks = Drink.query.filter_by(views=max_views).all()
+        drink = drinks[randint(0, len(drinks)-1)]
+        d = {'id': drink.drink_id,
+             'image': drink.image,
+             'name': drink.name}
+        return d
 
     def delete_drink(self, drink_id):
         drink = DrinkDbInter().get_drink(drink_id)
