@@ -1,10 +1,10 @@
+from random import randint
+
 from app import db
 from app.interactors.img_inter import ImgInter
 from app.models import Drink
 
 from flask_login import current_user
-
-from random import randint
 
 from sqlalchemy import func
 
