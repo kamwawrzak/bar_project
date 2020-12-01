@@ -7,8 +7,8 @@ from app.interactors.web_inter import WebInter
 from app.models import Drink
 
 
-from flask import (Blueprint, flash, redirect, render_template, request,
-                   url_for)
+from flask import (Blueprint, flash, jsonify, redirect, render_template,
+                   request, url_for)
 
 from flask_login import current_user, login_required
 
@@ -47,9 +47,16 @@ def display_drink(drink_id):
     comments = CommentDbInter().get_drink_comments(drink_id)
     img = ImgInter().get_img_path(drink)
     author = UserDbInter().get_user(drink.author).nick
+    DrinkDbInter().views_counter(drink)
     return render_template('drink_page.html', title=drink.name, drink=drink,
                            ingredients=ingredients, comments=comments, img=img,
                            author=author)
+
+
+@drink_bp.route('/v1/most_viewed', methods=['GET'])
+def most_viewed():
+    d = DrinkDbInter().get_most_viewed()
+    return jsonify(d)
 
 
 @drink_bp.route('/v1/user_drinks/<user_id>')
