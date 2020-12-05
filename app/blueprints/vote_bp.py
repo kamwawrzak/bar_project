@@ -2,7 +2,7 @@ from app.db_interactors.vote_db_inter import VoteDbInter
 from app.interactors.vote_inter import VoteInter
 from app.models import Vote
 
-from flask import Blueprint, flash, jsonify, make_response, request
+from flask import Blueprint, jsonify, make_response, request
 
 from flask_login import login_required
 
