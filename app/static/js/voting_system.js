@@ -35,7 +35,8 @@ function sendVote(starId, userId, drinkId){
         data: data,
         dataType: 'json',
         contentType: 'application/json',
-        success: function(){ displayRate(); }
+        success: function(){ displayRate(); },
+        error: function(){ alert('Only registered users can vote.'); }
     });
 };
 

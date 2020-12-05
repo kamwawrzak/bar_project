@@ -13,14 +13,17 @@ vote_bp = Blueprint('vote_bp', __name__)
 @login_required
 @vote_bp.route('/v1/add_vote', methods=['POST'])
 def add_vote():
-    vote_data = request.json['drink_id']
-    vote_data1 = request.json['user_id']
-    vote_data2 = request.json['value']
-    new_vote = Vote(drink=int(vote_data[0]),
-                    user=int(vote_data1[0]),
-                    value=int(vote_data2[0]))
-    VoteDbInter().add_vote(new_vote)
-    return make_response(jsonify({'msg': 'Vote added'}), 200)
+    vote_drink = request.json['drink_id']
+    vote_user = request.json['user_id']
+    vote_value = request.json['value']
+    if len(vote_user) == 0:
+        return make_response(jsonify({'msg': 'Vote not added.'}), 401)
+    else:
+        new_vote = Vote(drink=int(vote_drink[0]),
+                        user=int(vote_user[0]),
+                        value=int(vote_value[0]))
+        VoteDbInter().add_vote(new_vote)
+        return make_response(jsonify({'msg': 'Vote added'}), 200)
 
 
 @vote_bp.route('/v1/display_rate/<drink_id>', methods=['GET'])
