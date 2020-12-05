@@ -639,13 +639,14 @@ textarea::placeholder
     height: 305px;
     margin-left: 30px;
     margin-right: 30px;
+    margin-top: 10px;
     float: left;
 }
 
 #drink-name-display h4
 {
-    margin-bottom: 0px;
-
+    margin-bottom: 0;
+    margin-top: 0;
     font-size: 40px;
     font-weight: 900;
     text-align: left;
@@ -698,17 +699,17 @@ a:hover.author-link
     text-align: left;
 }
 
-#drink-ingredients > ul
+#drink-ingredients ul
 {
     margin-top: 0;
-    list-style-type: square;
 }
 
 #drink-ingredients ul > li
 {
+    margin-top: 2px;
     height: 20px;
     display: block;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 400;
 }
 
@@ -958,13 +959,24 @@ a:hover.comment-option
 #drinks-list > ul
 {
     padding: 0;
+    margin-top: 20px;
 }
 
 #drinks-list > ul > li
 {
     margin: 0 0;
+    margin-bottom: 10px;
 }
 
+.drink-operatios
+{
+    text-align: center;
+}
+
+#drinks-list-header
+{
+    margin: 0 0;
+}
 /* Change avatar page */
 #change-avatar
 {
@@ -1080,4 +1092,26 @@ input::-webkit-outer-spin-button, input::-webkit-inner-spin-button
     text-align: center;
     font-size: 20px;
     height: 25px;
+}
+
+/* Rating drink */
+
+.star
+{
+    opacity: 0.8;
+    float: left;
+    color: black;
+}
+
+.star-mouseover
+{
+    opacity: 1.0;
+    float: left;
+    color: #ffd11a;
+    cursor: pointer;
+}
+
+#rate
+{
+    margin-right: 160px;
 }

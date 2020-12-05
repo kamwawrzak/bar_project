@@ -1,5 +1,3 @@
-from random import randint
-
 from app import db
 from app.interactors.img_inter import ImgInter
 from app.models import Drink
@@ -57,10 +55,19 @@ class DrinkDbInter:
     def get_most_viewed(self):
         max_views = db.session.query(func.max(Drink.views))
         drinks = Drink.query.filter_by(views=max_views).all()
-        drink = drinks[randint(0, len(drinks)-1)]
-        d = {'id': drink.drink_id,
-             'image': drink.image,
-             'name': drink.name}
+        drinks.sort(key=lambda x: x.avg_rate, reverse=True)
+        d = {'id': drinks[0].drink_id,
+             'image': drinks[0].image,
+             'name': drinks[0].name}
+        return d
+
+    def get_top_rated(self):
+        max_rate = db.session.query(func.max(Drink.avg_rate))
+        drinks = Drink.query.filter_by(avg_rate=max_rate).all()
+        drinks.sort(key=lambda x: x.views, reverse=True)
+        d = {'id': drinks[0].drink_id,
+             'image': drinks[0].image,
+             'name': drinks[0].name}
         return d
 
     def delete_drink(self, drink_id):

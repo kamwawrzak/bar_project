@@ -2,9 +2,9 @@
 
 {% block content %}
     {% with drinks=drinks, msg=msg %}
+        <h3 id="drinks-list-header"> {{ msg }} </h3>
         {% if drinks %}
         <div class="search-results">
-            <h3> {{ msg }} </h3>
             <ul>
                 {% for d in drinks %}
                 <li>
@@ -20,18 +20,12 @@
                         </div>
                         <div style="clear:both;"></div>
                     </a>
-                    {% if d.author == current_user.user_id %}
-                        <a href="/v1/drink/update/{{ d.drink_id }}">
-                            <input type="button" value="Update Drink"></a>
-                        <a href="/v1/drink/delete/{{ d.drink_id }}">
-                            <input type="button" value="Delete Drink"></a>
-                    {% endif %}
                 </li>
                 {% endfor %}
             </ul>
         </div>
         {% else %}
-            <h3> {{ msg }} </h3>
+            <h3> There are no drinks meeting this criteria. </h3>
         {% endif %}
     {% endwith %}
 {% endblock content %}

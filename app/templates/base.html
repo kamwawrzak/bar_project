@@ -13,9 +13,9 @@
         <link rel="stylesheet" type="text/css" href="/static/icons/bar_p.css" />
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;700&display=swap" rel="stylesheet" />
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-        <script type="text/javascript" src="{{ url_for('static', filename='js/sticky-menu.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='js/sticky_menu.js') }}"></script>
         <script type="text/javascript" src="{{ url_for('static', filename='js/flashing_msg.js') }}"></script>
-        <script type="text/javascript" src="{{ url_for('static', filename='js/get-data.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='js/display_recommended.js') }}"></script>
 
         {% block head %} {% endblock %}
 
@@ -23,7 +23,7 @@
     <body>
         {% if current_user.is_authenticated and current_user.nick == None %}
                 <input type="hidden" id="current-user-nick" value="{{ current_user.nick }}">
-                <script type="text/javascript" src="{{ url_for('static', filename='js/pop-up.js') }}"></script>
+                <script type="text/javascript" src="{{ url_for('static', filename='js/set_nick.js') }}"></script>
                 <div id="set-nick-window" class="form-container">
                     <h3>Please set your nick.</h3>
                     <form action="/v1/set_nick" method="POST">
@@ -36,7 +36,7 @@
             <header>
                     <div id="logo">
                         <a href="/">
-                            <i class="icon-glass"></i> Cocktail World
+                            🍸 Cocktail World
                         </a>
                     </div>
                     <nav id="topnav">
@@ -103,10 +103,10 @@
             <main>
                 <div class="sidebar">
                     <div id="highest-rate" class="recommended">
-                        Highest rate:
-                        <a href="" class="sidelink">
-                            <img src="">
-                            Drink Name
+                        <span>Highest rate:</span>
+                        <a href="/top-rated-drink" class="sidelink">
+                            <img id="top-rated-img" src="">
+                           <span id="top-rated-name">Drink Name</span>
                         </a>
                     </div>
                     <div id="most-viewed" class="recommended">

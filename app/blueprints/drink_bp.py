@@ -7,8 +7,8 @@ from app.interactors.web_inter import WebInter
 from app.models import Drink
 
 
-from flask import (Blueprint, flash, jsonify, redirect, render_template,
-                   request, url_for)
+from flask import (Blueprint, flash, jsonify, make_response, redirect,
+                   render_template, request, url_for)
 
 from flask_login import current_user, login_required
 
@@ -56,16 +56,23 @@ def display_drink(drink_id):
 @drink_bp.route('/v1/most_viewed', methods=['GET'])
 def most_viewed():
     d = DrinkDbInter().get_most_viewed()
-    return jsonify(d)
+    return make_response(jsonify(d), 200)
 
 
+@drink_bp.route('/v1/top_rated', methods=['GET'])
+def top_rated():
+    d = DrinkDbInter().get_top_rated()
+    return make_response(jsonify(d), 200)
+
+
+@login_required
 @drink_bp.route('/v1/user_drinks/<user_id>')
 def user_drinks(user_id):
-    msg = 'Your drinks'
+    msg = None
     drinks = DrinkDbInter().search_by_user(user_id)
     if len(drinks) == 0:
         msg = 'There are no drinks.'
-    return render_template('search_results.html', title='Your Drinks',
+    return render_template('user_drinks.html', title='Your Drinks',
                            drinks=drinks, msg=msg)
 
 

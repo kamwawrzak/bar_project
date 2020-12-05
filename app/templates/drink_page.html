@@ -1,11 +1,29 @@
 {% extends 'base.html' %}
 
+{% block head %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/voting_system.js') }}"></script>
+{% endblock %}
+
 {% block content %}
     {% with drink=drink, ingredients=ingredients, comments=comments, img=img, author=author %}
+        <input type="hidden" id="drink_id" value="{{ drink.drink_id }}">
+        <input type="hidden" id="user_id" value="{{ current_user.user_id }}">
+
         <div id="drink-page-top">
             <div id="drink-img">
                 <img src="{{ img }}">
             </div>
+            <div id="voting-container">
+                <div id="stars">
+                    <div id="star1" class="star"><i class="icon-star-empty"></i></div>
+                    <div id="star2" class="star"><i class="icon-star-empty"></i></div>
+                    <div id="star3" class="star"><i class="icon-star-empty"></i></div>
+                    <div id="star4" class="star"><i class="icon-star-empty"></i></div>
+                    <div id="star5" class="star"><i class="icon-star-empty"></i></div>
+                </div>
+            </div>
+            <span id="rate">Rate: 0 (0 votes)</span>
             <div id="drink-name-display">
                 <h4> {{ drink.name }} </h4>
             </div>
@@ -41,10 +59,12 @@
         </div>
         <div style="clear: both;"></div>
         <div id="drink-mid-page">
-            <h6 class="drink-page-headers">Description</h6>
-            <div class="drink-long-text">
-                {{ drink.description }}
-            </div>
+            {% if drink.description %}
+                <h6 class="drink-page-headers">Description</h6>
+                <div class="drink-long-text">
+                    {{ drink.description }}
+                </div>
+            {% endif %}
             <h6 class="drink-page-headers">Preparation</h6>
             <div class="drink-long-text">
                 {{ drink.description }}
@@ -77,9 +97,11 @@
                             </div>
                             <div class="comment-operations">
                                 {% if c.author == current_user.user_id %}
-                                    <a href="/v1/drink/{{ drink.drink_id }}/comment/edit/{{ c.comment_id }}" class="comment-option">Edit Comment
+                                    <a href="/v1/drink/{{ drink.drink_id }}/comment/edit/{{ c.comment_id }}" class="comment-option">
+                                        Edit Comment
                                     </a>
-                                    <a href="/v1/drink/{{ drink.drink_id }}/comment/delete/{{ c.comment_id }}" class="comment-option">Delete Comment
+                                    <a href="/v1/drink/{{ drink.drink_id }}/comment/delete/{{ c.comment_id }}" class="comment-option">
+                                        Delete Comment
                                     </a>
                                 {% endif %}
                             </div>
