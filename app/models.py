@@ -44,6 +44,7 @@ class Drink(db.Model):
     add_date = db.Column(db.String, nullable=False)
     image = db.Column(db.String(250), default='default.jpg')
     views = db.Column(db.Integer, default=0)
+    avg_rate = db.Column(db.Float, default=0)
 
 
 class Comment(db.Model):
@@ -55,3 +56,10 @@ class Comment(db.Model):
                       nullable=False)
     date = db.Column(db.String, nullable=False)
     content = db.Column(db.String(250), nullable=False)
+
+
+class Vote(db.Model):
+    vote_id = db.Column(db.Integer, primary_key=True)
+    user = db.Column(db.Integer, db.ForeignKey(User.user_id))
+    drink = db.Column(db.Integer, db.ForeignKey(Drink.drink_id))
+    value = db.Column(db.Integer)

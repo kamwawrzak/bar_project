@@ -36,8 +36,6 @@ def display_category(category):
         drinks = DrinkDbInter().get_drinks()
     else:
         drinks = DrinkDbInter().search_by_category(category)
-    msg = 'Drinks in category: {}'.format(category.capitalize())
-    if len(drinks) == 0:
-        msg = 'There are no drinks in this category yet.'
-    return render_template('search_results.html', title=category.upper(),
-                           drinks=drinks, msg=msg)
+    msg = '{} Drinks:'.format(category.capitalize())
+    return render_template('search_results.html', title=category.capitalize() +
+                           ' Drinks', drinks=drinks, msg=msg)

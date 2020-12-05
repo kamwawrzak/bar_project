@@ -35,7 +35,6 @@ class UserDbInter:
                             oauth_user=False,
                             password_hash=password,
                             nick=nick,
-                            nick_changed=True,
                             register_date=register_date)
             db.session.add(new_user)
             db.session.commit()

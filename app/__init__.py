@@ -17,7 +17,8 @@ def create_app():
 
     with app.app_context():
         from .blueprints import (comment_bp, login_bp, drink_bp, home_bp,
-                                 oauth_bp, profile_bp, register_bp, search_bp)
+                                 oauth_bp, profile_bp, register_bp, search_bp,
+                                 vote_bp)
         app.register_blueprint(home_bp.home_bp)
         app.register_blueprint(login_bp.login_bp)
         app.register_blueprint(drink_bp.drink_bp)
@@ -27,5 +28,6 @@ def create_app():
         app.register_blueprint(comment_bp.comment_bp)
         app.register_blueprint(oauth_bp.oauth_bp)
         app.register_blueprint(oauth_bp.fb_blueprint)
+        app.register_blueprint(vote_bp.vote_bp)
         db.create_all()
         return app
