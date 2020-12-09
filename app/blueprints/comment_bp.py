@@ -9,7 +9,7 @@ comment_bp = Blueprint('comment_bp', __name__)
 
 
 @login_required
-@comment_bp.route('/v1/drink/<drink_id>/comment', methods=['GET', 'POST'])
+@comment_bp.route('/v1/drink/<drink_id>/comment', methods=['POST'])
 def add_commment(drink_id):
     if request.method == 'POST':
         d = WebInter().get_comment_data(drink_id)
