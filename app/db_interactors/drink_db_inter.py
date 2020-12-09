@@ -28,10 +28,11 @@ class DrinkDbInter:
     def add_drink(self, drink, img=None):
         db.session.add(drink)
         current_user.drinks_number += 1
+        db.session.commit()
         if img:
             img_name = ImgInter().upload_img(img, drink)
             drink.image = img_name
-        db.session.commit()
+            db.session.commit()
 
     def update_drink(self, drink, name, category, technique, description,
                      preparation, ingredients, img):
