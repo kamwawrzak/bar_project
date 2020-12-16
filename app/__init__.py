@@ -1,3 +1,7 @@
+import boto3
+
+from config import Config
+
 from flask import Flask
 
 from flask_login import LoginManager
@@ -7,6 +11,8 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 lm = LoginManager()
+s3 = boto3.client('s3', aws_access_key_id=Config.S3_ACCESS_KEY_ID,
+                  aws_secret_access_key=Config.S3_ACCESS_SECRET_KEY)
 
 
 def create_app():

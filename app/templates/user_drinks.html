@@ -10,7 +10,7 @@
                     <li>
                         <a href="/v1/drink/{{ d.drink_id }}">
                             <div class="search-img">
-                                <img src="/static/images/drinks/{{ d.image }}">
+                                <img src="{{ d.image }}">
                             </div>
                             <div class="drink-name">
                                 {{ d.name.capitalize() }}

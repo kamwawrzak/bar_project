@@ -30,12 +30,14 @@ class UserDbInter:
 
     def add_user(self, email, user_type, img=None, password=None, nick=None):
         register_date = DatetimeInter().get_date()
+        default_link = ImgInter().get_default_img('user')
         if user_type == 'regular':
             new_user = User(email=email,
                             oauth_user=False,
                             password_hash=password,
                             nick=nick,
-                            register_date=register_date)
+                            register_date=register_date,
+                            image=default_link)
             db.session.add(new_user)
             db.session.commit()
             if img:
@@ -45,7 +47,8 @@ class UserDbInter:
         elif user_type == 'oauth':
             new_user = User(email=email,
                             oauth_user=True,
-                            register_date=register_date)
+                            register_date=register_date,
+                            image=default_link)
         db.session.add(new_user)
         db.session.commit()
         return new_user
@@ -55,10 +58,10 @@ class UserDbInter:
         drinks = DrinkDbInter().search_by_user(user.user_id)
         oauth = OAuth.query.filter_by(user_id=user_id).first()
         comments = CommentDbInter().get_user_comments(user_id)
-        if user.image != 'default.jpg':
+        if user.image != ImgInter().get_default_img('user'):
             ImgInter().delete_img(user)
         for d in drinks:
-            if d.image != 'default.jpg':
+            if d.image != ImgInter().get_default_img('drink'):
                 ImgInter().delete_img(d)
             db.session.delete(d)
         for c in comments:

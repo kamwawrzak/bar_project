@@ -6,6 +6,7 @@ from app.interactors.img_inter import ImgInter
 from app.interactors.web_inter import WebInter
 from app.models import Drink
 
+from config import Config
 
 from flask import (Blueprint, flash, jsonify, make_response, redirect,
                    render_template, request, url_for)
@@ -25,6 +26,7 @@ def add_drink():
                                techniques=Drink.TECHNIQUES)
     else:
         d = WebInter().get_drink_data()
+        default_link = Config.S3_LOCATION + 'images/drinks/default.jpg'
         img = request.files['file']
         new_drink = Drink(name=d['name'].capitalize(),
                           category=d['category'],
@@ -34,7 +36,8 @@ def add_drink():
                           description=d['description'],
                           preparation=d['preparation'],
                           ingredients=d['ingredients'],
-                          add_date=d['add_date'])
+                          add_date=d['add_date'],
+                          image=default_link)
         DrinkDbInter().add_drink(new_drink, img)
         flash('Drink added successfully.', category='success')
         return redirect(url_for('home_bp.index'))
@@ -45,11 +48,10 @@ def display_drink(drink_id):
     drink = DrinkDbInter().get_drink(drink_id)
     ingredients = DrinkInter().get_ingredients(drink)
     comments = CommentDbInter().get_drink_comments(drink_id)
-    img = ImgInter().get_img_path(drink)
     author = UserDbInter().get_user(drink.author).nick
     DrinkDbInter().views_counter(drink)
     return render_template('drink_page.html', title=drink.name, drink=drink,
-                           ingredients=ingredients, comments=comments, img=img,
+                           ingredients=ingredients, comments=comments,
                            author=author)
 
 
@@ -94,7 +96,6 @@ def update_drink(drink_id):
     drink = DrinkDbInter().get_drink(drink_id)
     ingredients = DrinkInter().get_ingredients(drink)
     ingr_number = len(ingredients)
-    current_image = ImgInter().get_img_path(drink)
     if request.method == 'POST':
         d = WebInter().get_drink_data()
         img = request.files['file']
@@ -113,8 +114,7 @@ def update_drink(drink_id):
                                drink=drink, techniques=Drink.TECHNIQUES,
                                categories=Drink.CATEGORIES,
                                ingredients=ingredients,
-                               ingr_number=ingr_number,
-                               img=current_image)
+                               ingr_number=ingr_number)
 
 
 @login_required

@@ -8,12 +8,12 @@
     <div id="add-drink" class="form-container">
         <form action="/v1/add_drink" method="POST" enctype="multipart/form-data">
             <div id="drink-name-container" class="text-fields">
-                <h4>Drink Name</h4>
-                <input type="text" id="name" name="name" class="text-fields">
+                <h4>Drink Name <span class="required-mark">*</span></h4>
+                <input type="text" id="name" name="name" class="text-fields" minlength="3" maxlength="15">
             </div>
             <div class="selectors-container">
                 <div id="category-container" class="selector">
-                    <h4>Category</h4>
+                    <h4>Category <span class="required-mark">*</span></h4>
                     <select id="category-select" class="dropdownlist" name="category" required>
                             {% with categories=categories %}
                                     <option value="" selected hidden>Choose Category...</option>
@@ -24,7 +24,7 @@
                     </select>
                 </div>
                 <div id="technique-container" class="selector">
-                    <h4>Technique</h4>
+                    <h4>Technique <span class="required-mark">*</span></h4>
                     <select id="technique-select" class="dropdownlist" name="technique" required>
                         {% with techniques=techniques %}
                                 <option value="" selected hidden>Choose Technique...</option>
@@ -41,7 +41,7 @@
                 <textarea id="description" name="description" maxlength="500" placeholder="Max 500 characters"></textarea>
             </div>
             <div class="text-box">
-                <h4>Preparation</h4>
+                <h4>Preparation <span class="required-mark">*</span></h4>
                 <textarea id="preparation" name="preparation" maxlength="500" placeholder="Max 500 characters"></textarea>
             </div>
             <div id="ingredients" class="ingredients">
@@ -49,10 +49,10 @@
                 <table id="ingredients-tab" class="text-fields">
                     <tr class="ingredient-row">
                         <td>
-                            <input type="text" name="ingredient0" class="ingredient-input" placeholder="Ingredient Name">
+                            <input type="text" name="ingredient0" class="ingredient-input" placeholder="Ingredient Name" minlength="3" maxlength="30">
                         </td>
                         <td>
-                            <input type="number" name="amount0" class="ingredient-input" step="0.1" placeholder="Amount">
+                            <input type="number" name="amount0" class="ingredient-input" step="0.1" maxlength="1000" placeholder="Amount">
                         </td>
                         <td>
                             <select id="unit" name="unit0" class="dropdownlist">

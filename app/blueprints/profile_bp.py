@@ -19,11 +19,10 @@ profile_bp = Blueprint('profile', __name__)
 def display_profile(user_id):
     msg = None
     user = UserDbInter().get_user(user_id)
-    img = ImgInter().get_img_path(user)
     drinks = DrinkDbInter().search_by_user(user_id)
     if not drinks:
         msg = 'This user did not add any drinks yet.'
-    return render_template('profile.html', title=user.nick, user=user, img=img,
+    return render_template('profile.html', title=user.nick, user=user,
                            drinks=drinks, msg=msg)
 
 
@@ -52,18 +51,17 @@ def change_password():
 @profile_bp.route('/v1/profile/<user_id>/update_img', methods=['GET', 'POST'])
 def update_profile_pic(user_id):
     user = UserDbInter().get_user(user_id)
-    current_img = ImgInter().get_img_path(user)
     if request.method == 'POST':
         img = request.files['file']
         if img:
-            if user.image != 'default.jpg':
+            if user.image != ImgInter().get_default_img('user'):
                 ImgInter().delete_img(user)
-            img_name = ImgInter().upload_img(img, user)
-            ImgDbInter().update_db_image(user, img_name)
+            img_link = ImgInter().upload_img(img, user)
+            ImgDbInter().update_db_image(user, img_link)
         return redirect('/v1/profile/{}'.format(user_id))
     else:
         return render_template('profile_img.html', title=user.nick,
-                               img=current_img)
+                               user=current_user)
 
 
 @login_required
@@ -89,7 +87,7 @@ def delete_account(user_id):
             flash('Account deleted successfully.', category='success')
             return redirect(url_for('home_bp.index'))
         else:
-            if request.form.get('option') == "True":
+            if request.form.get('option') == 'True':
                 UserDbInter().delete_user(user_id)
                 logout_user()
                 flash('Account deleted successfully.', category='success')

@@ -2,9 +2,10 @@ import imghdr
 import os
 from datetime import datetime
 
-
-from app import db
+from app import db, s3
 from app.models import Drink, User
+
+from config import Config
 
 from flask import abort, current_app
 
@@ -12,6 +13,7 @@ from flask import abort, current_app
 class ImgInter:
 
     def upload_img(self, img, db_obj):
+        img_link = None
         img_name = None
         if img.filename != '':
             ext = os.path.splitext(img.filename)[1]
@@ -19,14 +21,15 @@ class ImgInter:
                 abort(400)
             else:
                 if isinstance(db_obj, Drink):
-                    img_name = ImgInter().create_img_name(img, db_obj.drink_id)
-                    img.save(os.path.join(current_app.config['DRINKS_PATH'],
-                                          img_name))
+                    img_name = ImgInter().img_name(img, db_obj.drink_id)
+                    img_name = 'images/drinks/' + img_name
                 elif isinstance(db_obj, User):
-                    img_name = ImgInter().create_img_name(img, db_obj.user_id)
-                    img.save(os.path.join(current_app.config['USERS_PATH'],
-                             img_name))
-            return img_name
+                    img_name = ImgInter().img_name(img, db_obj.user_id)
+                    img_name = 'images/users/' + img_name
+                img_link = Config.S3_LOCATION + img_name
+                s3.upload_fileobj(img, 'bar-project', img_name,
+                                  ExtraArgs={"ACL": "public-read"})
+                return img_link
 
     def validate_format(self, stream):
         head = stream.read(512)
@@ -37,35 +40,37 @@ class ImgInter:
         else:
             return '.' + (img_format if img_format != 'jpeg' else 'jpg')
 
-    def create_img_name(self, img, model_id):
+    def img_name(self, img, model_id):
         img_format = ImgInter().validate_format(img.stream)
         t_stamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         img_name = str(model_id) + '_' + str(t_stamp) + img_format
         return img_name
 
-    def get_img_path(self, db_obj):
-        img_path = None
-        if isinstance(db_obj, Drink):
-            img_path = '/static/images/drinks/' + str(db_obj.image)
-        elif isinstance(db_obj, User):
-            img_path = '/static/images/users/' + str(db_obj.image)
-        return img_path
+    def get_img_name(self, db_obj):
+        img_name = db_obj.image.split('/')[-1]
+        return img_name
 
-    def get_all_img(self, db_obj):
-        if isinstance(db_obj, Drink):
-            return os.listdir(current_app.config['DRINKS_PATH'])
-        elif isinstance(db_obj, User):
-            return os.listdir(current_app.config['USERS_PATH'])
+    def get_default_img(self, img_type):
+        img_path = ''
+        if img_type == 'drink':
+            img_path = 'images/drinks/default.jpg'
+        elif img_type == 'user':
+            img_path = 'images/users/default.jpg'
+        return Config.S3_LOCATION + img_path
 
     def delete_img(self, db_obj):
-        img = None
-        if isinstance(db_obj, Drink) and db_obj.image != 'default.jpg':
-            img = os.path.join(current_app.config['DRINKS_PATH'], db_obj.image)
-        elif isinstance(db_obj, User) and db_obj.image != 'default.jpg':
-            img = os.path.join(current_app.config['USERS_PATH'], db_obj.image)
-        if img:
-            os.remove(img)
-            db_obj.image = 'default.jpg'
+        default_link = ''
+        img_name = ImgInter().get_img_name(db_obj)
+        if img_name != 'default.jpg':
+            if isinstance(db_obj, Drink):
+                default_link = ImgInter().get_default_img('drink')
+                s3.delete_object(Bucket=Config.S3_BUCKET_NAME,
+                                 Key='images/drinks/' + img_name)
+            elif isinstance(db_obj, User):
+                default_link = ImgInter().get_default_img('user')
+                s3.delete_object(Bucket=Config.S3_BUCKET_NAME,
+                                 Key='images/users/' + img_name)
+            db_obj.image = default_link
             db.session.commit()
         else:
             pass

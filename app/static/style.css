@@ -88,6 +88,13 @@ ul > li
 
 /* Categories menu list */
 
+#topnav
+{
+    height: 50px;
+    border-bottom: 1px solid black;
+    padding-bottom: 10px;
+}
+
 #topnav > ul > li:hover ol
 {
     display: block;
@@ -142,7 +149,8 @@ ol.dropdown-menu > li:first-child
   position: fixed;
   top: 0;
   width: 1300px;
-  padding-bottom: 15px;
+  height: 50px;
+  padding-bottom: 10px;
   border-bottom: 1px solid black;
   z-index: 150;
 }
@@ -161,22 +169,21 @@ ol.dropdown-menu > li:first-child
 
 .error
 {
-    background-color: white;
-    border: 3px solid red;
+    background-color: lightcoral;
+    border: 2px solid red;
     color: red;
 }
 
 .success
 {
-    background-color: white;
-    border: 3px solid green;
+    background-color: lightgreen;
+    border: 2px solid green;
     color: green;
 }
 
 #content
 {
     width: 860px;
-    height: 1300px;
     text-align: center;
     float: left;
     padding: 20px;
@@ -186,7 +193,6 @@ ol.dropdown-menu > li:first-child
 .sidebar
 {
     width: 180px;
-    height: 1300px;
     padding: 10px;
     text-align: center;
     float: left;
@@ -262,6 +268,12 @@ footer
     box-shadow: 3px 3px 10px 2px #6a6a48;
     -webkit-box-shadow: 3px 3px 10px 2px #6a6a48;
     -moz-box-shadow: 3px 3px 10px 2px #6a6a48;
+}
+
+.required-mark
+{
+    color: red;
+    font-size: 12px;
 }
 
 /* Search page style */

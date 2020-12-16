@@ -8,7 +8,7 @@
     {% with user=user, img=img %}
         <div id="change-avatar" class="form-container">
             <form action="/v1/profile/{{ current_user.user_id }}/update_img" method="POST" enctype="multipart/form-data">
-                <img src="{{ img }}">
+                <img src="{{ user.image }}">
                 <div id="delete-pic">
                     <a href="/v1/profile/{{ current_user.user_id }}/delete_pic">
                         <input type="button" value="Delete Avatar" class="submit-button">
