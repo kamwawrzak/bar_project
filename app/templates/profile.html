@@ -5,7 +5,7 @@
         <div id="profile-page">
             <div id="profile-top">
                 <div id="user-img">
-                    <img src="{{ img }}">
+                    <img src="{{ user.image }}">
                 </div>
                 <div id="user-info">
                     <div id="user-nick">
@@ -29,7 +29,7 @@
                                 <li>
                                     <a href="/v1/drink/{{ d.drink_id }}">
                                         <div class="search-img">
-                                            <img src="/static/images/drinks/{{ d.image }}">
+                                            <img src="{{ d.image }}">
                                         </div>
                                         <div>
                                             <div class="drink-name">

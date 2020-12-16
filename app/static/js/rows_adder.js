@@ -18,12 +18,15 @@ function add() {
       ingredient.setAttribute("name", "ingredient"+i);
       ingredient.setAttribute("class", "ingredient-input");
       ingredient.setAttribute("placeholder", "Ingredient Name");
+      ingredient.setAttribute("minlength", "3");
+      ingredient.setAttribute("maxlength", "30");
 
       var amount = document.createElement("input");
       amount.setAttribute("type", "number");
       amount.setAttribute("name", "amount"+i);
       amount.setAttribute("class", "ingredient-input");
       amount.setAttribute("placeholder", "Amount");
+      amount.setAttribute("maxlength", "1000");
 
 
       var unit = document.createElement("select");

@@ -12,7 +12,7 @@ class User(db.Model, UserMixin):
     nick = db.Column(db.String(16), unique=True, default=None)
     password_hash = db.Column(db.String(86))
     register_date = db.Column(db.String)
-    image = db.Column(db.String, default='default.jpg')
+    image = db.Column(db.String)
     drinks_number = db.Column(db.Integer, default=0)
 
     def get_id(self):
@@ -42,7 +42,7 @@ class Drink(db.Model):
     preparation = db.Column(db.String(250), nullable=False)
     ingredients = db.Column(db.String(250), nullable=False)
     add_date = db.Column(db.String, nullable=False)
-    image = db.Column(db.String(250), default='default.jpg')
+    image = db.Column(db.String)
     views = db.Column(db.Integer, default=0)
     avg_rate = db.Column(db.Float, default=0)
 

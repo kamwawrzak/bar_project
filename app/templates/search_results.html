@@ -10,7 +10,7 @@
                 <li>
                     <a href="/v1/drink/{{ d.drink_id }}">
                         <div class="search-img">
-                            <img src="/static/images/drinks/{{ d.image }}">
+                            <img src="{{ d.image }}">
                         </div>
                         <div class="drink-name">
                             {{ d.name.capitalize() }}
@@ -25,7 +25,7 @@
             </ul>
         </div>
         {% else %}
-            <h3> There are no drinks meeting this criteria. </h3>
+            <h3> There are no drinks meeting these criteria. </h3>
         {% endif %}
     {% endwith %}
 {% endblock content %}

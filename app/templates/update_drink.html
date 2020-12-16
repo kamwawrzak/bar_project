@@ -10,7 +10,7 @@
         <div id="update-drink" class="form-container">
             <form action="/v1/drink/update/{{ drink.drink_id }}" method="POST" enctype="multipart/form-data">
                 <div id="update-drink-img">
-                    <img src="{{ img }}">
+                    <img src="{{ drink.image }}">
                     {% if drink.image != "default.jpg" %}
                         <div id="delete-button">
                             <a href="/v1/drink/{{ drink.drink_id }}/delete_image">

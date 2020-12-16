@@ -43,7 +43,7 @@ class DrinkDbInter:
         drink.preparation = preparation
         drink.ingredients = ingredients
         if img:
-            if drink.image != 'default.jpg':
+            if drink.image != ImgInter().get_default_img('drink'):
                 ImgInter().delete_img(drink)
             img_name = ImgInter().upload_img(img, drink)
             drink.image = img_name
@@ -74,7 +74,7 @@ class DrinkDbInter:
     def delete_drink(self, drink_id):
         drink = DrinkDbInter().get_drink(drink_id)
         db.session.delete(drink)
-        if drink.image != 'default.jpg':
+        if drink.image != ImgInter().get_default_img('drink'):
             ImgInter().delete_img(drink)
         current_user.drinks_number -= 1
         db.session.commit()
