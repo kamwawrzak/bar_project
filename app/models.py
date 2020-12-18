@@ -30,6 +30,7 @@ class Drink(db.Model):
                   'other']
     TECHNIQUES = ['stir', 'shake', 'stir/shake', 'build', 'other']
     SEARCH_CRITERIA = ['drink name', 'ingredient']
+    UNITS = ['ml', 'piece(s)', 'drop(s)']
 
     drink_id = db.Column(db.Integer, primary_key=True)
     author = db.Column(db.Integer, db.ForeignKey(User.user_id),
@@ -40,11 +41,19 @@ class Drink(db.Model):
     technique = db.Column(db.String(20), nullable=True)
     description = db.Column(db.String(250), nullable=True)
     preparation = db.Column(db.String(250), nullable=False)
-    ingredients = db.Column(db.String(250), nullable=False)
     add_date = db.Column(db.String, nullable=False)
     image = db.Column(db.String)
     views = db.Column(db.Integer, default=0)
     avg_rate = db.Column(db.Float, default=0)
+
+
+class Ingredient(db.Model):
+    ingr_id = db.Column(db.Integer, primary_key=True)
+    ingr_name = db.Column(db.String, nullable=False)
+    ingr_amount = db.Column(db.Float)
+    ingr_unit = db.Column(db.String)
+    drink = db.Column(db.Integer, db.ForeignKey(Drink.drink_id),
+                      nullable=False)
 
 
 class Comment(db.Model):

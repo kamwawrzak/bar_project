@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block content %}
-    {% with drink=drink, categories=categories, techniques=techniques, ingredients=ingredients, ingr_number=ingr_number, img=img %}
+    {% with drink=drink, categories=categories, techniques=techniques, units=units, ingredients=ingredients, ingr_number=ingr_number, img=img %}
         <div id="update-drink" class="form-container">
             <form action="/v1/drink/update/{{ drink.drink_id }}" method="POST" enctype="multipart/form-data">
                 <div id="update-drink-img">
@@ -75,21 +75,23 @@
                                 <td>
                                     <input type="text"
                                            name="{{ 'ingredient{}'.format(ingredients.index(i)) }}"
-                                           class="ingredient-input" value="{{ i.ingredient }}"
+                                           class="ingredient-input" value="{{ i.ingr_name }}"
                                            placeholder="Ingredient Name">
                                 </td>
                                 <td><input type="number"
                                            name="{{ 'amount{}'.format(ingredients.index(i)) }}"
-                                           class="ingredient-input" value="{{ i.amount }}"
+                                           class="ingredient-input" value="{{ i.ingr_amount }}"
                                            placeholder="Amount" step="0.1">
                                 </td>
                                 <td>
-                                    <select id="unit" class="dropdownlist">
-                                            name="{{ 'unit{}'.format(ingredients.index(i)) }}">
-                                        <option selected value="{{ i.unit }}">{{ i.unit }}</option>
-                                        <option value="ml">ml</option>
-                                        <option value="piece(s)">piece(s)</option>
-                                        <option value="drop(s)">drop(s)</option>
+                                    <select id="unit" class="dropdownlist" name="{{ 'unit{}'.format(ingredients.index(i)) }}">
+                                        {% for u in units %}
+                                            {% if i.ingr_unit == u %}
+                                                <option selected value="{{ i.ingr_unit }}">{{ i.ingr_unit }}</option>
+                                            {% else %}
+                                                <option value="{{ u }}">{{ u }}</option>
+                                            {% endif %}
+                                        {% endfor %}
                                     </select>
                                 </td>
                             </tr>
