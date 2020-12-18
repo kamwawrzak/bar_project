@@ -1,5 +1,3 @@
-import pickle
-
 from app.interactors.date_time_inter import DatetimeInter
 
 from flask import request
@@ -20,7 +18,6 @@ class WebInter:
                                      'description', 'preparation')
         d['author'] = current_user.get_id()
         d['author_nick'] = current_user.nick
-        d['ingredients'] = pickle.dumps(WebInter().get_ingredients())
         d['add_date'] = DatetimeInter().get_date()
         return d
 

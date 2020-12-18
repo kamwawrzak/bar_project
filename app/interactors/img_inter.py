@@ -13,7 +13,6 @@ from flask import abort, current_app
 class ImgInter:
 
     def upload_img(self, img, db_obj):
-        img_link = None
         img_name = None
         if img.filename != '':
             ext = os.path.splitext(img.filename)[1]

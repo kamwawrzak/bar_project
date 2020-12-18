@@ -1,5 +1,5 @@
-from app.db_interactors.drink_db_inter import DrinkDbInter
 from app.db_interactors.img_db_inter import ImgDbInter
+from app.db_interactors.search_db_inter import SearchDbInter
 from app.db_interactors.user_db_inter import UserDbInter
 from app.interactors.img_inter import ImgInter
 from app.interactors.validators import Validators
@@ -19,7 +19,7 @@ profile_bp = Blueprint('profile', __name__)
 def display_profile(user_id):
     msg = None
     user = UserDbInter().get_user(user_id)
-    drinks = DrinkDbInter().search_by_user(user_id)
+    drinks = SearchDbInter().search_by_user(user_id)
     if not drinks:
         msg = 'This user did not add any drinks yet.'
     return render_template('profile.html', title=user.nick, user=user,
