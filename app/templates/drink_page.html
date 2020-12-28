@@ -74,7 +74,7 @@
         <div id="comment-section">
             {% if current_user.is_authenticated %}
                     <div id="add-comment">
-                        <form action="/v1/drink/{{ drink.drink_id }}/comment" method="POST">
+                        <form action="{{ url_for('comment_bp.add_comment', drink_id=drink.drink_id) }}" method="POST">
                             <div id="textarea-div">
                                 <textarea id="comment-area" name="content" maxlength="250" placeholder="Max 250 characters"></textarea>
                             </div>
@@ -97,10 +97,10 @@
                             </div>
                             <div class="comment-operations">
                                 {% if c.author == current_user.user_id %}
-                                    <a href="/v1/drink/{{ drink.drink_id }}/comment/edit/{{ c.comment_id }}" class="comment-option">
+                                    <a href="{{ url_for('comment_bp.edit_comment', drink_id=drink.drink_id, comment_id=c.comment_id) }}" class="comment-option">
                                         Edit Comment
                                     </a>
-                                    <a href="/v1/drink/{{ drink.drink_id }}/comment/delete/{{ c.comment_id }}" class="comment-option">
+                                    <a href="{{ url_for('comment_bp.delete_comment', drink_id=drink.drink_id, comment_id=c.comment_id) }}" class="comment-option">
                                         Delete Comment
                                     </a>
                                 {% endif %}

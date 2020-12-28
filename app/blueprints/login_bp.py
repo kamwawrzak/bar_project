@@ -10,7 +10,7 @@ from flask_login import login_required, login_user, logout_user
 from werkzeug.urls import url_parse
 
 
-login_bp = Blueprint('login', __name__)
+login_bp = Blueprint('login_bp', __name__)
 
 
 @lm.user_loader
@@ -34,7 +34,7 @@ def login():
             return redirect(url_for('home_bp.index'))
         else:
             flash(v, category='error')
-            return redirect(url_for('login.login'))
+            return redirect(url_for('login_bp.login'))
 
 
 @login_required

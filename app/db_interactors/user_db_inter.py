@@ -55,7 +55,7 @@ class UserDbInter:
 
     def delete_user(self, user_id):
         user = UserDbInter().get_user(user_id)
-        drinks = DrinkDbInter().search_by_user(user.user_id)
+        drinks = DrinkDbInter().user_all_drinks(user.user_id)
         oauth = OAuth.query.filter_by(user_id=user_id).first()
         comments = CommentDbInter().get_user_comments(user_id)
         if user.image != ImgInter().get_default_img('user'):

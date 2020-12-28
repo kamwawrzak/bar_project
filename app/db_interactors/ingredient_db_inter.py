@@ -17,14 +17,9 @@ class IngredientDbInter:
             db.session.add(ingredient)
             db.session.commit()
 
-    def update_ingredients(self, old_ingr, new_ingr):
-        i = 0
-        for ingr in old_ingr:
-            ingr.ingr_name = new_ingr[i]['ingredient']
-            ingr.ingr_amount = new_ingr[i]['amount']
-            ingr.ingr_unit = new_ingr[i]['unit']
-            i += 1
-        db.session.commit()
+    def update_ingredients(self, drink, new_ingr):
+        IngredientDbInter().delete_ingredient(drink.drink_id)
+        IngredientDbInter().add_ingredients(new_ingr, drink)
 
     def delete_ingredient(self, drink_id):
         ingredients = IngredientDbInter().get_ingredients(drink_id)

@@ -8,7 +8,7 @@
                 <ul>
                     {% for d in drinks.items %}
                     <li>
-                        <a href="/v1/drink/{{ d.drink_id }}">
+                        <a href="{{ url_for('drink_bp.display_drink', drink_id=d.drink_id) }}">
                             <div class="search-img">
                                 <img src="{{ d.image }}">
                             </div>

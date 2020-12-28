@@ -3,7 +3,7 @@
 {% block content %}
     {% with comment=comment %}
         <div id="update-comment" class="form-container">
-            <form action="/v1/drink/{{ comment.drink }}/comment/edit/{{ comment.comment_id }}" method="POST">
+            <form action="{{ url_for('comment_bp.edit_comment', drink_id=drink.drink_id, comment_id=c.comment_id) }}" method="POST">
                 <div id="update-textarea">
                     <textarea id="update-content" name="content" maxlength="250" placeholder="Max 250 characters">{{ comment.content }}</textarea>
                 </div>

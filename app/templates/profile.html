@@ -27,7 +27,7 @@
                         <ul>
                             {% for d in drinks.items %}
                                 <li>
-                                    <a href="/v1/drink/{{ d.drink_id }}">
+                                    <a href="{{ url_for('drink_bp.display_drink', drink_id=d.drink_id) }}">
                                         <div class="search-img">
                                             <img src="{{ d.image }}">
                                         </div>
@@ -38,10 +38,10 @@
                                         </div>
                                         {% if d.author == current_user.user_id %}
                                             <div class="drink-operations">
-                                                <a href="/v1/drink/update/{{ d.drink_id }}" class="comment-option">
+                                                <a href="{{ url_for('drink_bp.update_drink', drink_id=d.drink_id) }}" class="comment-option">
                                                     Update Drink
                                                 </a>
-                                                <a href="/v1/drink/delete/{{ d.drink_id }}" class="comment-option">
+                                                <a href="{{ url_for('drink_bp.delete_drink', drink_id=d.drink_id) }}" class="comment-option">
                                                     Delete Drink
                                                 </a>
                                             </div>

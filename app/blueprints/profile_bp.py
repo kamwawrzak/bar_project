@@ -41,7 +41,9 @@ def change_password():
                 UserDbInter().update_password(d['newpass'])
                 flash('Password has been changed successfully.',
                       category='success')
-            return redirect(url_for('profile_bp.display_profile'))
+            return redirect(url_for('profile_bp.display_profile',
+                                    user_id=current_user.user_id,
+                                    page=1))
         else:
             flash('Incorrect current password.', category='error')
             return redirect(url_for('profile_bp.change_password'))
@@ -58,7 +60,9 @@ def update_profile_pic(user_id):
                 ImgInter().delete_img(user)
             img_link = ImgInter().upload_img(img, user)
             ImgDbInter().update_db_image(user, img_link)
-        return redirect('/v1/profile/{}'.format(user_id))
+        return redirect(url_for('profile_bp.display_profile',
+                                user_id=user_id,
+                                page=1))
     else:
         return render_template('profile_img.html', title=user.nick,
                                user=current_user)
@@ -69,7 +73,8 @@ def update_profile_pic(user_id):
 def delete_profile_pic(user_id):
     user = UserDbInter().get_user(user_id)
     ImgInter().delete_img(user)
-    return redirect('/v1/profile/{}'.format(user_id))
+    return redirect(url_for('profile_bp.display_profile', user_id=user_id,
+                            page=1))
 
 
 @login_required
@@ -81,7 +86,8 @@ def delete_account(user_id):
             if not check_password_hash(current_user.password_hash,
                                        d['password']):
                 flash('Incorrect password.', category='error')
-                return redirect('/v1/profile/delete/{}'.format(user_id))
+                return redirect(url_for('profile_bp.delete_account',
+                                        user_id=user_id))
             UserDbInter().delete_user(user_id)
             logout_user()
             flash('Account deleted successfully.', category='success')
@@ -93,6 +99,7 @@ def delete_account(user_id):
                 flash('Account deleted successfully.', category='success')
                 return redirect(url_for('home_bp.index'))
             else:
-                return redirect('/v1/profile/{}'.format(user_id))
+                return redirect(url_for('profile_bp.display_profile',
+                                        user_id=user_id, page=1))
     else:
         return render_template('delete_account.html', title='Delete account')

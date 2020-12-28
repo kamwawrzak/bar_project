@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
     <div id="login" class="form-container">
-        <form action="/v1/login" method="POST">
+        <form action="{{ url_for('login_bp.login') }}" method="POST">
             <div id="email" class="text-fields">
                 <input type="email" name="email" placeholder="E-mail Address">
             </div>

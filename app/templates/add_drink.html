@@ -6,7 +6,7 @@
 
 {% block content %}
     <div id="add-drink" class="form-container">
-        <form action="/v1/add_drink" method="POST" enctype="multipart/form-data">
+        <form action="{{ url_for('drink_bp.add_drink') }}" method="POST" enctype="multipart/form-data">
             <div id="drink-name-container" class="text-fields">
                 <h4>Drink Name <span class="required-mark">*</span></h4>
                 <input type="text" id="name" name="name" class="text-fields" minlength="3" maxlength="15">
@@ -42,7 +42,7 @@
             </div>
             <div class="text-box">
                 <h4>Preparation <span class="required-mark">*</span></h4>
-                <textarea id="preparation" name="preparation" maxlength="500" placeholder="Max 500 characters"></textarea>
+                <textarea id="preparation" name="preparation" maxlength="500" placeholder="Max 500 characters" required></textarea>
             </div>
             <div id="ingredients" class="ingredients">
                 <h4>Ingredients</h4>
