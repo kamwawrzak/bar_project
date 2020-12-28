@@ -23,6 +23,10 @@ class DrinkDbInter:
                                             per_page=Config().PER_PAGE)
         return drinks
 
+    def user_all_drinks(self, user_id):
+        drinks = Drink.query.filter_by(author=user_id).all()
+        return drinks
+
     def add_drink(self, drink, img=None):
         db.session.add(drink)
         current_user.drinks_number += 1

@@ -5,21 +5,20 @@ from config import Config
 
 class SearchDbInter:
 
-    def get_ingredients_by_name(self, search_string):
-        r = Ingredient().query.filter_by(ingr_name=search_string.lower()).all()
+    def get_ingredients_by_name(self, search):
+        r = Ingredient().query.filter_by(ingr_name=search.lower()).all()
         return r
 
-    def get_drinks_by_ingredient(self, search_string, page):
-        ingredients = SearchDbInter().get_ingredients_by_name(search_string)
+    def get_drinks_by_ingredient(self, search, page):
+        ingredients = SearchDbInter().get_ingredients_by_name(search)
         d_ids = [i.drink for i in ingredients]
         drinks = Drink.query.filter(Drink.drink_id.in_(d_ids)).paginate(
             page=page,
             per_page=Config().PER_PAGE)
         return drinks
 
-    def get_drinks_by_name(self, search_string, page):
-        search_string = search_string.lower()
-        d = Drink.query.filter_by(name=search_string).paginate(
+    def get_drinks_by_name(self, search, page):
+        d = Drink.query.filter_by(name=search.lower()).paginate(
            page=page,
            per_page=Config().PER_PAGE)
         return d

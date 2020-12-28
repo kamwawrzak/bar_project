@@ -2,7 +2,7 @@
 
 {% block content %}
     <div id="search" class="form-container">
-        <form action="/v1/search" method="POST">
+        <form action="{{ url_for('search_bp.search_drinks') }}" method="POST">
             <div id="criteria-container">
                 <label for="criteria">Search by:</label>
                 <select id="criteria" name="criteria" class="dropdownlist">

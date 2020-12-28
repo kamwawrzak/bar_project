@@ -3,7 +3,7 @@
 {% block content %}
     {% if current_user.oauth_user == False %}
         <div id="delete-account" class="form-container">
-            <form action="/v1/profile/delete/{{ current_user.user_id }}" method="POST">
+            <form action="{{ url_for('profile_bp.delete_account', user_id=current_user.user_id) }}" method="POST">
                 <span>Do you want delete to your account?</span>
                     <span>Type your password to confirm.</span>
                 <div id="password">
@@ -11,7 +11,7 @@
                 </div>
                 <div id="option-buttons">
                     <button type="submit" class="submit-button">Delete Account</button>
-                    <a href="/v1/profile/{{ current_user.user_id }}">
+                    <a href="{{ url_for('profile_bp.display_profile', user_id=current_user.user_id, page=1) }}">
                         <input type="button" value="Cancel" class="submit-button">
                     </a>
                 </div>
@@ -19,11 +19,11 @@
         </div>
     {% else %}
         <div id="delete-oauth-account" class="form-container">
-            <form action="/v1/profile/delete/{{ current_user.user_id }}" method="POST">
+            <form action="{{ url_for('profile_bp.delete_account', user_id=current_user.user_id) }}" method="POST">
                 <span>Do you really want to delete your account?</span>
                 <div class="option-buttons">
                     <button type="submit" class="submit-button" name="option" value="True">Delete Account</button>
-                    <a href="/v1/profile/{{ current_user.user_id }}">
+                    <a href="{{ url_for('profile_bp.display_profile', user_id=current_user.user_id, page=1) }}">
                         <input type="button" name="option" value="Cancel" class="submit-button">
                     </a>
                 </div>

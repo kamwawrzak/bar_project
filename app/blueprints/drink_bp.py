@@ -68,10 +68,10 @@ def top_rated():
 @login_required
 @drink_bp.route('/v1/user_drinks/<user_id>/<page>')
 def user_drinks(user_id, page):
-    msg = None
+    msg = 'Your Drinks:'
     drinks = SearchDbInter().search_by_user(user_id, int(page))
     if len(drinks.items) == 0:
-        msg = 'There are no drinks.'
+        msg = 'You have not added drinks yet.'
     return render_template('user_drinks.html', title='Your Drinks',
                            drinks=drinks, msg=msg, user_id=user_id)
 
@@ -86,7 +86,9 @@ def delete_drink(drink_id):
     DrinkDbInter().delete_drink(drink_id)
     IngredientDbInter().delete_ingredient(drink_id)
     ImgInter().delete_img(drink)
-    return redirect('/v1/user_drinks/{}'.format(current_user.user_id))
+    return redirect(url_for('drink_bp.user_drinks',
+                            user_id=current_user.user_id,
+                            page=1))
 
 
 @login_required
@@ -106,8 +108,8 @@ def update_drink(drink_id):
                                     description=d['description'],
                                     preparation=d['preparation'],
                                     img=img)
-        IngredientDbInter().update_ingredients(old_ingr, new_ingr)
-        return redirect('/v1/drink/{}'.format(drink_id))
+        IngredientDbInter().update_ingredients(drink, new_ingr)
+        return redirect(url_for('drink_bp.display_drink', drink_id=drink_id))
 
     else:
         return render_template('update_drink.html', title='Update drink',
@@ -122,4 +124,4 @@ def update_drink(drink_id):
 def delete_drink_pic(drink_id):
     drink = DrinkDbInter().get_drink(drink_id)
     ImgInter().delete_img(drink)
-    return redirect('/v1/drink/update/{}'.format(drink_id))
+    return redirect(url_for('drink_bp.update_drink', drink_id=drink_id))

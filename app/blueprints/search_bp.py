@@ -14,28 +14,24 @@ def search_drinks():
         return render_template('search.html', title='Search',
                                search_criteria=Drink.SEARCH_CRITERIA)
     else:
-        search_string = WebInter().get_form_data('search')['search']
+        search = WebInter().get_form_data('search')['search']
         criteria = WebInter().get_form_data('criteria')['criteria']
-        return redirect(url_for('search_bp.display_results',
-                                search_string=search_string,
-                                criteria=criteria,
-                                page=1))
+        return redirect(url_for('search_bp.display_results', search=search,
+                                criteria=criteria, page=1))
 
 
-@search_bp.route('/v1/results/<criteria>/<search_string>/<page>',
-                 methods=['GET'])
+@search_bp.route('/v1/results/<criteria>/<search>/<page>', methods=['GET'])
 @search_bp.route('/v1/results', methods=['GET'])
-def display_results(search_string, page, criteria):
-    page = int(page)
+def display_results(search, page, criteria):
     if criteria == 'drink_name':
-        drinks = SearchDbInter().get_drinks_by_name(search_string, page)
+        drinks = SearchDbInter().get_drinks_by_name(search, int(page))
     else:
-        drinks = SearchDbInter().get_drinks_by_ingredient(search_string, page)
-    msg = 'Search results for: "{}"'.format(search_string)
+        drinks = SearchDbInter().get_drinks_by_ingredient(search, int(page))
+    msg = 'Search results for: "{}"'.format(search)
     if len(drinks.items) == 0:
-        msg = 'There are no search results for: "{}"'.format(search_string)
+        msg = 'There are no search results for: "{}"'.format(search)
     return render_template('search_results.html', title='Search results',
-                           drinks=drinks, msg=msg, search_string=search_string,
+                           drinks=drinks, msg=msg, search=search,
                            criteria=criteria)
 
 

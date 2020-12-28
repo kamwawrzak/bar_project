@@ -8,12 +8,12 @@
 {% block content %}
     {% with drink=drink, categories=categories, techniques=techniques, units=units, ingredients=ingredients, ingr_number=ingr_number, img=img %}
         <div id="update-drink" class="form-container">
-            <form action="/v1/drink/update/{{ drink.drink_id }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ url_for('drink_bp.update_drink', drink_id=drink.drink_id) }}" method="POST" enctype="multipart/form-data">
                 <div id="update-drink-img">
                     <img src="{{ drink.image }}">
                     {% if drink.image != "default.jpg" %}
                         <div id="delete-button">
-                            <a href="/v1/drink/{{ drink.drink_id }}/delete_image">
+                            <a href="{{ url_for('drink_bp.delete_drink_pic', drink_id=drink.drink_id) }}">
                                 <input type="button" value="Delete Image" class="submit-button">
                             </a>
                         </div>

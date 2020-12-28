@@ -29,7 +29,7 @@ def register_user():
                                    img=img,
                                    user_type='regular')
             flash('Your account has been created.', category='success')
-            return redirect(url_for('login.login'))
+            return redirect(url_for('login_bp.login'))
         else:
             flash(error, category='error')
             return redirect(url_for('register_bp.register_user'))

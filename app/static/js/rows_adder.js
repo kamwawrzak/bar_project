@@ -3,7 +3,7 @@ var i = null;
 function add() {
   if (i == null){
      i = document.getElementById('ingredient-iterator').value;
-  }
+  };
   if (i < 6) {
       var table = document.getElementById('ingredients-tab'),
           row = table.insertRow(-1),

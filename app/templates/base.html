@@ -26,7 +26,7 @@
                 <script type="text/javascript" src="{{ url_for('static', filename='js/set_nick.js') }}"></script>
                 <div id="set-nick-window" class="form-container">
                     <h3>Please set your nick.</h3>
-                    <form action="/v1/set_nick" method="POST">
+                    <form action="{{ url_for('facebook.set_nick') }}" method="POST">
                         <input type="text" id="nick" name="nick" placeholder="Your Nick" class="text-fields">
                         <button type="submit" name="submit" class="submit-button" onClick="PopUp('hide')">Set Nick</button>
                     </form>
@@ -42,12 +42,12 @@
                     <nav id="topnav">
                         {% if current_user.is_anonymous %}
                             <ul>
-                                <li><a href="/v1/search">Search</a></li>
+                                <li><a href="{{ url_for('search_bp.search_drinks') }}">Search</a></li>
                                 <li>
                                     <a href="">Categories</a>
                                     <ol class="dropdown-menu">
                                         <li><a href="{{ url_for('search_bp.display_category', category='all', page=1) }}">All Drinks</a></li>
-                                        <li><a href="{{ url_for('search_bp.display_category', category='whisky_bourbon', page=1) }}">Whiskey/Bourbon</a></li>
+                                        <li><a href="{{ url_for('search_bp.display_category', category='whisky_bourbon', page=1) }}">Whisky/Bourbon</a></li>
                                         <li><a href="{{ url_for('search_bp.display_category', category='tequila_mezcal', page=1) }}">Tequila/Mezcal</a></li>
                                         <li><a href="{{ url_for('search_bp.display_category', category='vodka', page=1) }}">Vodka</a></li>
                                         <li><a href="{{ url_for('search_bp.display_category', category='rum', page=1) }}">Rum</a></li>
@@ -55,17 +55,17 @@
                                         <li><a href="{{ url_for('search_bp.display_category', category='other', page=1) }}">Other</a></li>
                                     </ol>
                                 </li>
-                                <li><a href="/v1/register">Register</a></li>
-                                <li><a href="/v1/login">Login</a></li>
+                                <li><a href="{{ url_for('register_bp.register_user') }}">Register</a></li>
+                                <li><a href="{{ url_for('login_bp.login') }}">Login</a></li>
                             </ul>
                         {% else %}
                             <ul>
-                                <li><a href="/v1/search">Search</a></li>
+                                <li><a href="{{ url_for('search_bp.search_drinks') }}">Search</a></li>
                                 <li>
                                     <a href="">Categories</a>
                                     <ol class="dropdown-menu">
                                         <li><a href="{{ url_for('search_bp.display_category', category='all', page=1) }}">All Drinks</a></li>
-                                        <li><a href="{{ url_for('search_bp.display_category', category='whisky_bourbon', page=1) }}">Whiskey/Bourbon</a></li>
+                                        <li><a href="{{ url_for('search_bp.display_category', category='whisky_bourbon', page=1) }}">Whisky/Bourbon</a></li>
                                         <li><a href="{{ url_for('search_bp.display_category', category='tequila_mezcal', page=1) }}">Tequila/Mezcal</a></li>
                                         <li><a href="{{ url_for('search_bp.display_category', category='vodka', page=1) }}">Vodka</a></li>
                                         <li><a href="{{ url_for('search_bp.display_category', category='rum', page=1) }}">Rum</a></li>
@@ -73,20 +73,20 @@
                                         <li><a href="{{ url_for('search_bp.display_category', category='other', page=1) }}">Other</a></li>
                                     </ol>
                                 </li>
-                                <li><a href="/v1/add_drink">Add Drink</a></li>
+                                <li><a href="{{ url_for('drink_bp.add_drink') }}">Add Drink</a></li>
                                 <li>
                                     <a href="">Manage Profile</a>
                                     <ol class="dropdown-menu">
                                         <li><a href="{{ url_for('profile_bp.display_profile', user_id=current_user.user_id, page=1) }}">Your Profile</a></li>
                                         <li><a href="{{ url_for('drink_bp.user_drinks', user_id=current_user.user_id, page=1) }}">Your Drinks</a></li>
-                                        <li><a href="/v1/profile/{{ current_user.user_id }}/update_img">Change Avatar</a></li>
+                                        <li><a href="{{ url_for('profile_bp.update_profile_pic', user_id=current_user.user_id) }}">Change Avatar</a></li>
                                         {% if current_user.oauth_user == False %}
-                                            <li><a href="/v1/profile/change_password">Change Password</a></li>
+                                            <li><a href="{{ url_for('profile_bp.change_password') }}">Change Password</a></li>
                                         {% endif %}
-                                        <li><a href="/v1/profile/delete/confirm">Delete Account</a></li>
+                                        <li><a href="{{ url_for('profile_bp.delete_account', user_id=current_user.user_id) }}">Delete Account</a></li>
                                     </ol>
                                 </li>
-                                <li><a href="/v1/logout">Logout</a></li>
+                                <li><a href="{{ url_for('login_bp.logout') }}">Logout</a></li>
                             </ul>
                         {% endif %}
                 </nav>
