@@ -8,7 +8,7 @@
                 <select id="criteria" name="criteria" class="dropdownlist">
                     {% with criteria=search_criteria %}
                         {% for c in criteria %}
-                            <option value="{{ c }}">{{ c.capitalize() }}</option>
+                            <option value="{{ c.replace(' ', '_') }}">{{ c.capitalize() }}</option>
                         {% endfor %}
                     {% endwith %}
                 </select>
