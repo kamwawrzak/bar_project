@@ -66,14 +66,14 @@ def top_rated():
 
 
 @login_required
-@drink_bp.route('/v1/user_drinks/<user_id>')
-def user_drinks(user_id):
+@drink_bp.route('/v1/user_drinks/<user_id>/<page>')
+def user_drinks(user_id, page):
     msg = None
-    drinks = SearchDbInter().search_by_user(user_id)
-    if len(drinks) == 0:
+    drinks = SearchDbInter().search_by_user(user_id, int(page))
+    if len(drinks.items) == 0:
         msg = 'There are no drinks.'
     return render_template('user_drinks.html', title='Your Drinks',
-                           drinks=drinks, msg=msg)
+                           drinks=drinks, msg=msg, user_id=user_id)
 
 
 @login_required

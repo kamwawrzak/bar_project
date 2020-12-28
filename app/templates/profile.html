@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    {% with user=user, img=img, drinks=drinks %}
+    {% with user=user, img=img, drinks=drinks, user_id=user_id %}
         <div id="profile-page">
             <div id="profile-top">
                 <div id="user-img">
@@ -25,7 +25,7 @@
                 {% if drinks %}
                     <div id="drinks-list" class="search-results">
                         <ul>
-                            {% for d in drinks %}
+                            {% for d in drinks.items %}
                                 <li>
                                     <a href="/v1/drink/{{ d.drink_id }}">
                                         <div class="search-img">
@@ -35,10 +35,9 @@
                                             <div class="drink-name">
                                                 {{ d.name.capitalize() }}
                                             </div>
-
                                         </div>
                                         {% if d.author == current_user.user_id %}
-                                            <div class="drink-operatios">
+                                            <div class="drink-operations">
                                                 <a href="/v1/drink/update/{{ d.drink_id }}" class="comment-option">
                                                     Update Drink
                                                 </a>
@@ -53,9 +52,36 @@
                             {% endfor %}
                         </ul>
                     </div>
-                    {% else %}
-                        {{ msg }}
-                    {% endif %}
+                    <div class="pagination">
+                        {% if drinks.has_prev %}
+                            <a href="{{ url_for('profile_bp.display_profile',
+                                                 user_id=user_id,
+                                                 page=drinks.prev_num) }}" class="page_num"><<</a>
+                        {% endif %}
+                        {% for page_num in drinks.iter_pages(left_edge=1, left_current=5, right_current=5, right_edge=1) %}
+                        {% if page_num %}
+                            {% if drinks.page == page_num %}
+                                <a href="{{ url_for('profile_bp.display_profile',
+                                                     user_id=user_id,
+                                                     page=page_num) }}" class="page_num_chosed">{{ page_num }}</a>
+                            {% else %}
+                                <a href="{{ url_for('profile_bp.display_profile',
+                                                     user_id=user_id,
+                                                     page=page_num) }}" class="page_num">{{ page_num }}</a>
+                            {% endif %}
+                        {% else %}
+                            ...
+                        {% endif %}
+                        {% endfor %}
+                        {% if drinks.has_next %}
+                            <a href="{{ url_for('profile_bp.display_profile',
+                                                 user_id=user_id,
+                                                 page=drinks.next_num) }}" class="page_num">>></a>
+                        {% endif %}
+                    </div>
+                {% else %}
+                    {{ msg }}
+                {% endif %}
             </div>
         </div>
     {% endwith %}

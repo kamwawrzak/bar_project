@@ -6,8 +6,10 @@ $(document).ready(function(){
 
         if (windowScroll > navPosition){ $('#topnav').addClass('sticky-topnav') }
         else { $('#topnav').removeClass('sticky-topnav') };
-    }
-
-    stickyNavbar();
-    $(window).scroll(function(){ stickyNavbar(); });
+    };
+    var pageHeight = $(document).height();
+    if(pageHeight > 800){
+        stickyNavbar();
+        $(window).scroll(function(){ stickyNavbar(); });
+    };
 })

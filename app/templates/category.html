@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    {% with drinks=drinks, msg=msg, search_string=search_string, criteria=criteria %}
+    {% with drinks=drinks, msg=msg, category=category %}
         <h3 id="drinks-list-header"> {{ msg }} </h3>
         {% if drinks %}
             <div class="search-results">
@@ -26,31 +26,31 @@
             </div>
             <div class="pagination">
                 {% if drinks.has_prev %}
-                    <a href="{{ url_for('search_bp.display_results',
-                                         search_string=search_string,
-                                         criteria=criteria,
-                                         page=drinks.prev_num) }}" class="page_num"><<</a>
+                    <a href="{{ url_for('search_bp.display_category',
+                                category=category, page=drinks.prev_num) }}"
+                                class="page_num"><<</a>
                 {% endif %}
                 {% for page_num in drinks.iter_pages(left_edge=1, left_current=5, right_current=5, right_edge=1) %}
                     {% if page_num %}
                         {% if drinks.page == page_num %}
-                            <a href="{{ url_for('search_bp.display_results', search_string=search_string,
-                                        criteria=criteria, page=page_num) }}" class="page_num_chosed">{{ page_num }}</a>
+                            <a href="{{ url_for('search_bp.display_category',
+                                                category=category,
+                                                page=page_num) }}" class="page_num_chosed">{{ page_num }}</a>
                         {% else %}
-                            <a href="{{ url_for('search_bp.display_results', search_string=search_string,
-                                        criteria=criteria, page=page_num) }}" class="page_num">{{ page_num }}</a>
+                            <a href="{{ url_for('search_bp.display_category', category=category, page=page_num) }}" class="page_num">{{ page_num }}</a>
                         {% endif %}
                     {% else %}
                         ...
                     {% endif %}
                 {% endfor %}
                 {% if drinks.has_next %}
-                    <a href="{{ url_for('search_bp.display_results', search_string=search_string,
-                                         criteria=criteria, page=drinks.next_num) }}" class="page_num">>></a>
+                    <a href="{{ url_for('search_bp.display_category',
+                                        category=category,
+                                        page=drinks.next_num) }}" class="page_num">>></a>
                 {% endif %}
             </div>
         {% else %}
-            <h3> There are no drinks meeting these criteria. </h3>
+            <h3> There are no drinks in this category. </h3>
         {% endif %}
     {% endwith %}
 {% endblock content %}

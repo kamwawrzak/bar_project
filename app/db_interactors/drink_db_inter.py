@@ -4,6 +4,8 @@ from app.interactors.img_inter import ImgInter
 from app.interactors.web_inter import WebInter
 from app.models import Drink
 
+from config import Config
+
 from flask_login import current_user
 
 from sqlalchemy import func
@@ -15,8 +17,10 @@ class DrinkDbInter:
         drink = Drink.query.filter_by(drink_id=drink_id).first()
         return drink
 
-    def get_all_drinks(self):
-        drinks = Drink.query.order_by(Drink.name).all()
+    def get_all_drinks(self, page):
+        drinks = Drink.query.order_by(Drink.name).paginate(
+                                            page=int(page),
+                                            per_page=Config().PER_PAGE)
         return drinks
 
     def add_drink(self, drink, img=None):

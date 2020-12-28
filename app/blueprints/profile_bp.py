@@ -12,18 +12,18 @@ from flask_login import current_user, login_required, logout_user
 
 from werkzeug.security import check_password_hash
 
-profile_bp = Blueprint('profile', __name__)
+profile_bp = Blueprint('profile_bp', __name__)
 
 
-@profile_bp.route('/v1/profile/<user_id>', methods=['GET'])
-def display_profile(user_id):
+@profile_bp.route('/v1/profile/<user_id>/<page>', methods=['GET'])
+def display_profile(user_id, page):
     msg = None
     user = UserDbInter().get_user(user_id)
-    drinks = SearchDbInter().search_by_user(user_id)
+    drinks = SearchDbInter().search_by_user(user_id, int(page))
     if not drinks:
         msg = 'This user did not add any drinks yet.'
     return render_template('profile.html', title=user.nick, user=user,
-                           drinks=drinks, msg=msg)
+                           drinks=drinks, msg=msg, user_id=user_id)
 
 
 @login_required

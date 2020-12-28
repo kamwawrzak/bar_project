@@ -46,13 +46,13 @@
                                 <li>
                                     <a href="">Categories</a>
                                     <ol class="dropdown-menu">
-                                        <li><a href="/v1/drinks/all">All Drinks</a></li>
-                                        <li><a href="/v1/drinks/whiskey_bourbon">Whiskey/Bourbon</a></li>
-                                        <li><a href="/v1/drinks/tequila_mezcal">Tequila/Mezcal</a></li>
-                                        <li><a href="/v1/drinks/vodka">Vodka</a></li>
-                                        <li><a href="/v1/drinks/rum">Rum</a></li>
-                                        <li><a href="/v1/drinks/gin">Gin</a></li>
-                                        <li><a href="/v1/drinks/other">Other</a></li>
+                                        <li><a href="{{ url_for('search_bp.display_category', category='all', page=1) }}">All Drinks</a></li>
+                                        <li><a href="{{ url_for('search_bp.display_category', category='whisky_bourbon', page=1) }}">Whiskey/Bourbon</a></li>
+                                        <li><a href="{{ url_for('search_bp.display_category', category='tequila_mezcal', page=1) }}">Tequila/Mezcal</a></li>
+                                        <li><a href="{{ url_for('search_bp.display_category', category='vodka', page=1) }}">Vodka</a></li>
+                                        <li><a href="{{ url_for('search_bp.display_category', category='rum', page=1) }}">Rum</a></li>
+                                        <li><a href="{{ url_for('search_bp.display_category', category='gin', page=1) }}">Gin</a></li>
+                                        <li><a href="{{ url_for('search_bp.display_category', category='other', page=1) }}">Other</a></li>
                                     </ol>
                                 </li>
                                 <li><a href="/v1/register">Register</a></li>
@@ -64,21 +64,21 @@
                                 <li>
                                     <a href="">Categories</a>
                                     <ol class="dropdown-menu">
-                                        <li><a href="/v1/drinks/all">All Drinks</a></li>
-                                        <li><a href="/v1/drinks/whisky_bourbon">Whisky/Bourbon</a></li>
-                                        <li><a href="/v1/drinks/tequila_mezcal">Tequila/Mezcal</a></li>
-                                        <li><a href="/v1/drinks/vodka">Vodka</a></li>
-                                        <li><a href="/v1/drinks/rum">Rum</a></li>
-                                        <li><a href="/v1/drinks/gin">Gin</a></li>
-                                        <li><a href="/v1/drinks/other">Other</a></li>
+                                        <li><a href="{{ url_for('search_bp.display_category', category='all', page=1) }}">All Drinks</a></li>
+                                        <li><a href="{{ url_for('search_bp.display_category', category='whisky_bourbon', page=1) }}">Whiskey/Bourbon</a></li>
+                                        <li><a href="{{ url_for('search_bp.display_category', category='tequila_mezcal', page=1) }}">Tequila/Mezcal</a></li>
+                                        <li><a href="{{ url_for('search_bp.display_category', category='vodka', page=1) }}">Vodka</a></li>
+                                        <li><a href="{{ url_for('search_bp.display_category', category='rum', page=1) }}">Rum</a></li>
+                                        <li><a href="{{ url_for('search_bp.display_category', category='gin', page=1) }}">Gin</a></li>
+                                        <li><a href="{{ url_for('search_bp.display_category', category='other', page=1) }}">Other</a></li>
                                     </ol>
                                 </li>
                                 <li><a href="/v1/add_drink">Add Drink</a></li>
                                 <li>
                                     <a href="">Manage Profile</a>
                                     <ol class="dropdown-menu">
-                                        <li><a href="/v1/profile/{{ current_user.user_id }}">Your Profile</a></li>
-                                        <li><a href="/v1/user_drinks/{{ current_user.user_id }}">Your Drinks</a></li>
+                                        <li><a href="{{ url_for('profile_bp.display_profile', user_id=current_user.user_id, page=1) }}">Your Profile</a></li>
+                                        <li><a href="{{ url_for('drink_bp.user_drinks', user_id=current_user.user_id, page=1) }}">Your Drinks</a></li>
                                         <li><a href="/v1/profile/{{ current_user.user_id }}/update_img">Change Avatar</a></li>
                                         {% if current_user.oauth_user == False %}
                                             <li><a href="/v1/profile/change_password">Change Password</a></li>
@@ -109,13 +109,6 @@
                            <span id="top-rated-name">Drink Name</span>
                         </a>
                     </div>
-                    <div id="most-viewed" class="recommended">
-                        <span>Most views:</span>
-                        <a href="/most-viewed-drink" class="sidelink">
-                            <img id="most-viewed-img" src="">
-                            <span id="most-viewed-name">Drink Name</span>
-                        </a>
-                    </div>
                 </div>
                 <div id="content">
 
@@ -123,7 +116,13 @@
 
                 </div>
                 <div class="sidebar">
-                    <img src="" id="ad">
+                    <div id="most-viewed" class="recommended">
+                        <span>Most views:</span>
+                        <a href="/most-viewed-drink" class="sidelink">
+                            <img id="most-viewed-img" src="">
+                            <span id="most-viewed-name">Drink Name</span>
+                        </a>
+                    </div>
                 </div>
                 <div style="clear:both;"></div>
             </main>

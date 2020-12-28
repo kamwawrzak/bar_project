@@ -33,7 +33,8 @@ header
 {
     color: black;
     text-decoration: none;
-    padding: 30px;
+    padding-top: 10px;
+    padding-bottom: 20px;
 	display: block;
 }
 
@@ -184,6 +185,7 @@ ol.dropdown-menu > li:first-child
 #content
 {
     width: 860px;
+    min-height: 340px;
     text-align: center;
     float: left;
     padding: 20px;
@@ -242,17 +244,12 @@ img
     height: 160px;
 }
 
-.sidebar > #ad
-{
-    width: 160px;
-    height: 560px;
-}
-
 footer
 {
-    clear: both;
+    float: top;
     text-align: center;
-    padding: 10px;
+    padding-top: 10px;
+    border-top: 1px solid black;
 }
 
 .form-container
@@ -264,7 +261,8 @@ footer
     border: 1px solid black;
     margin-left: auto;
     margin-right: auto;
-    margin-top: 20px;
+    margin-top: 0;
+    margin-bottom: 10px;
     box-shadow: 3px 3px 10px 2px #6a6a48;
     -webkit-box-shadow: 3px 3px 10px 2px #6a6a48;
     -moz-box-shadow: 3px 3px 10px 2px #6a6a48;
@@ -385,6 +383,26 @@ footer
     background-color: #E5E7E9;
 }
 
+.pagination
+{
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+a.page_num
+{
+    text-decoration: none;
+    color: black;
+}
+
+a.page_num_chosed
+{
+    color: black;
+    font-weight: 700;
+    text-decoration: underline;
+}
+
 .search-img
 {
     float:left;
@@ -455,6 +473,7 @@ a > .fb-button:hover
 #register
 {
     width: 400px;
+    margin-bottom: 40px;
     text-align: center;
 }
 
@@ -757,6 +776,11 @@ a:hover.author-link
     margin-right: 30px;
     border-top: 1px solid black;
 }
+
+#all-comments
+{
+    max-height: 150px;
+}
 #add-comment
 {
     text-align: center;
@@ -980,7 +1004,7 @@ a:hover.comment-option
     margin-bottom: 10px;
 }
 
-.drink-operatios
+.drink-operations
 {
     text-align: center;
 }

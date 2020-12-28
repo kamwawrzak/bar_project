@@ -15,3 +15,4 @@ class Config:
     S3_ACCESS_KEY_ID = os.environ.get('S3_ACCESS_KEY_ID')
     S3_ACCESS_SECRET_KEY = os.environ.get('S3_ACCESS_SECRET_KEY')
     S3_LOCATION = 'http://{}.s3.amazonaws.com/'.format(S3_BUCKET_NAME)
+    PER_PAGE = 10
