@@ -1,26 +1,29 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <form action="/v1/search" method="POST">
-        <select name="criteria">
-            {% with criteria=search_criteria %}
-                {% for c in criteria %}
-                    <option value="{{ c }}">{{ c }}</option>
-                {% endfor %}
-            {% endwith %}
-        </select>
-        <input type="text" name="search">
-        <button type="submit" name="search">Search</button><br>
-        <ul>
-            Drinks categories:
-            <li><a href="/v1/drinks/all">All Drinks</a></li>
-            {% with categories=categories %}
-                {% for c in categories %}
-                    <li><a href="/v1/drinks/{{ c }}">
-                        {{ c.replace('_', '/').capitalize() }}</a>
-                    </li>
-                {% endfor %}
-            {% endwith %}
-        </ul>
-    </form>
+    <div id="search" class="form-container">
+        <form action="{{ url_for('search_bp.search_drinks') }}" method="POST">
+            <div id="criteria-container">
+                <label for="criteria">Search by:</label>
+                <select id="criteria" name="criteria" class="dropdownlist">
+                    {% with criteria=search_criteria %}
+                        {% for c in criteria %}
+                            <option value="{{ c.replace(' ', '_') }}">{{ c.capitalize() }}</option>
+                        {% endfor %}
+                    {% endwith %}
+                </select>
+            </div>
+            <div id="search-container">
+                <div id="search-text" class="text-fields">
+                    <input type="text" name="search" placeholder="Introduce Searching Text">
+                </div>
+                <div id="search-button">
+                    <button class="submit-button" type="submit">
+                        <i class="icon-search"></i>
+                    </button>
+                </div>
+                <div style="clear: both;"></div>
+            </div>
+        </form>
+    </div>
 {% endblock content %}

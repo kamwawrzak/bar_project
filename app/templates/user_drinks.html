@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% with drinks=drinks, msg=msg %}
+        <h3 id="drinks-list-header"> {{ msg }} </h3>
+        {% if drinks %}
+            <div class="search-results">
+                <ul>
+                    {% for d in drinks.items %}
+                    <li>
+                        <a href="{{ url_for('drink_bp.display_drink', drink_id=d.drink_id) }}">
+                            <div class="search-img">
+                                <img src="{{ d.image }}">
+                            </div>
+                            <div class="drink-name">
+                                {{ d.name.capitalize() }}
+                            </div>
+                            {% if d.author == current_user.user_id %}
+                                <div class="drink-operations">
+                                    <a href="{{ url_for('drink_bp.update_drink', drink_id=d.drink_id) }}" class="comment-option">
+                                        Update Drink
+                                    </a>
+                                    <a href="{{ url_for('drink_bp.delete_drink', drink_id=d.drink_id) }}" class="comment-option">
+                                        Delete Drink
+                                    </a>
+                                </div>
+                            {% endif %}
+                            <div style="clear:both;"></div>
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+                </div>
+                <div class="pagination">
+                    {% if drinks.has_prev %}
+                        <a href="{{ url_for('drink_bp.user_drinks',
+                                             user_id=current_user.user_id,
+                                             page=drinks.prev_num) }}" class="page_num"><<</a>
+                    {% endif %}
+                    {% for page_num in drinks.iter_pages(left_edge=1, left_current=5, right_current=5, right_edge=1) %}
+                        {% if page_num %}
+                            {% if drinks.page == page_num %}
+                                <a href="{{ url_for('drink_bp.user_drinks', user_id=current_user.user_id, page=page_num) }}" class="page_num_chosed">{{ page_num }}</a>
+                            {% else %}
+                                <a href="{{ url_for('drink_bp.user_drinks', user_id=current_user.user_id, page=page_num) }}" class="page_num">{{ page_num }}</a>
+                            {% endif %}
+                        {% else %}
+                            ...
+                        {% endif %}
+                    {% endfor %}
+                    {% if drinks.has_next %}
+                        <a href="{{ url_for('drink_bp.user_drinks', user_id=current_user.user_id, page=drinks.next_num) }}" class="page_num">>></a>
+                    {% endif %}
+                </div>
+        {% else %}
+            <h3> {{ msg }} </h3>
+        {% endif %}
+    {% endwith %}
+{% endblock content %}

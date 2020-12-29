@@ -1,41 +1,120 @@
 {% extends 'base.html' %}
 
+{% block head %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/voting_system.js') }}"></script>
+{% endblock %}
+
 {% block content %}
-    {% with drink=drink, ingredients=ingredients, comments=comments, img=img %}
-    Drink name: {{ drink.name }}<br>
-    <img src="{{ img }}" style="width:200px;height:300px;"><br>
-    Technique: {{ drink.technique }}<br>
-    Ingredients:<br>
-        {% for k, v in ingredients.items() %}
-            {% if k != None and v != '' %}
-                <li>{{ k }} : {{ v }} ml<br></li>
-            {% endif %}
-        {% endfor %}
-    Description: {{ drink.description }}<br>
-    Preparation: {{ drink.preparation }}<br>
-    Comments:<br>
-    {% if comments %}
-        {% for c in comments %}
-            <a href="/v1/profile/{{ c.author }}">{{ c.author_nick }}</a> says:<br>
-            {{ c.content }} <br>
-            Comment added: {{ c.date }}
-            {% if c.author == current_user.user_id %}
-                <a href="/v1/drink/{{ drink.drink_id }}/comment/edit/{{ c.comment_id }}">
-                    <input type="button" value="Edit Comment">
+    {% with drink=drink, ingredients=ingredients, comments=comments, img=img, author=author %}
+        <input type="hidden" id="drink_id" value="{{ drink.drink_id }}">
+        <input type="hidden" id="user_id" value="{{ current_user.user_id }}">
+
+        <div id="drink-page-top">
+            <div id="drink-img">
+                <img src="{{ drink.image }}">
+            </div>
+            <div id="voting-container">
+                <div id="stars">
+                    <div id="star1" class="star"><i class="icon-star-empty"></i></div>
+                    <div id="star2" class="star"><i class="icon-star-empty"></i></div>
+                    <div id="star3" class="star"><i class="icon-star-empty"></i></div>
+                    <div id="star4" class="star"><i class="icon-star-empty"></i></div>
+                    <div id="star5" class="star"><i class="icon-star-empty"></i></div>
+                </div>
+            </div>
+            <span id="rate">Rate: 0 (0 votes)</span>
+            <div id="drink-name-display">
+                <h4> {{ drink.name }} </h4>
+            </div>
+            <div id="date-added">
+                Added on {{ drink.add_date }}
+            </div>
+            <div id="drink-author">
+                <span class="drink-attribute">Author:</span>
+                <a href="{{ url_for('profile_bp.display_profile', user_id=drink.author, page=1) }}" class="author-link">
+                    {{ author }}
                 </a>
-                <a href="/v1/drink/{{ drink.drink_id }}/comment/delete/{{ c.comment_id }}">
-                    <input type="button" value="Delete Comment"><br>
-                 </a>
-            {% endif %}<br>
-        {% endfor %}
-    {% else %}
-        There are no comments. You may be the first!
-    {% endif %}
-    {% if current_user.is_authenticated %}
-    <form action="/v1/drink/{{ drink.drink_id }}/comment" method="POST">
-        <input type="text" name="content" placeholder="Type your comment here.">
-        <button type="submit" name="submit">Add comment</button>
-    </form>
-    {% endif %}
+            </div>
+            <div id="category">
+                <span class="drink-attribute">Category:</span>
+                {{ drink.category }}
+            </div>
+            <div id="technique">
+                <span class="drink-attribute">Technique:</span>
+                {{ drink.technique }}
+            </div>
+            <div id="drink-ingredients">
+                <span class="drink-attribute">Ingredients:</span>
+                <ul>
+                    {% for i in ingredients %}
+                        {% if i != None %}
+                                <li>
+                                    {{ i.ingr_name.capitalize() }}: {{ i.ingr_amount }} {{ i.ingr_unit }}
+                                </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <div style="clear: both;"></div>
+        <div id="drink-mid-page">
+            {% if drink.description %}
+                <h6 class="drink-page-headers">Description</h6>
+                <div class="drink-long-text">
+                    {{ drink.description }}
+                </div>
+            {% endif %}
+            <h6 class="drink-page-headers">Preparation</h6>
+            <div class="drink-long-text">
+                {{ drink.description }}
+            </div>
+        </div>
+        <h6 class="drink-page-headers">Comments</h6>
+        <div id="comment-section">
+            {% if current_user.is_authenticated %}
+                    <div id="add-comment">
+                        <form action="{{ url_for('comment_bp.add_comment', drink_id=drink.drink_id) }}" method="POST">
+                            <div id="textarea-div">
+                                <textarea id="comment-area" name="content" maxlength="250" placeholder="Max 250 characters"></textarea>
+                            </div>
+                            <div id="add-button-div">
+                                <button id="add-comment-button" type="submit" name="submit" class="submit-button">Send</button>
+                            </div>
+                            <div style="clear:both;"></div>
+                        </form>
+                    </div>
+            {% endif %}
+            <div id="all-comments">
+
+                {% for c in comments %}
+                    <div id="comment">
+                        <div class="comment-header">
+                            <div class="comment-author">
+                                <a href="{{ url_for('profile_bp.display_profile', user_id=c.author, page=1) }}" class="author-link">
+                                {{ c.author_nick }}
+                                </a>
+                            </div>
+                            <div class="comment-operations">
+                                {% if c.author == current_user.user_id %}
+                                    <a href="{{ url_for('comment_bp.edit_comment', drink_id=drink.drink_id, comment_id=c.comment_id) }}" class="comment-option">
+                                        Edit Comment
+                                    </a>
+                                    <a href="{{ url_for('comment_bp.delete_comment', drink_id=drink.drink_id, comment_id=c.comment_id) }}" class="comment-option">
+                                        Delete Comment
+                                    </a>
+                                {% endif %}
+                            </div>
+                            <div class="comment-date">{{ c.date }}</div>
+                            <div style="clear: both;"></div>
+                        </div>
+                        <div id="comment-content-display">
+                            <div id="comment-text">{{ c.content }}</div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
     {% endwith %}
 {% endblock content %}

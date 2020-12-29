@@ -1,40 +1,29 @@
-from app import db
-from app.interactors.drink_interactors import DrinkInteractors
-from app.interactors.img_interactors import ImgInteractors
-from app.interactors.user_interactors import UserInteractors
+from app.db_interactors.img_db_inter import ImgDbInter
+from app.db_interactors.search_db_inter import SearchDbInter
+from app.db_interactors.user_db_inter import UserDbInter
+from app.interactors.img_inter import ImgInter
 from app.interactors.validators import Validators
-from app.interactors.web_interactors import WebInteractors
+from app.interactors.web_inter import WebInter
 
 
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 
 from flask_login import current_user, login_required, logout_user
 
-from werkzeug.security import check_password_hash, generate_password_hash
+from werkzeug.security import check_password_hash
+
+profile_bp = Blueprint('profile_bp', __name__)
 
 
-profile_bp = Blueprint('profile', __name__)
-
-
-@profile_bp.route('/v1/profile/<user_id>', methods=['GET'])
-def display_profile(user_id):
-    user = UserInteractors().get_user(user_id)
-    img = ImgInteractors().get_img_path(user, 'user')
-    return render_template('profile.html', title=user.nick, user=user, img=img)
-
-
-@login_required
-@profile_bp.route('/v1/profile/manage/<user_id>')
-def manage_profile(user_id):
-    user = UserInteractors().get_user(user_id)
-    return render_template('manage_profile.html', title=user.nick)
-
-
-@profile_bp.route('/v1/user_drinks/<user_id>')
-def user_drinks(user_id):
-    drinks = DrinkInteractors().search_by_user(user_id)
-    return render_template('search_results.html', title='Your Drinks',
-                           drinks=drinks)
+@profile_bp.route('/v1/profile/<user_id>/<page>', methods=['GET'])
+def display_profile(user_id, page):
+    msg = None
+    user = UserDbInter().get_user(user_id)
+    drinks = SearchDbInter().search_by_user(user_id, int(page))
+    if not drinks:
+        msg = 'This user did not add any drinks yet.'
+    return render_template('profile.html', title=user.nick, user=user,
+                           drinks=drinks, msg=msg, user_id=user_id)
 
 
 @login_required
@@ -43,67 +32,74 @@ def change_password():
     if request.method == 'GET':
         return render_template('change_password.html', title='Change password')
     else:
-        d = WebInteractors().get_form_data('oldpass', 'newpass', 'confirmnew')
+        d = WebInter().get_form_data('oldpass', 'newpass', 'confirmnew')
         e = Validators().validate_pass(d['newpass'], d['confirmnew'])
         if check_password_hash(current_user.password_hash, d['oldpass']):
             if e:
-                flash(e)
+                flash(e, category='error')
             else:
-                current_user.password_hash = generate_password_hash(
-                    d['newpass'], 'SHA256')
-                db.session.commit()
-                flash('Password has been changed successfully.')
-            return redirect(url_for('profile_bp.profile'))
+                UserDbInter().update_password(d['newpass'])
+                flash('Password has been changed successfully.',
+                      category='success')
+            return redirect(url_for('profile_bp.display_profile',
+                                    user_id=current_user.user_id,
+                                    page=1))
         else:
-            flash('Incorrect password.')
+            flash('Incorrect current password.', category='error')
+            return redirect(url_for('profile_bp.change_password'))
 
 
 @login_required
 @profile_bp.route('/v1/profile/<user_id>/update_img', methods=['GET', 'POST'])
 def update_profile_pic(user_id):
-    user = UserInteractors().get_user(user_id)
-    current_img = ImgInteractors().get_img_path(user, 'user')
+    user = UserDbInter().get_user(user_id)
     if request.method == 'POST':
         img = request.files['file']
         if img:
-            if user.image != 'default.jpg':
-                ImgInteractors().delete_img(user, 'user')
-            img_name = ImgInteractors().upload_img(img, user_id, 'user')
-            user.image = img_name
-            db.session.commit()
-        return redirect('/v1/profile/{}'.format(user_id))
+            if user.image != ImgInter().get_default_img('user'):
+                ImgInter().delete_img(user)
+            img_link = ImgInter().upload_img(img, user)
+            ImgDbInter().update_db_image(user, img_link)
+        return redirect(url_for('profile_bp.display_profile',
+                                user_id=user_id,
+                                page=1))
     else:
         return render_template('profile_img.html', title=user.nick,
-                               img=current_img)
+                               user=current_user)
 
 
 @login_required
 @profile_bp.route('/v1/profile/<user_id>/delete_pic')
 def delete_profile_pic(user_id):
-    user = UserInteractors().get_user(user_id)
-    ImgInteractors().delete_img(user, 'user')
-    return redirect('/v1/profile/{}'.format(user_id))
+    user = UserDbInter().get_user(user_id)
+    ImgInter().delete_img(user)
+    return redirect(url_for('profile_bp.display_profile', user_id=user_id,
+                            page=1))
 
 
 @login_required
-@profile_bp.route('/v1/profile/delete/confirm', methods=['GET'])
-def confirm_delete():
-    return render_template('delete_account.html', title='Delete account')
-
-
-@login_required
-@profile_bp.route('/v1/profile/delete/<user_id>')
+@profile_bp.route('/v1/profile/delete/<user_id>', methods=['GET', 'POST'])
 def delete_account(user_id):
-    user = UserInteractors().get_user(user_id)
-    drinks = DrinkInteractors().search_by_user(user.user_id)
-    if user.image != 'default.jpg':
-        ImgInteractors().delete_img(user, 'user')
-    for d in drinks:
-        if d.image != 'default.jpg':
-            ImgInteractors().delete_img(d, 'drink')
-        db.session.delete(d)
-    db.session.delete(user)
-    db.session.commit()
-    logout_user()
-    flash('Account deleted successfully')
-    return redirect(url_for('home_bp.index'))
+    if request.method == 'POST':
+        if current_user.oauth_user is False:
+            d = WebInter().get_form_data('password')
+            if not check_password_hash(current_user.password_hash,
+                                       d['password']):
+                flash('Incorrect password.', category='error')
+                return redirect(url_for('profile_bp.delete_account',
+                                        user_id=user_id))
+            UserDbInter().delete_user(user_id)
+            logout_user()
+            flash('Account deleted successfully.', category='success')
+            return redirect(url_for('home_bp.index'))
+        else:
+            if request.form.get('option') == 'True':
+                UserDbInter().delete_user(user_id)
+                logout_user()
+                flash('Account deleted successfully.', category='success')
+                return redirect(url_for('home_bp.index'))
+            else:
+                return redirect(url_for('profile_bp.display_profile',
+                                        user_id=user_id, page=1))
+    else:
+        return render_template('delete_account.html', title='Delete account')

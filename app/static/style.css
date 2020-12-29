@@ -1,0 +1,1152 @@
+/* Base  body style */
+
+body
+{
+    background-color: #d6d6c2;
+    width: 1300px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 18px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Logo style */
+#logo
+{
+    font-size: 56px;
+    font-weight: 700;
+    font-style: none;
+    background-color: #d6d6c2;
+    text-align: center;
+    margin-top: 0;
+    margin-right: auto;
+    margin-left: auto;
+    letter-spacing: 5px;
+    border-bottom: 1px solid black;
+}
+header
+{
+    font-size: 0;
+}
+
+#logo > a
+{
+    color: black;
+    text-decoration: none;
+    padding-top: 10px;
+    padding-bottom: 20px;
+	display: block;
+}
+
+#logo > a:hover
+{
+    background-color: #E5E7E9;
+    color: black;
+}
+
+/* Top navigation bar style */
+#topnav
+{
+    text-align: center;
+    background-color: #d6d6c2;
+    margin-bottom: 30px;
+    height: 40px;
+}
+#topnav > ul
+{
+    list-style-type: none;
+    margin-left: auto;
+    margin-right: auto;
+    height: 40px;
+    text-align: center;
+}
+
+ul > li
+{
+    display: inline-block;
+    position: relative;
+    font-weight: 900;
+    height: 40px;
+    color: black;
+    margin-top: 5px;
+}
+
+#topnav > ul > li > a
+{
+    color: black;
+    text-decoration: none;
+    font-size: 36px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+
+#topnav > ul > li > a:hover
+{
+    background-color: #E5E7E9;
+}
+
+
+/* Categories menu list */
+
+#topnav
+{
+    height: 50px;
+    border-bottom: 1px solid black;
+    padding-bottom: 10px;
+}
+
+#topnav > ul > li:hover ol
+{
+    display: block;
+}
+
+#topnav > ul > li > ol
+{
+    list-style-type: none;
+    position: absolute;
+    width: 100%;
+    z-index: 100;
+    padding: 0;
+    display: none;
+    background-color: #E5E7E9;
+    border-top: none;
+}
+
+ol.dropdown-menu > li
+{
+    text-align: center;
+    font-size: 16px;
+    margin-left: 0;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-top: 1px dotted black;
+}
+
+ol.dropdown-menu > li:first-child
+{
+    border-top: none;
+}
+
+#topnav > ul > li:hover > ol > li
+{
+    display: block;
+    bottom: 100%;
+}
+
+#topnav > ul > li:hover > ol > li > a
+{
+    color: black;
+    text-decoration: none;
+}
+
+
+#topnav > ul > li:hover > ol > li:hover
+{
+    background-color: #e0e0d1;
+}
+
+.sticky-topnav {
+  position: fixed;
+  top: 0;
+  width: 1300px;
+  height: 50px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid black;
+  z-index: 150;
+}
+
+/* Flash messages */
+#flash-msg
+{
+    max-width: 1000px;
+    border-radius: 15px;
+    padding: 10px;
+    position: absolute;
+    display: inline-block;
+    margin-left: 50%;
+    transform: translateX(-50%);
+}
+
+.error
+{
+    background-color: lightcoral;
+    border: 2px solid red;
+    color: red;
+}
+
+.success
+{
+    background-color: lightgreen;
+    border: 2px solid green;
+    color: green;
+}
+
+#content
+{
+    width: 860px;
+    min-height: 340px;
+    text-align: center;
+    float: left;
+    padding: 20px;
+    background-color: #d6d6c2;
+}
+
+.sidebar
+{
+    width: 180px;
+    padding: 10px;
+    text-align: center;
+    float: left;
+    color: black;
+    font-weight: 900;
+    font-size: 20px;
+}
+
+img
+{
+    width: 300px;
+    height: 300px;
+    border: 1px solid black;
+    box-shadow: 3px 3px 10px 2px #6a6a48;
+    -webkit-box-shadow: 3px 3px 10px 2px #6a6a48;
+    -moz-box-shadow: 3px 3px 10px 2px #6a6a48;
+}
+
+.sidelink
+{
+    color: black;
+    text-decoration: none;
+}
+
+.recommended
+{
+    display: block;
+}
+
+.recommended > a > img
+{
+    margin-top: 5px;
+    background-color: white;
+    width: 160px;
+    height: 160px;
+}
+
+#most-viewed
+{
+    margin-top: 15px;
+}
+
+.sidebar > #views > a > img
+{
+    background-color: white;
+    width: 160px;
+    height: 160px;
+}
+
+footer
+{
+    float: top;
+    text-align: center;
+    padding-top: 10px;
+    border-top: 1px solid black;
+}
+
+.form-container
+{
+    display: block;
+    padding: 30px;
+    color: black;
+    background-color: white;
+    border: 1px solid black;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 0;
+    margin-bottom: 10px;
+    box-shadow: 3px 3px 10px 2px #6a6a48;
+    -webkit-box-shadow: 3px 3px 10px 2px #6a6a48;
+    -moz-box-shadow: 3px 3px 10px 2px #6a6a48;
+}
+
+.required-mark
+{
+    color: red;
+    font-size: 12px;
+}
+
+/* Search page style */
+#search
+{
+    font-weight: 700;
+    font-size: 18px;
+    width: 400px;
+}
+
+#criteria-container
+{
+    margin-bottom: 20px;
+}
+
+
+.dropdownlist
+{
+    border: 1px solid black;
+    color: black;
+    font-size: 18px;
+    font-family: 'Montserrat', sans-serif;
+    width: 150px;
+    margin-top: 10px;
+    background-color: white;
+}
+
+#search-container input
+{
+    height: 40px;
+    width: 250px;
+    font-size: 18px;
+    text-align: center;
+}
+
+#search-text
+{
+    margin-left: 40px;
+    margin-top: 0;
+    float: left;
+}
+
+#search-button
+{
+    float: left;
+}
+
+#search-button button
+{
+  margin-top: 0;
+  margin-left: 5px;
+  width: 50px;
+  height: 44px;
+}
+
+.submit-button
+{
+    border: 1px solid black;
+    font-size: 22px;
+    background-color: #d6d6c2;
+    color: black;
+    margin-top: 10px;
+}
+
+.submit-button:hover
+{
+    background-color: #E5E7E9;
+    border: 2px solid black;
+    color: black;
+}
+
+/* Search results */
+.search-results
+{
+    text-align: center;
+    width: 610px;
+    padding: 20px;
+}
+
+.search-results h3
+{
+    margin-top: 0;
+    margin-left: 100px;
+}
+
+.search-results > ul > li
+{
+    display: block-inline;
+    width: 600px;
+    height: 100px;
+    margin-bottom: 10px;
+    margin-left: 40px;
+    background-color: white;
+    padding: 5px;
+    border: 1px solid black;
+    box-shadow: 3px 3px 10px 2px #6a6a48;
+    -webkit-box-shadow: 3px 3px 10px 2px #6a6a48;
+    -moz-box-shadow: 3px 3px 10px 2px #6a6a48;
+}
+
+.search-results > ul > li > a
+{
+    color: black;
+    text-decoration: none;
+}
+
+.search-results > ul > li:hover
+{
+    background-color: #E5E7E9;
+}
+
+.pagination
+{
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+a.page_num
+{
+    text-decoration: none;
+    color: black;
+}
+
+a.page_num_chosed
+{
+    color: black;
+    font-weight: 700;
+    text-decoration: underline;
+}
+
+.search-img
+{
+    float:left;
+}
+
+.search-img img
+{
+    width: 100px;
+    height: 100px;
+    box-shadow: none;
+}
+
+
+.drink-name
+{
+    text-align: center;
+    font-size: 22px;
+    font-weight: 700;
+    margin-top: 30px;
+}
+
+.drink-author
+{
+    text-align: center;
+    float:top;
+    font-size: 18px;
+    font-weight: 300;
+}
+
+/* Login page */
+#login
+{
+    font-size: 18px;
+    width: 400px;
+    padding: 30px;
+}
+
+#remember-box
+{
+    margin-top: 5px;
+    font-size: 15px;
+    color: #black;
+}
+
+#login button
+{
+    margin-top: 10px;
+    width: 300px;
+    height: 40px;
+}
+
+.fb-button
+{
+    background-color: #3b5998;
+    color: white;
+    border: 1px solid #1A5276;
+    font-size: 22px;
+}
+
+a > .fb-button:hover
+{
+    background-color: #3c5ea7;
+    border: 2px solid #1A5276;
+}
+
+/* Register page */
+
+#register
+{
+    width: 400px;
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+input[type="file"]
+{
+    display: none;
+}
+
+.upload-photo
+{
+    height: 60px;
+}
+.photo-upload
+{
+    margin-top: 20px;
+    height: 35px;
+    width: 300px;
+    border: 1px solid black;
+    font-size: 22px;
+    background-color: #d6d6c2;
+    color: black;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.upload-photo label:hover
+{
+    border: 2px solid black;
+    background-color: #E5E7E9;
+}
+
+.photo-hint
+{
+    color: red;
+    font-size: 12px;
+}
+
+#register button
+{
+    width: 300px;
+    height: 40px;
+    margin-top: 10px;
+}
+
+
+/* Add drink page */
+
+#add-drink
+{
+    width: 600px;
+}
+
+#drink-name-container input
+{
+    height: 25px;
+    width: 200px;
+    float: top;
+    text-align: center;
+}
+
+.ingredient-row
+{
+    padding: 0;
+    margin: 0;
+}
+
+table#ingredients-tab
+{
+    margin-left: auto;
+    margin-right: auto;
+    border-spacing: 0 0;
+    border-collapse: separate;
+}
+
+table#ingredients-tab > td
+{
+    padding: 0px;
+    margin: 0px;
+}
+
+.text-fields input
+{
+    height: 35px;
+    width: 300px;
+    margin-bottom: 10px;
+    font-size: 18px;
+    text-align: center;
+    float: top;
+    color: black;
+    border: 1px solid black;
+}
+
+label#add-drink
+{
+    text-align: left;
+}
+
+h4
+{
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+input.ingredient-input
+{
+    height: 21px;
+    font-size: 18px;
+    margin-bottom: 0;
+}
+
+select#unit
+{
+    width: 100px;
+    height: 25px;
+    margin-top: 0;
+}
+
+.selectors-container
+{
+    width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 10px;
+    float: top;
+}
+.selector
+{
+    width: 50%;
+    text-align: center;
+    margin: 0 0;
+    float: left;
+}
+
+.text-box
+{
+    margin-top: 10px;
+}
+
+textarea
+{
+    height: 80px;
+    width: 480px;
+    border: 1px solid black;
+    color: black;
+    resize: none;
+}
+
+textarea::placeholder
+{
+  text-align:right;
+  transform: translateY(65px);
+}
+
+#add-ingredient
+{
+    width: 485px;
+}
+
+#add-button
+{
+    margin-top: 10px;
+    height: 35px;
+    width: 300px;
+}
+
+.select-container
+{
+    margin-right: 150px;
+    text-align: right;
+}
+
+#category-select
+{
+    width: 200px;
+}
+
+#technique-select
+{
+    width: 200px;
+}
+
+/* Drink page */
+
+#drink-page-top
+{
+    width: 800px;
+    margin-top: 30px;
+    margin-left: auto;
+    margin-right: auto;
+}
+#drink-img
+{
+    width: 305px;
+    height: 305px;
+    margin-left: 30px;
+    margin-right: 30px;
+    margin-top: 10px;
+    float: left;
+}
+
+#drink-name-display h4
+{
+    margin-bottom: 0;
+    margin-top: 0;
+    font-size: 40px;
+    font-weight: 900;
+    text-align: left;
+}
+
+#drink-author
+{
+    font-size: 18px;
+    text-align: left;
+}
+
+a.author-link
+{
+    font-weight: 700;
+    text-decoration: none;
+    font-size: 18px;
+    color: black;
+}
+
+a:hover.author-link
+{
+    color: red;
+}
+
+.drink-attribute
+{
+    color: black;
+    font-weight: 700;
+}
+
+#date-added
+{
+    text-align: left;
+    font-size: 12px;
+    margin-bottom: 10px;
+}
+
+#category
+{
+    text-align: left;
+}
+
+#technique
+{
+    text-align: left;
+}
+
+#drink-ingredients
+{
+    text-align: left;
+}
+
+#drink-ingredients ul
+{
+    margin-top: 0;
+}
+
+#drink-ingredients ul > li
+{
+    margin-top: 2px;
+    height: 20px;
+    display: block;
+    font-size: 16px;
+    font-weight: 400;
+}
+
+#drink-mid-page
+{
+    margin-top: 30px;
+    margin-left: 30px;
+    margin-right: 30px;
+}
+
+.drink-long-text
+{
+   text-align: center;
+   font-size: 16px;
+   min-height: 100px;
+   border-top: 1px solid black;
+}
+
+.drink-page-headers
+{
+    font-size: 20px;
+    text-align: center;
+    margin-bottom: 15px;
+    margin-top: 10px;
+    color: black;
+}
+
+/* Comment section */
+
+#comment-section
+{
+    margin-left: 30px;
+    margin-right: 30px;
+    border-top: 1px solid black;
+}
+
+#all-comments
+{
+    max-height: 150px;
+}
+#add-comment
+{
+    text-align: center;
+    margin-top: 30px;
+
+}
+
+#comment-area
+{
+    height: 35px;
+    width: 530px;
+    text-align: center;
+    margin-left: 80px;
+    margin-right: auto;
+    box-shadow: 3px 3px 10px 2px black;
+    -webkit-box-shadow: 3px 3px 10px 2px black;
+    -moz-box-shadow: 3px 3px 10px 2px black;
+}
+
+#comment-area::placeholder
+{
+  text-align:right;
+  transform: translateY(20px);
+}
+
+#add-comment-button
+{
+    height: 41px;
+    width: 70px;
+    margin-top: 0;
+    border-left: none;
+    box-shadow: 3px 3px 10px 2px black;
+    -webkit-box-shadow: 3px 3px 10px 2px black;
+    -moz-box-shadow: 3px 3px 10px 2px black;
+}
+
+#textarea-div
+{
+    float: left;
+}
+#add-button-div
+{
+    float: left;
+}
+
+#all-comments
+{
+    overflow: auto;
+    height: 350px;
+    margin-top: 20px;
+}
+
+#comment
+{
+    margin-top: 10px;
+}
+
+.comment-header
+{
+    width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.comment-author a
+{
+    font-size: 18px;
+    padding-left: 5px;
+    float: left;
+}
+
+
+.comment-operations
+{
+    margin-left: auto;
+    margin-right: auto;
+    float: left;
+}
+
+#comment-content-display
+{
+    float: top;
+    width: 600px;
+    margin-left: 80px;
+    min-height: 50px;
+    background-color: white;
+    text-align: justify;
+    border: 1px solid black;
+    color: black;
+    font-size: 16px;
+    box-shadow: 3px 3px 10px 2px black;
+    -webkit-box-shadow: 3px 3px 10px 2px black;
+    -moz-box-shadow: 3px 3px 10px 2px black;
+}
+
+#comment-text
+{
+    padding: 5px;
+}
+
+a.comment-option
+{
+    border: none;
+    font-size: 12px;
+    text-decoration: none;
+    color: black;
+    margin-left: 15px;
+}
+
+a:hover.comment-option
+{
+    border: none;
+    font-size: 12px;
+    text-decoration: none;
+    color: red;
+}
+
+.comment-date
+{
+    float: right;
+    padding-right: 15px;
+    font-size: 12px;
+    color: black;
+}
+
+/* Change password page */
+
+#change-password
+{
+    width: 300px;
+    padding: 40px;
+}
+
+#change-password input
+{
+    margin-bottom: 10px;
+    width: 250px;
+}
+
+#change-password button
+{
+    margin-top: 10px;
+    width: 250px;
+}
+
+/* Delete account Page */
+#delete-account
+{
+    width: 350px;
+    padding: 40px;
+}
+
+#password > input
+{
+    margin-top: 10px;
+    height: 20px;
+    width: 250px;
+    font-size: 18px;
+    text-align: center;
+}
+
+#option-buttons
+{
+    margin-top: 15px;
+}
+
+/* Display profile page */
+
+#profile-page
+{
+    margin-top: 0;
+    text-align: center;
+}
+
+#profile-top
+{
+    width: 610px;
+    height: 300px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+#user-img
+{
+    float: left;
+    padding: 30px;
+    margin-left: 50px;
+}
+
+#user-info
+{
+    float: left;
+    text-align: left;
+}
+
+#user-img img
+{
+    width: 200px;
+    height: 250px;
+}
+
+#drinks-list
+{
+    padding: 0;
+    margin-left: auto;
+    margin-right: auto;
+    border-top: 1px solid black;
+}
+
+#drinks-list > ul
+{
+    padding: 0;
+    margin-top: 20px;
+}
+
+#drinks-list > ul > li
+{
+    margin: 0 0;
+    margin-bottom: 10px;
+}
+
+.drink-operations
+{
+    text-align: center;
+}
+
+#drinks-list-header
+{
+    margin: 0 0;
+}
+/* Change avatar page */
+#change-avatar
+{
+    width: 400px;
+    padding: 20px;
+    text-align: center;
+}
+
+
+#change-avatar img
+{
+    width: 150px;
+    height: 200px;
+    margin-top: 10px;
+}
+
+#delete-pic input
+{
+    width: 300px;
+    height: 35px;
+}
+
+#update-avatar
+{
+    width: 300px;
+    height: 35px;
+    margin-bottom: 15px;
+}
+
+/* Update comment */
+#update-comment
+{
+    width: 500px;
+    padding: 20px;
+}
+
+#update-comment textarea
+{
+    margin-bottom: 10px;
+    padding: 5px;
+}
+
+#update-comment::placeholder
+{
+  text-align:right;
+  transform: translateY(20px);
+}
+
+/* Update drink page */
+
+#update-drink
+{
+    width: 600px;
+    padding: 20px;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    margin-top: 15px;
+    text-align: center;
+}
+
+#delete-button > a > input
+{
+    width: 300px;
+    height: 35px;
+}
+
+input[type='number']
+{
+    width: 80px;
+    text-align: center;
+}
+
+input::-webkit-outer-spin-button, input::-webkit-inner-spin-button
+{
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.ingredient-row input[type='text']
+{
+    width: 290px;
+}
+
+/* Delete account */
+
+#delete-oauth-account
+{
+    width: 400px;
+    padding: 20px;
+}
+
+/* Set nick form */
+.disable-background
+{
+    opacity: 0.5;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+#set-nick-window
+{
+    width: 400px;
+    text-align: center;
+    top: 200px;
+    left: 450px;
+    position: absolute;
+    z-index: 150;
+}
+
+
+#set-nick-window input
+{
+    text-align: center;
+    font-size: 20px;
+    height: 25px;
+}
+
+/* Rating drink */
+
+.star
+{
+    opacity: 0.8;
+    float: left;
+    color: black;
+}
+
+.star-mouseover
+{
+    opacity: 1.0;
+    float: left;
+    color: #ffd11a;
+    cursor: pointer;
+}
+
+#rate
+{
+    margin-right: 160px;
+}

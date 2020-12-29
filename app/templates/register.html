@@ -1,17 +1,41 @@
 {% extends "base.html" %}
 
+{% block head %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+{% endblock %}
+
 {% block content %}
-    <form action="/v1/register" method="POST" enctype="multipart/form-data">
-        <label for="email">E-mail address</label><br>
-        <input type="email" id="email" name="email"><br>
-        <label for="nick">Nickname</label><br>
-        <input type="text" id="nick" name="nick"><br>
-        <label for="password">Password</label><br>
-        <input type="password" id="password" name="password"><br>
-        <label for="confirm_pass">Confirm Password</label><br>
-        <input type="password" id="confirm_pass" name="confirm_pass"><br>
-        <label for="photo">Upload Your Avatar</label><br>
-        <input type="file" id="photo" name="file"><br>
-        <button type="submit" name="submit">Submit</button>
-    </form>
+    <div id="register" class="form-container">
+        <form action="{{ url_for('register_bp.register_user') }}" method="POST" enctype="multipart/form-data">
+                <div class="text-fields">
+                    <label for="email"></label>
+                    <input type="email" id="email" name="email" placeholder="E-mail Address" required>
+                </div>
+                <div class="text-fields">
+                    <label for="nick"></label>
+                    <input type="text" id="nick" name="nick" placeholder="Nickname" minlength="4" maxlength="12" required>
+                </div>
+                <div class="text-fields">
+                    <label for="password"></label>
+                    <input type="password" id="password" name="password" placeholder="Password" minlength="8" maxlength="15" required>
+                </div>
+                <div class="text-fields">
+                    <label for="confirm-pass"></label>
+                    <input type="password" id="confirm-pass" name="confirm_pass" placeholder="Confirm Password" minlength="8" maxlength="15" required>
+                </div>
+                <div class="upload-photo">
+                    <label for="upload-photo" class="photo-upload">Choose Your Avatar...</label>
+                    <input type="file" id="upload-photo" name="file">
+                </div>
+                <div class="photo-hint"> Accept formats: .png .jpg .jpeg and size < 5MB.</div>
+            <button type="submit" name="submit" class="submit-button">Sign Up <i class="icon-right-big"></i></button>
+            <a href="{{ url_for('facebook.login') }}">
+                <button type="button" class="fb-button">
+                    <i class="icon-facebook-squared"></i>Sign up via Facebook
+                </button>
+            </a>
+        </form>
+    </div>
+    <script src="{{ url_for('static', filename='js/filename_updater.js') }}"></script>
 {% endblock content %}
+

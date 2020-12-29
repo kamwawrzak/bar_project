@@ -1,20 +1,17 @@
-from app import db
-from app.interactors.comment_interactors import CommentInteractors
-from app.interactors.drink_interactors import DrinkInteractors
-from app.interactors.img_interactors import ImgInteractors
-from app.interactors.web_interactors import WebInteractors
+from app.db_interactors.comment_db_inter import CommentDbInter
+from app.db_interactors.drink_db_inter import DrinkDbInter
+from app.db_interactors.ingredient_db_inter import IngredientDbInter
+from app.db_interactors.search_db_inter import SearchDbInter
+from app.db_interactors.user_db_inter import UserDbInter
+from app.interactors.img_inter import ImgInter
+from app.interactors.web_inter import WebInter
 from app.models import Drink
 
-
-from flask import (Blueprint, flash, redirect, render_template,
-                   request, url_for)
+from flask import (Blueprint, flash, jsonify, make_response, redirect,
+                   render_template, request, url_for)
 
 from flask_login import current_user, login_required
 
-
-CATEGORIES = ['whisky/bourbon', 'vodka', 'rum', 'gin', 'tequila/mezcal',
-              'other']
-TECHNIQUES = ['stir', 'shake', 'stir/shake', 'build', 'other']
 
 drink_bp = Blueprint('drink_bp', __name__)
 
@@ -22,95 +19,109 @@ drink_bp = Blueprint('drink_bp', __name__)
 @login_required
 @drink_bp.route('/v1/add_drink', methods=['GET', 'POST'])
 def add_drink():
-    img_name = 'default.jpg'
     if request.method == 'GET':
         return render_template('add_drink.html', title='Add Drink',
-                               categories=CATEGORIES, techniques=TECHNIQUES)
+                               categories=Drink.CATEGORIES,
+                               techniques=Drink.TECHNIQUES)
     else:
-        d = WebInteractors().get_drink_data()
+        d = WebInter().get_drink_data()
+        default_link = ImgInter().get_default_img('drink')
         img = request.files['file']
-        new_drink = Drink(name=d['name'],
+        new_drink = Drink(name=d['name'].lower(),
                           category=d['category'],
                           technique=d['technique'],
                           author=d['author'],
+                          author_nick=d['author_nick'],
                           description=d['description'],
                           preparation=d['preparation'],
-                          ingredients=d['ingredients'],
-                          add_date=d['add_date'])
-        db.session.add(new_drink)
-        current_user.drinks_number += 1
-
-        if img:
-            img_name = ImgInteractors().upload_img(img, new_drink.drink_id,
-                                                   'drink')
-        new_drink.image = img_name
-        db.session.commit()
-        flash('Drink added successfully.')
+                          add_date=d['add_date'],
+                          image=default_link)
+        DrinkDbInter().add_drink(new_drink, img)
+        flash('Drink added successfully.', category='success')
         return redirect(url_for('home_bp.index'))
 
 
 @drink_bp.route('/v1/drink/<drink_id>', methods=['GET'])
 def display_drink(drink_id):
-    drink = DrinkInteractors().get_drink(drink_id)
-    ingredients = DrinkInteractors().get_shorter_ingredients(drink)
-    comments = CommentInteractors().get_drink_comments(drink_id)
-    img = ImgInteractors().get_img_path(drink, 'drink')
-    return render_template('drink_page.html', title=drink.name, drink=drink,
-                           ingredients=ingredients, comments=comments, img=img)
+    drink = DrinkDbInter().get_drink(drink_id)
+    ingredients = IngredientDbInter().get_ingredients(drink_id)
+    comments = CommentDbInter().get_drink_comments(drink_id)
+    author = UserDbInter().get_user(drink.author).nick
+    DrinkDbInter().views_counter(drink)
+    return render_template('drink_page.html', title=drink.name.capitalize(),
+                           drink=drink, ingredients=ingredients,
+                           comments=comments, author=author)
 
 
-@drink_bp.route('/v1/drinks/<category>', methods=['GET', 'POST'])
-def display_category(category):
-    if category == 'all':
-        drinks = DrinkInteractors().get_drinks()
-    else:
-        drinks = DrinkInteractors().search_by_category(category)
-    return render_template('search_results.html', title=category.upper(),
-                           drinks=drinks)
+@drink_bp.route('/v1/most_viewed', methods=['GET'])
+def most_viewed():
+    d = DrinkDbInter().get_most_viewed()
+    return make_response(jsonify(d), 200)
+
+
+@drink_bp.route('/v1/top_rated', methods=['GET'])
+def top_rated():
+    d = DrinkDbInter().get_top_rated()
+    return make_response(jsonify(d), 200)
+
+
+@login_required
+@drink_bp.route('/v1/user_drinks/<user_id>/<page>')
+def user_drinks(user_id, page):
+    msg = 'Your Drinks:'
+    drinks = SearchDbInter().search_by_user(user_id, int(page))
+    if len(drinks.items) == 0:
+        msg = 'You have not added drinks yet.'
+    return render_template('user_drinks.html', title='Your Drinks',
+                           drinks=drinks, msg=msg, user_id=user_id)
 
 
 @login_required
 @drink_bp.route('/v1/drink/delete/<drink_id>', methods=['GET', 'POST'])
 def delete_drink(drink_id):
-    DrinkInteractors().delete_drink(drink_id)
-    return redirect('/v1/profile/{}'.format(current_user.user_id))
+    drink = DrinkDbInter().get_drink(drink_id)
+    comments = CommentDbInter().get_drink_comments(drink_id)
+    for c in comments:
+        CommentDbInter().delete_comment(c.comment_id)
+    DrinkDbInter().delete_drink(drink_id)
+    IngredientDbInter().delete_ingredient(drink_id)
+    ImgInter().delete_img(drink)
+    return redirect(url_for('drink_bp.user_drinks',
+                            user_id=current_user.user_id,
+                            page=1))
 
 
 @login_required
 @drink_bp.route('/v1/drink/update/<drink_id>', methods=['GET', 'POST'])
 def update_drink(drink_id):
-    drink = DrinkInteractors().get_drink(drink_id)
-    ingredients = DrinkInteractors().get_ingredients(drink)
-    ingr_number = len(ingredients)
-    current_image = ImgInteractors().get_img_path(drink, 'drink')
+    drink = DrinkDbInter().get_drink(drink_id)
+    old_ingr = IngredientDbInter().get_ingredients(drink_id)
+    ingr_number = len(old_ingr)
     if request.method == 'POST':
-        d = WebInteractors().get_drink_data()
+        d = WebInter().get_drink_data()
+        new_ingr = WebInter().get_ingredients()
         img = request.files['file']
-        if img:
-            if drink.image != 'default.jpg':
-                ImgInteractors().delete_img(drink, 'drink')
-            img_name = ImgInteractors().upload_img(img, drink.drink_id,
-                                                   'drink')
-            drink.image = img_name
-        drink.name = d['name']
-        drink.category = d['category']
-        drink.technique = d['technique']
-        drink.description = d['description']
-        drink.preparation = d['preparation']
-        drink.ingredients = d['ingredients']
-        db.session.commit()
-        return redirect('/v1/drink/{}'.format(drink_id))
+        DrinkDbInter().update_drink(drink=drink,
+                                    name=d['name'],
+                                    category=d['category'],
+                                    technique=d['technique'],
+                                    description=d['description'],
+                                    preparation=d['preparation'],
+                                    img=img)
+        IngredientDbInter().update_ingredients(drink, new_ingr)
+        return redirect(url_for('drink_bp.display_drink', drink_id=drink_id))
 
     else:
         return render_template('update_drink.html', title='Update drink',
-                               drink=drink, techniques=TECHNIQUES,
-                               categories=CATEGORIES, ingredients=ingredients,
-                               ingr_number=ingr_number, img=current_image)
+                               drink=drink, techniques=Drink.TECHNIQUES,
+                               categories=Drink.CATEGORIES, units=Drink.UNITS,
+                               ingredients=old_ingr,
+                               ingr_number=ingr_number)
 
 
 @login_required
 @drink_bp.route('/v1/drink/<drink_id>/delete_image')
 def delete_drink_pic(drink_id):
-    drink = DrinkInteractors().get_drink(drink_id)
-    ImgInteractors().delete_img(drink, 'drink')
-    return redirect('/v1/drink/update/{}'.format(drink_id))
+    drink = DrinkDbInter().get_drink(drink_id)
+    ImgInter().delete_img(drink)
+    return redirect(url_for('drink_bp.update_drink', drink_id=drink_id))

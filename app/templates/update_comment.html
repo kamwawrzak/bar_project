@@ -2,9 +2,17 @@
 
 {% block content %}
     {% with comment=comment %}
-        <form action="/v1/drink/{{ comment.drink }}/comment/edit/{{ comment.comment_id }}" method="POST">
-        <input type="text" name="content" value="{{ comment.content }}">
-        <button type="submit" name="Submit">Update Comment</button>
-        </form>
+        <div id="update-comment" class="form-container">
+            <form action="{{ url_for('comment_bp.edit_comment', drink_id=drink.drink_id, comment_id=c.comment_id) }}" method="POST">
+                <div id="update-textarea">
+                    <textarea id="update-content" name="content" maxlength="250" placeholder="Max 250 characters">{{ comment.content }}</textarea>
+                </div>
+                <div id="update-button">
+                    <button id="update-comment-button" type="submit" name="submit" class="submit-button">
+                        Update Comment
+                    </button>
+                </div>
+            </form>
+        </div>
     {% endwith %}
 {% endblock %}

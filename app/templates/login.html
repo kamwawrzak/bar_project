@@ -1,12 +1,24 @@
 {% extends 'base.html' %}
 {% block content %}
-    <form action="/v1/login" method="POST">
-        <label for="email">E-mail Address</label><br>
-        <input type="email" id="email" name="email"><br>
-        <label for="password">Password</label><br>
-        <input type="password" id="password" name="password"><br>
-        <label for="remember">Remember Me</label>
-        <input type="checkbox" id="remember" name="remember"><br>
-        <button type="submit" name="submit">Submit</button>
-    </form>
+    <div id="login" class="form-container">
+        <form action="{{ url_for('login_bp.login') }}" method="POST">
+            <div id="email" class="text-fields">
+                <input type="email" name="email" placeholder="E-mail Address">
+            </div>
+            <div id="pass" class="text-fields">
+                <input type="password" name="password" placeholder="Password">
+            </div>
+            <div id="remember-box">
+                    <label for="remember">Remember Me</label>
+                    <input type="checkbox" id="remember" name="remember">
+            </div>
+            <button type="submit" name="submit" class="submit-button">Sign In <i class="icon-right-big"></i></button>
+            <a href="{{ url_for('facebook.login') }}">
+                <button type="button" class="fb-button">
+                    <i class="icon-facebook-squared"></i>Sign in via Facebook
+                </button>
+            </a>
+            <div style="clear:both;"></div>
+        </form>
+    </div>
 {% endblock content %}

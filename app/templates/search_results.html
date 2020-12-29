@@ -1,21 +1,56 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    {% with drinks=drinks %}
+    {% with drinks=drinks, msg=msg, search=search, criteria=criteria %}
+        <h3 id="drinks-list-header"> {{ msg }} </h3>
         {% if drinks %}
-            {% for d in drinks %}
-                <li>
-                    <a href="/v1/drink/{{ d.drink_id }}">{{ d.name }}</a>
-                    {% if d.author == current_user.user_id %}
-                        <a href="/v1/drink/update/{{ d.drink_id }}">
-                            <input type="button" value="Update Drink"></a>
-                        <a href="/v1/drink/delete/{{ d.drink_id }}">
-                            <input type="button" value="Delete Drink"></a>
+            <div class="search-results">
+                <ul>
+                    {% for d in drinks.items %}
+                    <li>
+                        <a href="{{ url_for('drink_bp.display_drink', drink_id=d.drink_id) }}">
+                            <div class="search-img">
+                                <img src="{{ d.image }}">
+                            </div>
+                            <div class="drink-name">
+                                {{ d.name.capitalize() }}
+                            </div>
+                            <div class="drink-author">
+                                Created by: {{ d.author_nick }}
+                            </div>
+                            <div style="clear:both;"></div>
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="pagination">
+                {% if drinks.has_prev %}
+                    <a href="{{ url_for('search_bp.display_results',
+                                         search=search,
+                                         criteria=criteria,
+                                         page=drinks.prev_num) }}" class="page_num"><<</a>
+                {% endif %}
+                {% for page_num in drinks.iter_pages(left_edge=1, left_current=5, right_current=5, right_edge=1) %}
+                    {% if page_num %}
+                        {% if drinks.page == page_num %}
+                            <a href="{{ url_for('search_bp.display_results', search=search,
+                                        criteria=criteria, page=page_num) }}" class="page_num_chosed">{{ page_num }}</a>
+                        {% else %}
+                            <a href="{{ url_for('search_bp.display_results', search=search,
+                                        criteria=criteria, page=page_num) }}" class="page_num">{{ page_num }}</a>
+                        {% endif %}
+                    {% else %}
+                        ...
                     {% endif %}
-                </li>
-            {% endfor %}
+                {% endfor %}
+                {% if drinks.has_next %}
+                    <a href="{{ url_for('search_bp.display_results', search=search,
+                                         criteria=criteria, page=drinks.next_num) }}" class="page_num">>></a>
+                {% endif %}
+            </div>
         {% else %}
-            There are no drinks with this name.
+            <h3> There are no drinks meeting these criteria. </h3>
         {% endif %}
     {% endwith %}
 {% endblock content %}

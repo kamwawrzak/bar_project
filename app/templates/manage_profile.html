@@ -1,9 +1,0 @@
-{% extends 'base.html' %}
-
-{% block content %}
-    <ul>
-        <li><a href="/v1/profile/{{ current_user.user_id }}/update_img">Change profile photo</a></li>
-        <li><a href="/v1/profile/change_password">Change password</a></li><br>
-        <li><a href="/v1/profile/delete/confirm">Delete account</a></li><br>
-    </ul>
-{% endblock %}
