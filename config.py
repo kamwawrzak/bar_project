@@ -7,7 +7,7 @@ class Config:
     MAX_CONTENT_LENGTH = 5 * 1024 * 1024
     UPLOAD_EXTENSIONS = ['.jpg', '.jpeg', '.png']
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///bar.db/'
+    SQLALCHEMY_DATABASE_URI = 'postgresql://localhost/bar_project'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     FB_ID = os.environ.get('FB_ID')
     FB_SECRET = os.environ.get('FB_SECRET')
