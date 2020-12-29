@@ -15,6 +15,7 @@ Flask-Bcrypt==0.7.1
 Flask-Dance==3.0.0
 Flask-Login==0.5.0
 Flask-SQLAlchemy==2.4.4
+gunicorn==20.0.4
 idna==2.10
 iniconfig==1.0.1
 itsdangerous==1.1.0
