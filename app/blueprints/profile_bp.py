@@ -10,6 +10,7 @@ from flask import Blueprint, flash, redirect, render_template, request, url_for
 
 from flask_login import current_user, login_required, logout_user
 
+import werkzeug
 from werkzeug.security import check_password_hash
 
 profile_bp = Blueprint('profile_bp', __name__)
@@ -56,9 +57,18 @@ def update_profile_pic(user_id):
     if request.method == 'POST':
         img = request.files['file']
         if img:
-            if user.image != ImgInter().get_default_img('user'):
-                ImgInter().delete_img(user)
-            img_link = ImgInter().upload_img(img, user)
+            try:
+                img_link = ImgInter().upload_img(img, user)
+                if user.image != ImgInter().get_default_img('user'):
+                    ImgInter().delete_img(user)
+            except werkzeug.exceptions.BadRequest:
+                flash('Incorrect file format.', category='error')
+                return redirect(url_for('profile_bp.update_profile_pic',
+                                        user_id=user_id))
+            except werkzeug.exceptions.RequestEntityTooLarge:
+                flash('Uploaded file is too large.', category='error')
+                return redirect(url_for('profile_bp.update_profile_pic',
+                                        user_id=user_id))
             ImgDbInter().update_db_image(user, img_link)
         return redirect(url_for('profile_bp.display_profile',
                                 user_id=user_id,

@@ -295,7 +295,6 @@ footer
     font-size: 18px;
     font-family: 'Montserrat', sans-serif;
     width: 150px;
-    margin-top: 10px;
     background-color: white;
 }
 
@@ -573,8 +572,8 @@ label#add-drink
 
 h4
 {
-    margin-bottom: 10px;
     margin-top: 10px;
+    margin-bottom: 0;
 }
 
 input.ingredient-input

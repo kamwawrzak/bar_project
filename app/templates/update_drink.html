@@ -11,7 +11,7 @@
             <form action="{{ url_for('drink_bp.update_drink', drink_id=drink.drink_id) }}" method="POST" enctype="multipart/form-data">
                 <div id="update-drink-img">
                     <img src="{{ drink.image }}">
-                    {% if drink.image != "default.jpg" %}
+                    {% if drink.image != 'http://bar-project.s3.amazonaws.com/images/drinks/default.jpg' %}
                         <div id="delete-button">
                             <a href="{{ url_for('drink_bp.delete_drink_pic', drink_id=drink.drink_id) }}">
                                 <input type="button" value="Delete Image" class="submit-button">
@@ -20,17 +20,17 @@
                     {% endif %}
                     <div class="upload-photo">
                         <label for="upload-photo" class="photo-upload">Upload New Image...</label>
-                        <input type="file" name="file" id="upload-photo">
+                        <input type="file" name="file" id="upload-photo" accept=".jpg, .jpeg, .png">
                     </div>
-                    <div class="photo-hint"> Accept formats: .png .jpg .jpeg and size < 5MB.</div>
+                    <div class="photo-hint"> Accept formats: .png .jpg .jpeg and size < 1MB.</div>
                 </div>
                 <div id="update-name-container" class="text-fields">
-                    <h4>Drink Name</h4>
-                    <input type="text" id="update-name" name="name" class="text-fields" value="{{ drink.name }}">
+                    <h4>Drink Name <span class="required-mark">*</span></h4>
+                    <input type="text" id="update-name" name="name" class="text-fields" value="{{ drink.name }}" required>
                 </div>
                 <div class="selectors-container">
                     <div id="category-container" class="selector">
-                        <h4>Category</h4>
+                        <h4>Category <span class="required-mark">*</span></h4>
                         <select id="category-select" class="dropdownlist" name="category" required>
                             {% for c in categories %}
                                 {% if drink.category == c %}
@@ -42,7 +42,7 @@
                         </select>
                     </div>
                     <div id="technique-container" class="selector">
-                        <h4>Technique</h4>
+                        <h4>Technique <span class="required-mark">*</span></h4>
                         <select id="technique-select" class="dropdownlist" name="technique" required>
                             {% for t in techniques %}
                                 {% if drink.technique == t %}
@@ -62,8 +62,8 @@
                     </textarea>
                  </div>
                 <div class="text-box">
-                    <h4>Preparation</h4>
-                    <textarea id="preparation" name="preparation" maxlength="500" placeholder="Max 500 characters">
+                    <h4>Preparation <span class="required-mark">*</span></h4>
+                    <textarea id="preparation" name="preparation" maxlength="500" placeholder="Max 500 characters" required>
                         {{ drink.preparation }}
                     </textarea>
                 </div>

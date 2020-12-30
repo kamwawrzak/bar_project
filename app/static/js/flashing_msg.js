@@ -1,3 +1,3 @@
 $(document).ready(function(){
-    $('#flash-msg').delay(2000).fadeOut();
+    $('#flash-msg').delay(5000).fadeOut();
 });

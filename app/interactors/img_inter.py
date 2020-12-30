@@ -17,7 +17,7 @@ class ImgInter:
         if img.filename != '':
             ext = os.path.splitext(img.filename)[1]
             if ext not in current_app.config['UPLOAD_EXTENSIONS']:
-                abort(400)
+                abort(400, 'Incorrect file format.')
             else:
                 if isinstance(db_obj, Drink):
                     img_name = ImgInter().img_name(img, db_obj.drink_id)
@@ -26,7 +26,7 @@ class ImgInter:
                     img_name = ImgInter().img_name(img, db_obj.user_id)
                     img_name = 'images/users/' + img_name
                 img_link = Config.S3_LOCATION + img_name
-                s3.upload_fileobj(img, 'bar-project', img_name,
+                s3.upload_fileobj(img, Config.S3_BUCKET_NAME, img_name,
                                   ExtraArgs={"ACL": "public-read"})
                 return img_link
 
