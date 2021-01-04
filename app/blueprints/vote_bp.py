@@ -10,8 +10,8 @@ from flask_login import login_required
 vote_bp = Blueprint('vote_bp', __name__)
 
 
-@login_required
 @vote_bp.route('/v1/add_vote', methods=['POST'])
+@login_required
 def add_vote():
     vote_drink = request.json['drink_id']
     vote_user = request.json['user_id']

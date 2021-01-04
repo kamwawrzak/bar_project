@@ -4,7 +4,7 @@ import os
 class Config:
 
     SECRET_KEY = os.environ.get('SECRET_KEY')
-    MAX_CONTENT_LENGTH = 5 * 1024 * 1024
+    MAX_IMG_SIZE = 1024 * 1024
     UPLOAD_EXTENSIONS = ['.jpg', '.jpeg', '.png']
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')

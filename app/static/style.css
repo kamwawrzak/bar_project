@@ -146,7 +146,8 @@ ol.dropdown-menu > li:first-child
     background-color: #e0e0d1;
 }
 
-.sticky-topnav {
+.sticky-topnav
+{
   position: fixed;
   top: 0;
   width: 1300px;
@@ -154,6 +155,11 @@ ol.dropdown-menu > li:first-child
   padding-bottom: 10px;
   border-bottom: 1px solid black;
   z-index: 150;
+}
+
+#page-description
+{
+    text-align: justify;
 }
 
 /* Flash messages */
@@ -230,11 +236,6 @@ img
     background-color: white;
     width: 160px;
     height: 160px;
-}
-
-#most-viewed
-{
-    margin-top: 15px;
 }
 
 .sidebar > #views > a > img

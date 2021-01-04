@@ -10,6 +10,12 @@ class VoteDbInter:
         votes = Vote.query.filter_by(drink=drink_id).all()
         return votes
 
+    def delete_drink_votes(self, drink_id):
+        votes = VoteDbInter().get_drink_votes(drink_id)
+        for v in votes:
+            db.session.delete(v)
+            db.session.commit()
+
     def check_new_vote(self, drink_id, user_id):
         votes = VoteDbInter().get_drink_votes(drink_id)
         if len(votes) > 0:

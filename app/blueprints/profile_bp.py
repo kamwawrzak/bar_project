@@ -27,8 +27,8 @@ def display_profile(user_id, page):
                            drinks=drinks, msg=msg, user_id=user_id)
 
 
-@login_required
 @profile_bp.route('/v1/profile/change_password', methods=['GET', 'POST'])
+@login_required
 def change_password():
     if request.method == 'GET':
         return render_template('change_password.html', title='Change password')
@@ -50,8 +50,8 @@ def change_password():
             return redirect(url_for('profile_bp.change_password'))
 
 
-@login_required
 @profile_bp.route('/v1/profile/<user_id>/update_img', methods=['GET', 'POST'])
+@login_required
 def update_profile_pic(user_id):
     user = UserDbInter().get_user(user_id)
     if request.method == 'POST':
@@ -61,25 +61,24 @@ def update_profile_pic(user_id):
                 img_link = ImgInter().upload_img(img, user)
                 if user.image != ImgInter().get_default_img('user'):
                     ImgInter().delete_img(user)
+                ImgDbInter().update_db_image(user, img_link)
+                return redirect(url_for('profile_bp.display_profile',
+                                        user_id=user_id, page=1))
             except werkzeug.exceptions.BadRequest:
-                flash('Incorrect file format.', category='error')
-                return redirect(url_for('profile_bp.update_profile_pic',
-                                        user_id=user_id))
+                flash('Incorrect file format. Please use .jpg .jpeg or .png',
+                      category='error')
+                return redirect(request.referrer)
             except werkzeug.exceptions.RequestEntityTooLarge:
-                flash('Uploaded file is too large.', category='error')
-                return redirect(url_for('profile_bp.update_profile_pic',
-                                        user_id=user_id))
-            ImgDbInter().update_db_image(user, img_link)
-        return redirect(url_for('profile_bp.display_profile',
-                                user_id=user_id,
-                                page=1))
+                flash('The added file is too large. It should be < 1MB.',
+                      category='error')
+                return redirect(request.referrer)
     else:
         return render_template('profile_img.html', title=user.nick,
                                user=current_user)
 
 
-@login_required
 @profile_bp.route('/v1/profile/<user_id>/delete_pic')
+@login_required
 def delete_profile_pic(user_id):
     user = UserDbInter().get_user(user_id)
     ImgInter().delete_img(user)
@@ -87,8 +86,8 @@ def delete_profile_pic(user_id):
                             page=1))
 
 
-@login_required
 @profile_bp.route('/v1/profile/delete/<user_id>', methods=['GET', 'POST'])
+@login_required
 def delete_account(user_id):
     if request.method == 'POST':
         if current_user.oauth_user is False:

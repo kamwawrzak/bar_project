@@ -1,6 +1,8 @@
 from app import db
 from app.db_interactors.comment_db_inter import CommentDbInter
 from app.db_interactors.drink_db_inter import DrinkDbInter
+from app.db_interactors.ingredient_db_inter import IngredientDbInter
+from app.db_interactors.vote_db_inter import VoteDbInter
 from app.interactors.date_time_inter import DatetimeInter
 from app.interactors.img_inter import ImgInter
 from app.models import OAuth, User
@@ -63,6 +65,8 @@ class UserDbInter:
         for d in drinks:
             if d.image != ImgInter().get_default_img('drink'):
                 ImgInter().delete_img(d)
+            IngredientDbInter().delete_ingredient(d.drink_id)
+            VoteDbInter().delete_drink_votes(d.drink_id)
             db.session.delete(d)
         for c in comments:
             CommentDbInter().delete_comment(c.comment_id)

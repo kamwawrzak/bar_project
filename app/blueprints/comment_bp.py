@@ -8,8 +8,8 @@ from flask_login import login_required
 comment_bp = Blueprint('comment_bp', __name__)
 
 
-@login_required
 @comment_bp.route('/v1/drink/<drink_id>/comment', methods=['POST'])
+@login_required
 def add_comment(drink_id):
     if request.method == 'POST':
         d = WebInter().get_comment_data(drink_id)
@@ -21,17 +21,17 @@ def add_comment(drink_id):
         return redirect(url_for('drink_bp.display_drink', drink_id=drink_id))
 
 
-@login_required
 @comment_bp.route('/v1/drink/<drink_id>/comment/delete/<comment_id>')
+@login_required
 def delete_comment(comment_id, drink_id):
     CommentDbInter().delete_comment(comment_id)
     flash('Comment deleted.', category='success')
     return redirect(url_for('drink_bp.display_drink', drink_id=drink_id))
 
 
-@login_required
 @comment_bp.route('/v1/drink/<drink_id>/comment/edit/<comment_id>',
                   methods=['GET', 'POST'])
+@login_required
 def edit_comment(comment_id, drink_id):
     comment = CommentDbInter().get_comment(comment_id)
     if request.method == 'POST':
