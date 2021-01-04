@@ -31,10 +31,8 @@ class ImgInter:
                                   ExtraArgs={"ACL": "public-read"})
                 return img_link
 
-    def validate_format(self, stream):
-        head = stream.read(512)
-        stream.seek(0)
-        img_format = imghdr.what(None, head)
+    def validate_format(self, img):
+        img_format = imghdr.what(img, h=None)
         if not img_format:
             return None
         else:
@@ -48,7 +46,7 @@ class ImgInter:
             pass
 
     def img_name(self, img, model_id):
-        img_format = ImgInter().validate_format(img.stream)
+        img_format = ImgInter().validate_format(img)
         t_stamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         img_name = str(model_id) + '_' + str(t_stamp) + str(img_format)
         return img_name
