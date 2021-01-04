@@ -27,6 +27,7 @@ function add() {
       amount.setAttribute("class", "ingredient-input");
       amount.setAttribute("placeholder", "Amount");
       amount.setAttribute("maxlength", "1000");
+      amount.setAttribute("step", "0.1");
 
 
       var unit = document.createElement("select");
