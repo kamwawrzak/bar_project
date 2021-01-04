@@ -15,7 +15,7 @@ class IngredientDbInter:
                                     ingr_unit=i['unit'],
                                     drink=drink.drink_id)
             db.session.add(ingredient)
-            db.session.commit()
+        db.session.commit()
 
     def update_ingredients(self, drink, new_ingr):
         IngredientDbInter().delete_ingredient(drink.drink_id)

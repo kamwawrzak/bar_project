@@ -30,12 +30,13 @@ class DrinkDbInter:
     def add_drink(self, drink, img):
         db.session.add(drink)
         current_user.drinks_number += 1
+        db.session.commit()
         IngredientDbInter().add_ingredients(WebInter().get_ingredients(),
                                             drink)
         if img:
             img_name = ImgInter().upload_img(img, drink)
             drink.image = img_name
-        db.session.commit()
+            db.session.commit()
 
     def update_drink(self, drink, name, category, technique, description,
                      preparation, img):
