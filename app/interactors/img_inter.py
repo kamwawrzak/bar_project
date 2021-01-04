@@ -17,8 +17,9 @@ class ImgInter:
         if img.filename != '':
             ext = os.path.splitext(img.filename)[1]
             if ext not in current_app.config['UPLOAD_EXTENSIONS']:
-                abort(400)
+                abort(400, 'Incorrect file format.')
             else:
+                ImgInter().validate_size(img)
                 if isinstance(db_obj, Drink):
                     img_name = ImgInter().img_name(img, db_obj.drink_id)
                     img_name = 'images/drinks/' + img_name
@@ -26,7 +27,7 @@ class ImgInter:
                     img_name = ImgInter().img_name(img, db_obj.user_id)
                     img_name = 'images/users/' + img_name
                 img_link = Config.S3_LOCATION + img_name
-                s3.upload_fileobj(img, 'bar-project', img_name,
+                s3.upload_fileobj(img, Config.S3_BUCKET_NAME, img_name,
                                   ExtraArgs={"ACL": "public-read"})
                 return img_link
 
@@ -39,10 +40,17 @@ class ImgInter:
         else:
             return '.' + (img_format if img_format != 'jpeg' else 'jpg')
 
+    def validate_size(self, file):
+        file_len = len(file.read((int(1.3 * Config.MAX_IMG_SIZE))))
+        if file_len > Config.MAX_IMG_SIZE:
+            abort(413, 'Too large file.')
+        else:
+            pass
+
     def img_name(self, img, model_id):
         img_format = ImgInter().validate_format(img.stream)
         t_stamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        img_name = str(model_id) + '_' + str(t_stamp) + img_format
+        img_name = str(model_id) + '_' + str(t_stamp) + str(img_format)
         return img_name
 
     def get_img_name(self, db_obj):

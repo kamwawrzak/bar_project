@@ -25,9 +25,9 @@
                 </div>
                 <div class="upload-photo">
                     <label for="upload-photo" class="photo-upload">Choose Your Avatar...</label>
-                    <input type="file" id="upload-photo" name="file">
+                    <input type="file" id="upload-photo" name="file" accept=".jpg, .jpeg, .png">
                 </div>
-                <div class="photo-hint"> Accept formats: .png .jpg .jpeg and size < 5MB.</div>
+                <div class="photo-hint"> Accept formats: .png .jpg .jpeg and size < 1MB.</div>
             <button type="submit" name="submit" class="submit-button">Sign Up <i class="icon-right-big"></i></button>
             <a href="{{ url_for('facebook.login') }}">
                 <button type="button" class="fb-button">

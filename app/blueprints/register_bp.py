@@ -4,6 +4,7 @@ from app.interactors.web_inter import WebInter
 
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 
+import werkzeug
 from werkzeug.security import generate_password_hash
 
 
@@ -23,13 +24,22 @@ def register_user():
         img = request.files['file']
         if error is None:
             pass_hash = generate_password_hash(d['password'], method='SHA256')
-            UserDbInter().add_user(email=d['email'],
-                                   nick=d['nick'],
-                                   password=pass_hash,
-                                   img=img,
-                                   user_type='regular')
-            flash('Your account has been created.', category='success')
-            return redirect(url_for('login_bp.login'))
+            try:
+                UserDbInter().add_user(email=d['email'],
+                                       nick=d['nick'],
+                                       password=pass_hash,
+                                       img=img,
+                                       user_type='regular')
+                flash('Your account has been created.', category='success')
+                return redirect(url_for('login_bp.login'))
+            except werkzeug.exceptions.BadRequest:
+                flash('Incorrect file format. Please use .jpg .jpeg or .png',
+                      category='error')
+                return redirect(request.referrer)
+            except werkzeug.exceptions.RequestEntityTooLarge:
+                flash('The added file is too large. It should be < 1MB.',
+                      category='error')
+                return redirect(request.referrer)
         else:
             flash(error, category='error')
             return redirect(url_for('register_bp.register_user'))

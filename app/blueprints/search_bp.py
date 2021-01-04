@@ -40,9 +40,9 @@ def display_results(search, page, criteria):
 def display_category(category, page):
     category = category.replace('_', '/')
     if category == 'all':
-        drinks = DrinkDbInter().get_all_drinks(page)
+        drinks = DrinkDbInter().get_all_drinks(int(page))
     else:
-        drinks = SearchDbInter().search_by_category(category, page)
+        drinks = SearchDbInter().search_by_category(category, int(page))
     msg = '{} Drinks:'.format(category.capitalize())
     title = category.capitalize() + ' Drinks'
     if len(drinks.items) == 0:

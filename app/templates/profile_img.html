@@ -9,16 +9,18 @@
         <div id="change-avatar" class="form-container">
             <form action="{{ url_for('profile_bp.update_profile_pic', user_id=current_user.user_id) }}" method="POST" enctype="multipart/form-data">
                 <img src="{{ user.image }}">
-                <div id="delete-pic">
-                    <a href="{{ url_for('profile_bp.delete_profile_pic', user_id=current_user.user_id) }}">
-                        <input type="button" value="Delete Avatar" class="submit-button">
-                    </a>
-                </div>
+                {% if user.image != 'http://bar-project.s3.amazonaws.com/images/users/default.jpg' %}
+                    <div id="delete-pic">
+                        <a href="{{ url_for('profile_bp.delete_profile_pic', user_id=current_user.user_id) }}">
+                            <input type="button" value="Delete Avatar" class="submit-button">
+                        </a>
+                    </div>
+                {% endif %}
                 <div class="upload-photo">
                     <label for="upload-photo" class="photo-upload">Choose New Avatar...</label>
-                    <input type="file" name="file" id="upload-photo">
+                    <input type="file" name="file" id="upload-photo" accept=".jpg, .jpeg, .png">
                 </div>
-                <div class="photo-hint"> Accept formats: .png .jpg .jpeg and size < 5MB.</div>
+                <div class="photo-hint"> Accept formats: .png .jpg .jpeg and size < 1MB.</div>
                 <button type="submit" id="update-avatar" name="submit" class="submit-button">
                     Update Avatar <i class="icon-right-big"></i>
                 </button>
