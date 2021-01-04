@@ -32,6 +32,7 @@ class ImgInter:
                 return img_link
 
     def validate_format(self, img):
+        img.seek(0)
         img_format = imghdr.what(img, h=None)
         if not img_format:
             return None
