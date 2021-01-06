@@ -48,7 +48,7 @@ function displayRate(){
         $('#rate').html('Rate: ' + data.rate + ' (' + data.amount + ' vote)');
     }
     else {
-        $('#rate').html('Rate: ' + data.rate + ' (' + data.amount + ' vote)');
+        $('#rate').html('Rate: ' + data.rate + ' (' + data.amount + ' votes)');
     };
   });
 };
