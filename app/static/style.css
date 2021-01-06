@@ -123,6 +123,11 @@ ol.dropdown-menu > li
     border-top: 1px dotted black;
 }
 
+ol.dropdown-menu > li > a
+{
+    display: block;
+}
+
 ol.dropdown-menu > li:first-child
 {
     border-top: none;
@@ -226,9 +231,15 @@ img
     text-decoration: none;
 }
 
-.recommended
+.recommended img
 {
     display: block;
+    opacity: 0.9;
+}
+
+.recommended img:hover
+{
+    opacity: 1;
 }
 
 .recommended > a > img
@@ -422,7 +433,7 @@ a.page_num_chosed
     text-align: center;
     font-size: 22px;
     font-weight: 700;
-    margin-top: 30px;
+    padding-top: 30px;
 }
 
 .drink-author
