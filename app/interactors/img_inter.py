@@ -7,7 +7,7 @@ from app.models import Drink, User
 
 from config import Config
 
-from flask import abort, current_app
+from flask import abort
 
 
 class ImgInter:
@@ -16,7 +16,7 @@ class ImgInter:
         img_name = None
         if img.filename != '':
             ext = os.path.splitext(img.filename)[1]
-            if ext not in current_app.config['UPLOAD_EXTENSIONS']:
+            if ext not in Config.UPLOAD_EXTENSIONS:
                 abort(400, 'Incorrect file format.')
             else:
                 ImgInter().validate_size(img)

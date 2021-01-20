@@ -1,3 +1,4 @@
+from app.db_interactors.drink_db_inter import DrinkDbInter
 from app.db_interactors.vote_db_inter import VoteDbInter
 from app.interactors.vote_inter import VoteInter
 from app.models import Vote
@@ -19,10 +20,11 @@ def add_vote():
     if len(vote_user) == 0:
         return make_response(jsonify({'msg': 'Vote not added.'}), 401)
     else:
+        drink = DrinkDbInter().get_drink(vote_drink)
         new_vote = Vote(drink=int(vote_drink[0]),
                         user=int(vote_user[0]),
                         value=int(vote_value[0]))
-        VoteDbInter().add_vote(new_vote)
+        VoteDbInter().add_vote(drink, new_vote)
         return make_response(jsonify({'msg': 'Vote added'}), 200)
 
 

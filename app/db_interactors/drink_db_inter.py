@@ -1,5 +1,6 @@
 from app import db
 from app.db_interactors.ingredient_db_inter import IngredientDbInter
+from app.db_interactors.vote_db_inter import VoteDbInter
 from app.interactors.img_inter import ImgInter
 from app.interactors.web_inter import WebInter
 from app.models import Drink
@@ -13,21 +14,25 @@ from sqlalchemy import func
 
 class DrinkDbInter:
 
+    """Method accepts integer drink_id as argument and returns single drink
+    object from database."""
     def get_drink(self, drink_id):
-        drink = Drink.query.filter_by(drink_id=drink_id).first()
-        return drink
+        return Drink.query.filter_by(drink_id=drink_id).first()
 
+    """Method accepts integer page argument and returns some drinks objects
+    assigned to that page determined by PER_PAGE value. The drinks are sorted
+    alphabetically from A to Z."""
     def get_all_drinks(self, page):
-        drinks = Drink.query.order_by(Drink.name).paginate(
+        return Drink.query.order_by(Drink.name).paginate(
                                             page=int(page),
                                             per_page=Config().PER_PAGE)
-        return drinks
 
+    """Method accepts integer user_id as argument and returns all Drink
+    assigned to that user objects."""
     def user_all_drinks(self, user_id):
-        drinks = Drink.query.filter_by(author=user_id).all()
-        return drinks
+        return Drink.query.filter_by(author=user_id).all()
 
-    def add_drink(self, drink, img):
+    def add_drink(self, drink, img=None):
         db.session.add(drink)
         current_user.drinks_number += 1
         db.session.commit()
@@ -54,11 +59,12 @@ class DrinkDbInter:
 
     def delete_drink(self, drink_id):
         drink = DrinkDbInter().get_drink(drink_id)
-        db.session.delete(drink)
         if drink.image != ImgInter().get_default_img('drink'):
             ImgInter().delete_img(drink)
         current_user.drinks_number -= 1
-        IngredientDbInter().delete_ingredient(drink_id)
+        IngredientDbInter().delete_ingredients(drink_id)
+        VoteDbInter().delete_drink_votes(drink_id)
+        db.session.delete(drink)
         db.session.commit()
 
 # Recommended drinks functions
