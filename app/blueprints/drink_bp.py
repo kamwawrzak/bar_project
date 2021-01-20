@@ -95,7 +95,7 @@ def delete_drink(drink_id):
     for c in comments:
         CommentDbInter().delete_comment(c.comment_id)
     DrinkDbInter().delete_drink(drink_id)
-    IngredientDbInter().delete_ingredient(drink_id)
+    IngredientDbInter().delete_ingredients(drink_id)
     ImgInter().delete_img(drink)
     return redirect(url_for('drink_bp.user_drinks',
                             user_id=current_user.user_id,
