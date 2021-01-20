@@ -424,9 +424,14 @@ a.page_num_chosed
 {
     width: 100px;
     height: 100px;
+    opacity: 0.9;
     box-shadow: none;
 }
 
+.search-results > ul > li:hover > a > img
+{
+    opacity: 1;
+}
 
 .drink-name
 {

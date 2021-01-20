@@ -35,3 +35,14 @@ class CommentDbInter:
         comment = CommentDbInter().get_comment(comment_id)
         db.session.delete(comment)
         db.session.commit()
+
+    def delete_many_comments(self, drink_id=None, user_id=None):
+        if drink_id is not None:
+            comments = CommentDbInter().get_drink_comments(drink_id)
+        elif user_id is not None:
+            comments = CommentDbInter().get_user_comments(user_id)
+        else:
+            comments = []
+        for c in comments:
+            db.session.delete(c)
+        db.session.commit()
