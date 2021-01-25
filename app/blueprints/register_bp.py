@@ -13,6 +13,14 @@ register_bp = Blueprint('register_bp', __name__)
 
 @register_bp.route('/v1/register', methods=['GET', 'POST'])
 def register_user():
+    """Register user.
+
+    GET: Renders template 'register.html' allowing to introduce new user data.
+    POST: Get and validate data introduced by user. If there are no issues add
+          new user to database and optionally upload user image to S3 bucket.
+          Next redirect to login page. If there are any issues flash the error
+          and redirect to register page.
+    """
     if request.method == 'GET':
         return render_template('register.html', title='Registration')
     else:

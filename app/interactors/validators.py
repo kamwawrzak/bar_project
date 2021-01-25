@@ -6,6 +6,24 @@ from werkzeug.security import check_password_hash
 class Validators:
 
     def validate_register_data(self, email, nick, password, confirm_pass):
+        """Validation of user registration data.
+
+        Function checks if data introduced by user meets requirements.
+
+        Parameters
+        ----------
+        email : string
+        nick : string
+        password : string
+        confirm_pass : string
+
+        Returns
+        -------
+        string
+            If some error occurs method returns string describing that error.
+        None
+            If there are no errors it returns None.
+        """
         error = None
         check_email = Validators().validate_email(email)
         check_nick = Validators().validate_nick(nick)
@@ -19,6 +37,21 @@ class Validators:
         return error
 
     def validate_email(self, email):
+        """Email validation.
+
+        Function checks if email introduced by user exists in database.
+
+        Parameters
+        ----------
+        email : string
+
+        Returns
+        -------
+        string
+            If some error occurs method returns string describing that error.
+        None
+            If there are no errors it returns None.
+        """
         if not email:
             error = 'Email is required.'
         elif UserDbInter().user_by_email(email):
@@ -33,6 +66,22 @@ class Validators:
         return error
 
     def validate_nick(self, nick):
+        """Nick validation.
+
+        Function checks if nick introduced by user exists in database and meets
+        requirements.
+
+        Parameters
+        ----------
+        nick : string
+
+        Returns
+        -------
+        string
+            If some error occurs method returns string describing that error.
+        None
+            If there are no errors it returns None.
+        """
         if not nick:
             error = 'Nickname is required.'
         elif 12 > len(nick) < 3:
@@ -44,6 +93,22 @@ class Validators:
         return error
 
     def validate_pass(self, password, confirm_pass):
+        """Password validation.
+
+        Function checks if password introduced by user meets requirements.
+
+        Parameters
+        ----------
+        password : string
+        confirm_pass : string
+
+        Returns
+        -------
+        string
+            If some error occurs method returns string describing that error.
+        None
+            If there are no errors it returns None.
+        """
         specials = ['!', '@', '#', '$', '%', '^', '&', '*', '(', ')']
         if not password:
             error = 'Password is required.'
@@ -68,6 +133,21 @@ class Validators:
         return error
 
     def validate_login_data(self, email, password):
+        """Login validation.
+
+        Function checks if login data introduced by user are correct.
+
+        Parameters
+        ----------
+        email : string
+        password : string
+
+        Returns
+        -------
+        User
+            If login data introduced by user are correct the method returns the
+            User object from database.
+        """
         user = UserDbInter().user_by_email(email)
         if not user:
             return "This account doesn't exist"
