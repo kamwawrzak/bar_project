@@ -15,11 +15,30 @@ login_bp = Blueprint('login_bp', __name__)
 
 @lm.user_loader
 def load_user(user_id):
+    """User load manager.
+
+    Paramters
+    ---------
+    user_id: int
+
+    Returns
+    -------
+    User
+        User object with user_id equal user_id.
+    """
     return User.query.get(user_id)
 
 
 @login_bp.route('/v1/login', methods=['GET', 'POST'])
 def login():
+    """Login user.
+
+    GET: Renders template 'login.html' allowing to introduce user's login data.
+
+    POST: Gets and verify login data introduced by user. If they are correct
+          flash confirmation, login the user and redirect to home page. If
+          there is any issue display the error and redirect to login page.
+    """
     if request.method == 'GET':
         return render_template('login.html', title='Login')
     else:
@@ -38,8 +57,14 @@ def login():
 
 
 @login_required
-@login_bp.route('/v1/logout')
+@login_bp.route('/v1/logout', methods=['GET'])
 def logout():
+    """Logout user.
+
+    GET: Log out currently logged in user, flash confirmation and redirect to
+         home page.
+    Only logged in users can use this route.
+    """
     logout_user()
     flash('You have been logged out.', category='success')
     return redirect(url_for('home_bp.index'))

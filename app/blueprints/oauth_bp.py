@@ -24,6 +24,11 @@ fb_blueprint = make_facebook_blueprint(
 
 @fb_blueprint.route('/v1/facebook')
 def fb_login():
+    """Delete drink's image
+
+    GET: Checks if user is authorized if so it redirects to home page.
+         Otherwise start facebook OAuth authorization.
+    """
     if not facebook.authorized:
         return redirect(url_for('facebook.login'))
     return redirect(url_for('home_bp.index'))
@@ -32,6 +37,13 @@ def fb_login():
 @login_required
 @fb_blueprint.route('/v1/set_nick', methods=['POST'])
 def set_nick():
+    """Set user's nick.
+
+    GET: Get and verify nick passed by user. Next assign its value to currently
+         logged in user nick property and redirects to home page. If there is
+         any issue flash the error and redirects to home page.
+    Only logged in users can use this route.
+    """
     if request.method == 'POST':
         nick = request.form.get('nick')
         error = Validators().validate_nick(nick)
@@ -45,6 +57,28 @@ def set_nick():
 
 @oauth_authorized.connect_via(fb_blueprint)
 def fb_logged_in(blueprint, token):
+    """Facebook OAuth2 authorization.
+
+    The signal gets sent request to facebook for authorization user. If user
+    can login to facebook and allows the application gets required data it
+    checks if the user exists in database. If it exists it will logged in.
+    Otherwise new User and OAuth objects will be added to database and then
+    user will be logged in.
+
+    Parameters
+    ---------
+    blueprint: OAuth2ConsumerBlueprint
+        flask_dance blueprint object in this case: 'fb_blueprint'.
+    token: OAuth2Token
+        token received from authorization service in this case: facebook.
+
+    Returns
+    -------
+    boolean
+        False - to disable standard storing token data. Instead storing token
+        in database has been implemented.
+    """
+
     if not token:
         flash('Failed to log in via Facebook.', category='error')
         return False

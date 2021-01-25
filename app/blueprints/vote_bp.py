@@ -14,6 +14,13 @@ vote_bp = Blueprint('vote_bp', __name__)
 @vote_bp.route('/v1/add_vote', methods=['POST'])
 @login_required
 def add_vote():
+    """Add new vote.
+
+        POST: Get new vote properties from JSON object and creates new Vote
+              object. Next add it to database and returns response to the
+              client that it has been added correctly. If there is some error
+              it returns response informing that it has not been added.
+        """
     vote_drink = request.json['drink_id']
     vote_user = request.json['user_id']
     vote_value = request.json['value']
@@ -30,6 +37,15 @@ def add_vote():
 
 @vote_bp.route('/v1/display_rate/<drink_id>', methods=['GET'])
 def display_drink_rate(drink_id):
+    """Display drink rate.
+
+    GET: Gets all Votes assigned to the Drink from database. Next calculate
+         number of the Votes and Drink average rate. Return this information to
+         the client in JSON object.
+    Parameters
+    ----------
+    drink_id: int
+    """
     votes = VoteDbInter().get_drink_votes(drink_id)
     amount = len(votes)
     avg_rate = VoteInter().calc_avg_rate(votes)
