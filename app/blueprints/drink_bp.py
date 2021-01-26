@@ -42,7 +42,7 @@ def add_drink():
     else:
         d = WebInter().get_drink_data()
         img = request.files['file']
-        if img is None:
+        if img.filename == '':
             img_link = ImgInter().get_default_img('drink')
         else:
             img_link = None

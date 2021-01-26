@@ -87,8 +87,6 @@ class SearchDbInter:
             Drink.name).paginate(page=int(page), per_page=Config().PER_PAGE)
         return drinks
 
-    """Method accepts user_id and page number as arguments. Next it creates
-    list of user's Drinks objects and returns it in alphabetical order."""
     def search_by_user(self, user_id, page):
         """Drinks by name getter.
 
