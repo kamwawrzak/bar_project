@@ -1,6 +1,6 @@
-$(window).on('load', function(){ getRecommended(); });
+$(window).on('load', function(){ getMostViewed(); getTopRated(); });
 
-function getRecommended(){
+function getMostViewed(){
     $.getJSON('/v1/most_viewed', function (data){
         var drinkName = data.name;
         drinkName = drinkName.charAt(0).toUpperCase() + drinkName.substring(1).toLowerCase();
@@ -9,7 +9,9 @@ function getRecommended(){
             this.href = this.href.replace('/most-viewed-drink', '/v1/drink/' + data.id);})
         $('#most-viewed-img').attr('src', data.image);
     });
+};
 
+function getTopRated(){
     $.getJSON('/v1/top_rated', function (data){
         var drinkName = data.name;
         drinkName = drinkName.charAt(0).toUpperCase() + drinkName.substring(1).toLowerCase();
