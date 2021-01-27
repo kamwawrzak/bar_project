@@ -84,7 +84,7 @@ class SearchDbInter:
             Pagination object including Drink objects.
         """
         drinks = Drink.query.filter_by(category=category).order_by(
-            Drink.name).paginate(page=int(page), per_page=Config().PER_PAGE)
+            Drink.name).paginate(page=page, per_page=Config().PER_PAGE)
         return drinks
 
     def search_by_user(self, user_id, page):
