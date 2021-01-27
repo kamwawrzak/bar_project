@@ -16,7 +16,7 @@ from werkzeug.security import check_password_hash
 profile_bp = Blueprint('profile_bp', __name__)
 
 
-@profile_bp.route('/v1/profile/<user_id>/<page>', methods=['GET'])
+@profile_bp.route('/v1/profile/<user_id>/<int:page>', methods=['GET'])
 def display_profile(user_id, page):
     """Display user profile
 

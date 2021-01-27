@@ -113,7 +113,7 @@ def top_rated():
     return make_response(jsonify(d), 200)
 
 
-@drink_bp.route('/v1/user_drinks/<user_id>/<page>')
+@drink_bp.route('/v1/user_drinks/<user_id>/<int:page>')
 @login_required
 def user_drinks(user_id, page):
     """Display user's drinks.
@@ -129,7 +129,7 @@ def user_drinks(user_id, page):
     page: int
     """
     msg = 'Your Drinks:'
-    drinks = SearchDbInter().search_by_user(user_id, int(page))
+    drinks = SearchDbInter().search_by_user(user_id, page)
     if len(drinks.items) == 0:
         msg = 'You have not added drinks yet.'
     return render_template('user_drinks.html', title='Your Drinks',

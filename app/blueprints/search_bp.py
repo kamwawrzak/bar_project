@@ -26,7 +26,7 @@ def search_drinks():
                                 criteria=criteria, page=1))
 
 
-@search_bp.route('/v1/results/<criteria>/<search>/<page>', methods=['GET'])
+@search_bp.route('/v1/results/<criteria>/<search>/<int:page>', methods=['GET'])
 def display_results(search, criteria, page):
     """Display search results.
 
@@ -53,7 +53,7 @@ def display_results(search, criteria, page):
                            criteria=criteria)
 
 
-@search_bp.route('/v1/drinks/<category>/<page>', methods=['GET'])
+@search_bp.route('/v1/drinks/<category>/<int:page>', methods=['GET'])
 def display_category(category, page):
     """Display category
 
@@ -66,12 +66,11 @@ def display_category(category, page):
         list in Drink model.
     page: int
     """
-
     category = category.replace('_', '/')
     if category == 'all':
-        drinks = DrinkDbInter().get_all_drinks(int(page))
+        drinks = DrinkDbInter().get_all_drinks(page)
     else:
-        drinks = SearchDbInter().search_by_category(category, int(page))
+        drinks = SearchDbInter().search_by_category(category, page)
     msg = '{} Drinks:'.format(category.capitalize())
     title = category.capitalize() + ' Drinks'
     if len(drinks.items) == 0:

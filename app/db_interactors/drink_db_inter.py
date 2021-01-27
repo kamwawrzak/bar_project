@@ -48,7 +48,7 @@ class DrinkDbInter:
             Pagination object including all Drinks objects.
         """
         return Drink.query.order_by(Drink.name).paginate(
-                                            page=int(page),
+                                            page=page,
                                             per_page=Config().PER_PAGE)
 
     def user_all_drinks(self, user_id):
