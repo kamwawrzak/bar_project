@@ -27,9 +27,9 @@ def test_post_register(test_app):
     WHEN '/v1/register route send POST request
     THEN check response code status
     """
-    user_data = dict(email='tester1@gmail.com', nick='Tester1',
-                     password='Password1!', confirm_pass='Password1!',
-                     file=(open(img, 'rb'), img))
+    user_data = {'email': 'tester1@gmail.com', 'nick': 'Tester1',
+                 'password': 'Password1!', 'confirm_pass': 'Password1!',
+                 'file': (open(img, 'rb'), img)}
     msg = 'Your account has been created.'
     r = test_app.post('/v1/register', data=user_data, follow_redirects=True)
     user = User.query.filter_by(email=user_data['email']).first()
@@ -47,9 +47,9 @@ def test_already_registered_user(test_app):
     WHEN '/v1/register route send POST request
     THEN check response code status, flash message and redirect address
     """
-    user_data = dict(email='tester4@gmail.com', nick='Tester4',
-                     password='Password1!', confirm_pass='Password1!',
-                     file=(open(img, 'rb'), img))
+    user_data = {'email': 'tester4@gmail.com', 'nick': 'Tester4',
+                 'password': 'Password1!', 'confirm_pass': 'Password1!',
+                 'file': (open(img, 'rb'), img)}
     r = test_app.post('/v1/register', data=user_data, follow_redirects=True)
     error_msg = 'This email address is already registered.'
     assert r.status_code == 200
@@ -64,9 +64,9 @@ def test_different_pass_confirmpass(test_app):
     WHEN '/v1/register route send POST request
     THEN check response code status, flash message and redirect address
     """
-    user_data = dict(email='tester10@gmail.com', nick='Tester10',
-                     password='Password1!', confirm_pass='Something123@',
-                     file=(open(img, 'rb'), img))
+    user_data = {'email': 'tester10@gmail.com', 'nick': 'Tester10',
+                 'password': 'Password1!', 'confirm_pass': 'Something123@',
+                 'file': (open(img, 'rb'), img)}
     r = test_app.post('/v1/register', data=user_data, follow_redirects=True)
     users = User.query.filter_by(email=user_data['email']).all()
     error_msg = "Password and Confirm Password don't match."
@@ -83,9 +83,9 @@ def test_existing_nickname(test_app):
     WHEN '/v1/register route send POST request
     THEN check response code status, flash message and redirect address
     """
-    user_data = dict(email='tester12@gmail.com', nick='Tester4',
-                     password='Password1!', confirm_pass='Password1!',
-                     file=(open(img, 'rb'), img))
+    user_data = {'email': 'tester12@gmail.com', 'nick': 'Tester4',
+                 'password': 'Password1!', 'confirm_pass': 'Something123@',
+                 'file': (open(img, 'rb'), img)}
     r = test_app.post('/v1/register', data=user_data, follow_redirects=True)
     users = User.query.filter_by(email=user_data['email']).all()
     error_msg = 'This nickname already exists.'

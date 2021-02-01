@@ -3,6 +3,8 @@ from app.models import User
 
 from flask import get_flashed_messages
 
+from flask_login import current_user
+
 from werkzeug.security import generate_password_hash
 
 img = 'tests/whisky_sour.jpeg'
@@ -32,11 +34,12 @@ def test_login_user(test_app):
                     password_hash=password_hash)
     db.session.add(new_user)
     db.session.commit()
-    login_data = dict(email='tester13@gmail.com', password='Password123')
+    login_data = {'email': 'tester13@gmail.com', 'password': 'Password123'}
     r = test_app.post('/v1/login', data=login_data, follow_redirects=True)
     db.session.delete(new_user)
     db.session.commit()
     assert r.status_code == 200
     assert 'You have been logged in.' in get_flashed_messages()
     assert new_user.is_authenticated is True
+    assert current_user.nick == 'Tester13'
     assert b'About the page' in r.data
