@@ -55,7 +55,7 @@ class Validators:
         if not email:
             error = 'Email is required.'
         elif UserDbInter().user_by_email(email):
-            if UserDbInter().user_by_email(email) is False:
+            if UserDbInter().user_by_email(email).oauth_user is False:
                 error = 'This email address is already registered.'
             else:
                 e1 = 'This account has been created via Facebook.'
@@ -87,7 +87,7 @@ class Validators:
         elif 12 > len(nick) < 3:
             error = 'Nickname must contain between 4 and 12 characters.'
         elif UserDbInter().user_by_nick(nick):
-            error = 'This nickname already exists'
+            error = 'This nickname already exists.'
         else:
             error = None
         return error
