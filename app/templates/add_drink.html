@@ -1,9 +1,5 @@
 {% extends 'base.html' %}
 
-{% block head %}
-    <script type="text/javascript" src="{{ url_for('static', filename='js/rows_adder.js') }}"></script>
-{% endblock %}
-
 {% block content %}
     <div id="add-drink" class="form-container">
         <form action="{{ url_for('drink_bp.add_drink') }}" method="POST" enctype="multipart/form-data">
@@ -64,8 +60,8 @@
                         </td>
                     </tr>
                 </table>
-                <input type="hidden" id="ingredient-iterator" value="1">
-                <input type="button" id="add-ingredient" class="submit-button" value="Add ingredient" onclick="add()"/>
+                <input type="hidden" id="ingredient-iterator" value="1" />
+                <button type="button" id="add-ingredient" class="submit-button">Add Ingredient</button>
             </div>
             <div class="upload-photo">
                 <label for="upload-photo" class="photo-upload">Choose Drink Photo...</label>
@@ -77,5 +73,6 @@
             </button>
         </form>
     </div>
-    <script src="{{ url_for('static', filename='js/filename_updater.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/rows_adder.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/filename_updater.js') }}"></script>
 {% endblock content %}

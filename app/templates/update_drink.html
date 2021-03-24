@@ -1,10 +1,5 @@
 {% extends 'base.html' %}
 
-{% block head %}
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='js/rows_adder.js') }}"></script>
-{% endblock %}
-
 {% block content %}
     {% with drink=drink, categories=categories, techniques=techniques, units=units, ingredients=ingredients, ingr_number=ingr_number, img=img %}
         <div id="update-drink" class="form-container">
@@ -94,11 +89,12 @@
                         {% endfor %}
                     </table>
                     <input type="hidden" id="ingredient-iterator" value="{{ ingr_number }}">
-                    <input type="button" id="add-ingredient" class="submit-button" value="Add Ingredient" onclick="add()"/>
+                    <button type="button" id="add-ingredient" class="submit-button">Add Ingredient</button>
                 </div>
                 <button type="submit" name="submit" class="submit-button">Save Changes</button>
             </form>
         </div>
-        <script src="{{ url_for('static', filename='js/filename_updater.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='js/rows_adder.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='js/filename_updater.js') }}"></script>
     {% endwith %}
 {% endblock %}

@@ -1,9 +1,10 @@
-var i = null;
+window.addEventListener('DOMContentLoaded', (event) => {
+    document.getElementById('add-ingredient').addEventListener("click", addIngredient, false);
+});
 
-function add() {
-  if (i == null){
-     i = document.getElementById('ingredient-iterator').value;
-  };
+
+function addIngredient() {
+  let i = document.getElementById('ingredient-iterator').value * 1;
   if (i < 6) {
       var table = document.getElementById('ingredients-tab'),
           row = table.insertRow(-1),
@@ -67,6 +68,8 @@ function add() {
 
       table.appendChild(row);
 
-      i++;
-  }
-}
+      document.getElementById('ingredient-iterator').setAttribute('value', i+1);
+  } else {
+    alert('You can add maximum 6 ingredients.');
+  };
+};
