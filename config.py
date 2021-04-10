@@ -1,4 +1,11 @@
 import os
+from os.path import dirname, join
+
+from dotenv import load_dotenv
+
+
+env_path = join(dirname(__file__), '.env')
+load_dotenv(env_path)
 
 
 class Config:
@@ -7,7 +14,7 @@ class Config:
     MAX_IMG_SIZE = 1024 * 1024
     UPLOAD_EXTENSIONS = ['.jpg', '.jpeg', '.png']
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
+    SQLALCHEMY_DATABASE_URI = os.environ.get('SQLALCHEMY_DATABASE_URL')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     FB_ID = os.environ.get('FB_ID')
     FB_SECRET = os.environ.get('FB_SECRET')
