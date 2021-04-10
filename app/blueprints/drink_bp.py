@@ -8,7 +8,7 @@ from app.interactors.img_inter import ImgInter
 from app.interactors.web_inter import WebInter
 from app.models import Drink
 
-from flask import (Blueprint, flash, jsonify, make_response, redirect,
+from flask import (Blueprint, flash, make_response, redirect,
                    render_template, request, url_for)
 
 from flask_login import current_user, login_required
@@ -91,26 +91,20 @@ def display_drink(drink_id):
                            comments=comments, author=author)
 
 
-@drink_bp.route('/v1/most_viewed', methods=['GET'])
-def most_viewed():
-    """Display most viewed drink.
+@drink_bp.route('/v1/recommended', methods=['GET'])
+def get_recommended():
+    """Get top rated and most viewed drinks.
 
-    GET:  Gets most viewed Drink object from database and returns drink data
-          in JSON object.
+    GET: returns data of top rated and most viewed drinks.
     """
-    d = DrinkDbInter().get_most_viewed()
-    return make_response(jsonify(d), 200)
-
-
-@drink_bp.route('/v1/top_rated', methods=['GET'])
-def top_rated():
-    """Display most viewed drink.
-
-    GET:  Gets top rated Drink object from database and returns drink data
-          in JSON object.
-    """
-    d = DrinkDbInter().get_top_rated()
-    return make_response(jsonify(d), 200)
+    try:
+        top_rated_drink = DrinkDbInter().get_top_rated()
+        most_viewed_drink = DrinkDbInter().get_most_viewed()
+        return make_response({'success': True, 'top_rated': top_rated_drink,
+                              'most_viewed': most_viewed_drink}, 200)
+    except Exception:
+        return make_response({'success': False,
+                              'msg': 'Cannot get drinks.'}, 500)
 
 
 @drink_bp.route('/v1/user_drinks/<user_id>/<int:page>')
