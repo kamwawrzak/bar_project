@@ -1,3 +1,6 @@
-$(document).ready(function(){
-    $('#flash-msg').delay(5000).fadeOut();
+window.addEventListener('DOMContentLoaded', () => {
+    flashedMsg = document.getElementById('flash-msg');
+    if (flashedMsg){
+        window.setTimeout(() => { flashedMsg.remove(); }, 5000);
+    };
 });

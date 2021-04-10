@@ -12,13 +12,6 @@
         <link rel="stylesheet" type="text/css" href="/static/style.css" />
         <link rel="stylesheet" type="text/css" href="/static/icons/bar_p.css" />
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;700&display=swap" rel="stylesheet" />
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-        <script type="text/javascript" src="{{ url_for('static', filename='js/sticky_menu.js') }}"></script>
-        <script type="text/javascript" src="{{ url_for('static', filename='js/flashing_msg.js') }}"></script>
-        <script type="text/javascript" src="{{ url_for('static', filename='js/display_recommended.js') }}"></script>
-
-        {% block head %} {% endblock %}
-
     </head>
     <body>
         {% if current_user.is_authenticated and current_user.nick == None %}
@@ -104,7 +97,7 @@
                 <div class="sidebar">
                     <div id="top-rated" class="recommended">
                         <span>Top Rated</span>
-                        <a href="/top-rated-drink" class="sidelink">
+                        <a id="top-rated-link" class="sidelink">
                             <img id="top-rated-img" src="">
                             <span id="top-rated-name" class="recommended-name">Drink Name</span>
                         </a>
@@ -118,7 +111,7 @@
                 <div class="sidebar">
                     <div id="most-viewed" class="recommended">
                         <span class="recommended-header">Most Viewed</span>
-                        <a href="/most-viewed-drink" class="sidelink">
+                        <a id="most-viewed-link" class="sidelink">
                             <img id="most-viewed-img" src="">
                             <span id="most-viewed-name" class="recommended-name">Drink Name</span>
                         </a>
@@ -130,5 +123,8 @@
                 All rights reserved &copy 2020.
             </footer>
         </div>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/sticky_menu.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/flashing_msg.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/display_recommended.js') }}"></script>
     </body>
 </html>

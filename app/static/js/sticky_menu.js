@@ -1,15 +1,17 @@
-$(document).ready(function(){
-    var navPosition = $('#topnav').offset().top;
+window.addEventListener('DOMContentLoaded', () => {
+    let navPosition = document.getElementById('topnav').offsetTop;
+    let stickyNavbar = () => {
+        let windowScroll = window.scrollY;
 
-    var stickyNavbar = function(){
-        var windowScroll = $(window).scrollTop();
-
-        if (windowScroll > navPosition){ $('#topnav').addClass('sticky-topnav') }
-        else { $('#topnav').removeClass('sticky-topnav') };
+        if (windowScroll > navPosition){
+            document.getElementById('topnav').classList.add('sticky-topnav');
+        } else {
+            document.getElementById('topnav').classList.remove('sticky-topnav');
+        };
     };
-    var pageHeight = $(document).height();
+    let pageHeight = document.body.scrollHeight;
     if(pageHeight > 800){
         stickyNavbar();
-        $(window).scroll(function(){ stickyNavbar(); });
+        window.addEventListener('scroll', stickyNavbar);
     };
-})
+});

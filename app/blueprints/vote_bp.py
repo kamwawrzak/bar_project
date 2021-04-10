@@ -20,19 +20,17 @@ def add_vote():
               object. Next add it to database and returns response to the
               client that it has been added correctly. If there is some error
               it returns response informing that it has not been added.
-        """
-    vote_drink = request.json['drink_id']
-    vote_user = request.json['user_id']
-    vote_value = request.json['value']
-    if len(vote_user) == 0:
-        return make_response(jsonify({'msg': 'Vote not added.'}), 401)
+    """
+    data = request.json
+    if len(data['user_id']) == 0:
+        return make_response({'success': False, 'err': 'Unauthorized user.'}, 401)
     else:
-        drink = DrinkDbInter().get_drink(vote_drink)
-        new_vote = Vote(drink=int(vote_drink[0]),
-                        user=int(vote_user[0]),
-                        value=int(vote_value[0]))
+        drink = DrinkDbInter().get_drink(data['drink_id'])
+        new_vote = Vote(drink=int(data['drink_id']),
+                        user=int(data['user_id']),
+                        value=int(data['value']))
         VoteDbInter().add_vote(drink, new_vote)
-        return make_response(jsonify({'msg': 'Vote added'}), 200)
+        return make_response({'success': True, 'msg': 'Vote added successfully.'}, 200)
 
 
 @vote_bp.route('/v1/display_rate/<drink_id>', methods=['GET'])
@@ -49,4 +47,4 @@ def display_drink_rate(drink_id):
     votes = VoteDbInter().get_drink_votes(drink_id)
     amount = len(votes)
     avg_rate = VoteInter().calc_avg_rate(votes)
-    return make_response(jsonify({'rate': avg_rate, 'amount': amount}), 200)
+    return make_response({'success': True, 'rate': avg_rate, 'amount': amount}, 200)

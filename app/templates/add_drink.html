@@ -64,7 +64,7 @@
                 <button type="button" id="add-ingredient" class="submit-button">Add Ingredient</button>
             </div>
             <div class="upload-photo">
-                <label for="upload-photo" class="photo-upload">Choose Drink Photo...</label>
+                <label for="upload-photo" id="up-photo-label" class="photo-upload">Choose Drink Photo...</label>
                 <input type="file" name="file" id="upload-photo" accept=".jpg, .jpeg, .png">
             </div>
             <div class="photo-hint"> Accept formats: .png .jpg .jpeg and size < 1MB.</div>
@@ -74,5 +74,5 @@
         </form>
     </div>
     <script type="text/javascript" src="{{ url_for('static', filename='js/rows_adder.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='js/filename_updater.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/img_updater.js') }}"></script>
 {% endblock content %}

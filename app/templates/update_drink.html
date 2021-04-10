@@ -5,7 +5,7 @@
         <div id="update-drink" class="form-container">
             <form action="{{ url_for('drink_bp.update_drink', drink_id=drink.drink_id) }}" method="POST" enctype="multipart/form-data">
                 <div id="update-drink-img">
-                    <img src="{{ drink.image }}">
+                    <img id="img-display" src="{{ drink.image }}">
                     {% if drink.image != 'http://bar-project.s3.amazonaws.com/images/drinks/default.jpg' %}
                         <div id="delete-button">
                             <a href="{{ url_for('drink_bp.delete_drink_pic', drink_id=drink.drink_id) }}">
@@ -14,7 +14,7 @@
                         </div>
                     {% endif %}
                     <div class="upload-photo">
-                        <label for="upload-photo" class="photo-upload">Upload New Image...</label>
+                        <label for="upload-photo" id="up-photo-label" class="photo-upload">Upload New Image...</label>
                         <input type="file" name="file" id="upload-photo" accept=".jpg, .jpeg, .png">
                     </div>
                     <div class="photo-hint"> Accept formats: .png .jpg .jpeg and size < 1MB.</div>
@@ -95,6 +95,6 @@
             </form>
         </div>
         <script type="text/javascript" src="{{ url_for('static', filename='js/rows_adder.js') }}"></script>
-        <script type="text/javascript" src="{{ url_for('static', filename='js/filename_updater.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='js/img_updater.js') }}"></script>
     {% endwith %}
 {% endblock %}
