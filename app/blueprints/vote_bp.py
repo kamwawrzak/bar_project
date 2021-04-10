@@ -3,7 +3,7 @@ from app.db_interactors.vote_db_inter import VoteDbInter
 from app.interactors.vote_inter import VoteInter
 from app.models import Vote
 
-from flask import Blueprint, jsonify, make_response, request
+from flask import Blueprint, make_response, request
 
 from flask_login import login_required
 
@@ -23,14 +23,16 @@ def add_vote():
     """
     data = request.json
     if len(data['user_id']) == 0:
-        return make_response({'success': False, 'err': 'Unauthorized user.'}, 401)
+        return make_response({'success': False,
+                              'err': 'Unauthorized user.'}, 401)
     else:
         drink = DrinkDbInter().get_drink(data['drink_id'])
         new_vote = Vote(drink=int(data['drink_id']),
                         user=int(data['user_id']),
                         value=int(data['value']))
         VoteDbInter().add_vote(drink, new_vote)
-        return make_response({'success': True, 'msg': 'Vote added successfully.'}, 200)
+        return make_response({'success': True,
+                              'msg': 'Vote added successfully.'}, 200)
 
 
 @vote_bp.route('/v1/display_rate/<drink_id>', methods=['GET'])
@@ -47,4 +49,5 @@ def display_drink_rate(drink_id):
     votes = VoteDbInter().get_drink_votes(drink_id)
     amount = len(votes)
     avg_rate = VoteInter().calc_avg_rate(votes)
-    return make_response({'success': True, 'rate': avg_rate, 'amount': amount}, 200)
+    return make_response({'success': True, 'rate': avg_rate,
+                          'amount': amount}, 200)
