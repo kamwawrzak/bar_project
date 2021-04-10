@@ -196,7 +196,7 @@ ol.dropdown-menu > li:first-child
 #content
 {
     width: 860px;
-    min-height: 340px;
+    min-height: 65vh;
     text-align: center;
     float: left;
     padding: 20px;
